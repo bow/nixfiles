@@ -70,7 +70,12 @@
         bow = lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit inputs outputs pkgs-unstable stateVersion;
+            inherit
+              inputs
+              outputs
+              pkgs-unstable
+              stateVersion
+              ;
             userName = "bow";
           };
           modules = [ ./home/personal.nix ];
@@ -80,8 +85,26 @@
       # NixOS configuration.
       # usage: sudo nixos-rebuild switch --flake .#hostname
       nixosConfigurations = {
+        duskglow = lib.nixosSystem {
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              pkgs-unstable
+              stateVersion
+              ;
+          };
+          modules = [ ./hosts/duskglow ];
+        };
         vmlab = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs pkgs-unstable stateVersion; };
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              pkgs-unstable
+              stateVersion
+              ;
+          };
           modules = [ ./hosts/vmlab ];
         };
       };
