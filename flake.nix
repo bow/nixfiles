@@ -37,6 +37,7 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
+      sops-nix,
       home-manager,
       ...
     }@inputs:
@@ -94,7 +95,10 @@
               stateVersion
               ;
           };
-          modules = [ ./hosts/duskglow ];
+          modules = [
+            ./hosts/duskglow
+            sops-nix.nixosModules.sops
+          ];
         };
         vmlab = lib.nixosSystem {
           specialArgs = {

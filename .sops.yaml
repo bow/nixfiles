@@ -1,6 +1,7 @@
 keys:
   - &pgp_key 217877836071F0A75B262A69F328F0A0914407EF!
   - &age_key age1tvkzsh9g7gzlau3c2kcnrjwdgara020ekz685twd3sxy0qheuarqgj49w2
+  - &duskglow_key age18ef0z6rc8fl2y4twma4e45tnfmsjlv22rlamsrzw7u3p0k9hg3fsc0da09
 creation_rules:
   - age: *age_key
     pgp: *pgp_key
