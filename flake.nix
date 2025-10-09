@@ -114,6 +114,26 @@
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
+      # Reusable apps.
+      apps = forAllSystems (system: {
+        gen-machine-key =
+          let
+            pkgs = import nixpkgs { inherit system; };
+            pkgGenMachineKey = pkgs.writeShellScriptBin "gen-machine-key" ''
+              set -eu
+              OUT=''${1:-/mnt/persist/machine-key.txt}
+              mkdir -p ''$(dirname ''${OUT})
+              ${pkgs.age}/bin/age-keygen -o ''${OUT}
+              chmod 600 ''${OUT}
+              echo "Path: ''${OUT}"
+            '';
+          in
+          {
+            type = "app";
+            program = "${pkgGenMachineKey}/bin/gen-machine-key";
+          };
+      });
+
       # Flake conveniences.
       devShells = forAllSystems (system: {
         default =
