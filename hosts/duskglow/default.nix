@@ -12,8 +12,6 @@
     ./hardware-configuration.nix
     "${inputs.disko}/module.nix"
     ./disk-configuration.nix
-
-    inputs.nixos-cli.nixosModules.nixos-cli
   ];
 
   boot = {
@@ -124,9 +122,6 @@
         fileSystems = [ "/" ];
         interval = "monthly";
       };
-    };
-    nixos-cli = {
-      enable = true;
     };
   };
 
