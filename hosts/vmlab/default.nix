@@ -7,14 +7,14 @@
 }:
 {
   imports = [
-    ./hardware-configuration.nix
-    "${inputs.disko}/module.nix"
-    ./disk-configuration.nix
+    ../common
 
-    inputs.nixos-cli.nixosModules.nixos-cli
+    ./hardware.nix
+    ./disk.nix
   ];
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
     growPartition = true;
     initrd = {
@@ -48,13 +48,6 @@
     tmp.cleanOnBoot = true;
   };
 
-  console = {
-    earlySetup = true;
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-v20n.psf.gz";
-    keyMap = "us";
-    packages = [ pkgs.terminus_font ];
-  };
-
   environment = {
     systemPackages = with pkgs; [
       curl
@@ -82,24 +75,8 @@
     };
   };
 
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      max-jobs = "auto";
-      trusted-users = [
-        "root"
-        "bow"
-      ];
-    };
-  };
-
   networking = {
-    hostName = "vmlab-nixos";
+    hostName = "vmlab";
     networkmanager.enable = true;
   };
 
@@ -139,9 +116,6 @@
         interval = "monthly";
       };
     };
-    nixos-cli = {
-      enable = true;
-    };
     openssh = {
       enable = true;
       settings = {
@@ -153,8 +127,6 @@
   };
 
   swapDevices = [ { device = "/swap/swapfile"; } ];
-
-  time.timeZone = "Europe/Copenhagen";
 
   users = {
     mutableUsers = false;
