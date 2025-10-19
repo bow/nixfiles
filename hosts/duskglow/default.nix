@@ -9,8 +9,8 @@
   imports = [
     ../common
 
-    ./hardware-configuration.nix
-    ./disk-configuration.nix
+    ./hardware.nix
+    ./disk.nix
   ];
 
   boot = {
