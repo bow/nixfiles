@@ -7,6 +7,8 @@
 }:
 {
   imports = [
+    inputs.disko.nixosModules.disko
+
     ../common
 
     ./hardware.nix
