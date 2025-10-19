@@ -10,7 +10,6 @@
     ../common
 
     ./hardware-configuration.nix
-    "${inputs.disko}/module.nix"
     ./disk-configuration.nix
   ];
 
