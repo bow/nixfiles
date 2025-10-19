@@ -32,13 +32,6 @@
     tmp.cleanOnBoot = true;
   };
 
-  console = {
-    earlySetup = true;
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-v20n.psf.gz";
-    keyMap = "us";
-    packages = [ pkgs.terminus_font ];
-  };
-
   environment = {
     systemPackages = with pkgs; [
       curl
@@ -65,8 +58,6 @@
       EDITOR = "nvim";
     };
   };
-
-  i18n.defaultLocale = "en_US.UTF-8";
 
   networking = {
     hostName = "duskglow";
@@ -112,8 +103,6 @@
   };
 
   swapDevices = [ { device = "/swap/swapfile"; } ];
-
-  time.timeZone = "Europe/Copenhagen";
 
   users = {
     mutableUsers = false;
