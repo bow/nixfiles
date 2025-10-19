@@ -7,6 +7,8 @@
 }:
 {
   imports = [
+    ../common
+
     ./hardware-configuration.nix
     "${inputs.disko}/module.nix"
     ./disk-configuration.nix
@@ -121,20 +123,6 @@
         enable = true;
         fileSystems = [ "/" ];
         interval = "monthly";
-      };
-    };
-    keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = [ "*" ];
-          settings = {
-            main = {
-              capslock = "overload(control, esc)";
-              rightctrl = "compose";
-            };
-          };
-        };
       };
     };
     nixos-cli = {
