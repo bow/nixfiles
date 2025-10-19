@@ -1,13 +1,8 @@
 {
-  inputs,
-  outputs,
-  ...
-}:
-{
   imports = [
-    ./keyd.nix
     ./nix.nix
-    ./nix-ld.nix
-    ./nixos-cli.nix
+    ./programs-nix-ld.nix
+    ./services-keyd.nix
+    ./services-nixos-cli.nix
   ];
 }
