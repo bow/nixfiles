@@ -92,6 +92,26 @@
             sops-nix.nixosModules.sops
           ];
         };
+        # ISO installation media for nixos-anywhere
+        # Build with: nix build .#nixosConfigurations.iso.config.system.build.isoImage
+        # Then run with: nix run github:nix-community/nixos-anywhere -- --flake .#vmlab --target-host root@127.0.0.1 -p 2200
+        iso = lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            (
+              { pkgs, modulesPath, ... }:
+              {
+                imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+                networking.networkmanager.enable = true;
+                networking.wireless.enable = false;
+                systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
+                users.users.root.openssh.authorizedKeys.keys = [
+                  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILetxdkGYGooOnymLSctz3B+QxTGonnAwQbSwFoIa9UR openpgp:0xBBA92D16"
+                ];
+              }
+            )
+          ];
+        };
         vmlab = lib.nixosSystem {
           specialArgs = {
             inherit
@@ -135,16 +155,28 @@
         default =
           let
             pkgs = import nixpkgs { inherit system; };
+            localScripts = [
+              (pkgs.writeShellApplication {
+                name = "nxf-build-iso";
+                text = ''
+                  nix build .#nixosConfigurations.iso.config.system.build.isoImage
+                '';
+              })
+            ];
           in
           pkgs.mkShellNoCC {
-            packages = with pkgs; [
-              sops
-              ssh-to-age
+            packages =
+              with pkgs;
+              [
+                age
+                sops
+                ssh-to-age
 
-              nixfmt-rfc-style
-              deadnix
-              statix
-            ];
+                nixfmt-rfc-style
+                deadnix
+                statix
+              ]
+              ++ localScripts;
           };
       });
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
