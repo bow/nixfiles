@@ -26,10 +26,6 @@
       url = "github:nix-community/nixos-cli";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixCats = {
-      url = "github:BirdeeHub/nixCats-nvim";
-    };
   };
 
   outputs =
