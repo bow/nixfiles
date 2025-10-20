@@ -14,10 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # disko = builtins.fetchTarball {
-    #   url = "https://github.com/nix-community/disko/archive/refs/tags/v1.12.0.tar.gz";
-    #   sha256 = "sha256-eDoSOhxGEm2PykZFa/x9QG5eTH0MJdiJ9aR00VAofXE=";
-    # };
     disko = {
       url = "github:nix-community/disko/v1.12.0";
       inputs.nixpkgs.follows = "nixpkgs";
