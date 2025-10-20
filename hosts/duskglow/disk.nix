@@ -24,6 +24,7 @@
               content = {
                 type = "luks";
                 name = "cryptroot";
+                passwordFile = "/tmp/disk.key";
                 settings = {
                   allowDiscards = true;
                 };
