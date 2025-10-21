@@ -76,7 +76,7 @@
       };
 
       # NixOS configuration.
-      # usage: sudo nixos-rebuild switch --flake .#hostname
+      # usage: sudo nixos-rebuild switch --flake .#machinename
       nixosConfigurations = {
         duskglow = lib.nixosSystem {
           specialArgs = {
@@ -88,7 +88,7 @@
               ;
           };
           modules = [
-            ./hosts/duskglow
+            ./machines/duskglow
             sops-nix.nixosModules.sops
           ];
         };
@@ -121,7 +121,7 @@
               stateVersion
               ;
           };
-          modules = [ ./hosts/vmlab ];
+          modules = [ ./machines/vmlab ];
         };
       };
 
