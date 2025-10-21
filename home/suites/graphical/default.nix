@@ -4,6 +4,9 @@
   ...
 }:
 {
+  imports = [
+    ./i3.nix
+  ];
 
   home.packages =
     let

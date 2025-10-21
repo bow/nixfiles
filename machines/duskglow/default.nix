@@ -10,6 +10,7 @@
     inputs.disko.nixosModules.disko
 
     ../common
+    ../common/extras/i3.nix
 
     ./hardware.nix
     ./disk.nix
