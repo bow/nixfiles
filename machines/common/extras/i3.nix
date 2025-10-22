@@ -7,6 +7,10 @@
 
   services.xserver = {
     enable = true;
+    autorun = false;
+    displayManager.startx = {
+      enable = true;
+    };
     desktopManager = {
       xterm.enable = false;
     };
@@ -23,6 +27,10 @@
 
   services.displayManager = {
     defaultSession = "none+i3";
+    autoLogin = {
+      enable = true;
+      user = "bow";
+    };
   };
 
   programs.i3lock.enable = true;

@@ -16,6 +16,17 @@
     ./disk.nix
   ];
 
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "startx";
+        user = "bow";
+      };
+      default_session = initial_session;
+    };
+  };
+
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
