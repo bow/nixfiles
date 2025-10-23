@@ -18,9 +18,6 @@
     stateVersion = stateVersion;
     username = userName;
     homeDirectory = "/home/${userName}";
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
   };
 
   nixpkgs = {

@@ -6,58 +6,38 @@
 {
   imports = [
     ./i3.nix
+    ./ghostty.nix
   ];
 
-  home.packages =
-    let
-      fontPkgs = with pkgs; [
-        font-awesome
-        iosevka
-      ];
+  home.packages = with pkgs; [
+    # PDF reader.
+    evince
 
-      appPkgs = with pkgs; [
-        # PDF reader.
-        evince
+    # Web browser.
+    firefox
 
-        # Image viewer.
-        feh
+    # Text editor.
+    geany
 
-        # Web browser.
-        firefox
+    # Disk partition editor.
+    gparted
 
-        # Text editor.
-        geany
+    # Markdown-based knowledge base.
+    obsidian
 
-        # Terminal emulator.
-        ghostty
+    # Music player.
+    spotify
 
-        # Disk partition editor.
-        gparted
+    # Official Todoist app.
+    todoist-electron
 
-        # Screnshot tool.
-        maim
+    # Encryption tooling.
+    veracrypt
 
-        # Markdown-based knowledge base.
-        obsidian
+    # Video player.
+    vlc
 
-        # Temperature-based screen light adjuster.
-        redshift
-
-        # Music player.
-        spotify
-
-        # Official Todoist app.
-        todoist-electron
-
-        # Encryption tooling.
-        veracrypt
-
-        # PDF reader.
-        zathura
-
-        # Video player.
-        vlc
-      ];
-    in
-    fontPkgs ++ appPkgs;
+    # PDF reader.
+    zathura
+  ];
 }

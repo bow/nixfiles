@@ -163,4 +163,8 @@
       recursive = true;
     };
   };
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 }
