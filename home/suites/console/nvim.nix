@@ -20,9 +20,6 @@
       tree-sitter
       lua54Packages.jsregexp
 
-      # Ansible
-      ansible-language-server
-
       # Bash
       bash-language-server
       tree-sitter-grammars.tree-sitter-bash
