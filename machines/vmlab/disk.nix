@@ -80,4 +80,13 @@
       };
     };
   };
+  services.btrfs = {
+    autoScrub = {
+      enable = true;
+      fileSystems = [ "/" ];
+      interval = "monthly";
+    };
+  };
+  boot.supportedFilesystems = [ "btrfs" ];
+  swapDevices = [ { device = "/swap/swapfile"; } ];
 }

@@ -7,13 +7,11 @@
 }:
 {
   imports = [
-    inputs.disko.nixosModules.disko
-
-    ../common
-    ../common/extras/i3.nix
+    ../base/workstation
 
     ./hardware.nix
     ./disk.nix
+    inputs.disko.nixosModules.disko
   ];
 
   services.greetd = {
@@ -41,7 +39,6 @@
         canTouchEfiVariables = true;
       };
     };
-    supportedFilesystems = [ "btrfs" ];
     tmp.cleanOnBoot = true;
   };
 
@@ -104,18 +101,6 @@
       wheelNeedsPassword = false;
     };
   };
-
-  services = {
-    btrfs = {
-      autoScrub = {
-        enable = true;
-        fileSystems = [ "/" ];
-        interval = "monthly";
-      };
-    };
-  };
-
-  swapDevices = [ { device = "/swap/swapfile"; } ];
 
   users = {
     mutableUsers = false;

@@ -17,11 +17,6 @@
 
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [
-        rofi
-        rofi-pass
-        polybar
-      ];
     };
   };
 

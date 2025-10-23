@@ -7,12 +7,11 @@
 }:
 {
   imports = [
-    inputs.disko.nixosModules.disko
-
-    ../common
+    ../base/workstation
 
     ./hardware.nix
     ./disk.nix
+    inputs.disko.nixosModules.disko
   ];
 
   boot = {
@@ -46,7 +45,6 @@
         canTouchEfiVariables = true;
       };
     };
-    supportedFilesystems = [ "btrfs" ];
     tmp.cleanOnBoot = true;
   };
 
@@ -111,24 +109,25 @@
   };
 
   services = {
-    btrfs = {
-      autoScrub = {
-        enable = true;
-        fileSystems = [ "/" ];
-        interval = "monthly";
-      };
-    };
     openssh = {
       enable = true;
       settings = {
         PermitRootLogin = "no";
       };
     };
+    greetd = {
+      enable = true;
+      settings = rec {
+        initial_session = {
+          command = "startx";
+          user = "bow";
+        };
+        default_session = initial_session;
+      };
+    };
     spice-vdagentd.enable = true;
     qemuGuest.enable = true;
   };
-
-  swapDevices = [ { device = "/swap/swapfile"; } ];
 
   users = {
     mutableUsers = false;
