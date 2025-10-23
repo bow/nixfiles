@@ -8,7 +8,7 @@
     enable = true;
     package = pkgs.i3;
     config = rec {
-      modifier = "Mod1";
+      modifier = "Mod4";
       keybindings = {
         "${modifier}+Return" = "exec ${pkgs-unstable.ghostty}/bin/ghostty";
         "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
