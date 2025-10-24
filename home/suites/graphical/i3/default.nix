@@ -4,6 +4,10 @@
   ...
 }:
 {
+  imports = [
+    ./polybar.nix
+  ];
+
   xsession.windowManager.i3 = {
     enable = true;
     package = pkgs.i3;
@@ -25,9 +29,6 @@
     # Screnshot tool.
     pkgs.maim
 
-    # Status bar.
-    pkgs-unstable.polybar
-
     # Temperature-based screen light adjuster.
     pkgs.redshift
 
@@ -40,8 +41,8 @@
   ];
 
   home.file = {
-    ".xinitrc".source = ../../../dotfiles/xorg/.xinitrc;
-    ".xmodmaprc".source = ../../../dotfiles/xorg/.xmodmaprc;
-    ".Xdefaults".source = ../../../dotfiles/xorg/.Xdefaults;
+    ".xinitrc".source = ../../../../dotfiles/xorg/.xinitrc;
+    ".xmodmaprc".source = ../../../../dotfiles/xorg/.xmodmaprc;
+    ".Xdefaults".source = ../../../../dotfiles/xorg/.Xdefaults;
   };
 }
