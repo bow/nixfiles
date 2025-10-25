@@ -10,8 +10,6 @@
     {
       enableDefaultPackages = true;
       packages = [
-        # (pkgs.nerd-fonts.override { fonts = nerdFontsNames; })
-
         pkgs.nerd-fonts.droid-sans-mono
         pkgs.nerd-fonts.inconsolata
         pkgs.nerd-fonts.ubuntu
