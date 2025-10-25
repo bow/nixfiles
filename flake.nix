@@ -53,6 +53,7 @@
         inherit system;
         config.allowUnfree = true;
       };
+      pkgs-local = import ./pkgs { inherit pkgs; };
     in
     {
       inherit lib;
@@ -67,6 +68,7 @@
               inputs
               outputs
               pkgs-unstable
+              pkgs-local
               stateVersion
               ;
             userName = "bow";
@@ -84,6 +86,7 @@
               inputs
               outputs
               pkgs-unstable
+              pkgs-local
               stateVersion
               ;
           };
