@@ -8,6 +8,9 @@
   stateVersion,
   ...
 }:
+let
+  primaryUserName = "bow";
+in
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -124,6 +127,10 @@
     qemuGuest.enable = true;
   };
 
+  local.i3 = {
+    autoLoginUserName = primaryUserName;
+  };
+
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = {
@@ -135,7 +142,7 @@
         stateVersion
         ;
       asStandalone = false;
-      userName = "bow";
+      userName = primaryUserName;
     };
   };
 
@@ -145,7 +152,7 @@
       root = {
         hashedPassword = "$6$cgJT.91qlswKdIud$r0.H/NLTLAKo8u8jkZZH2tY8PBLaFygL436FYnGcRJh5hTD.PpX7o94/yTdipcKKSxQjrhVB02OS8Wd3knmqC.";
       };
-      bow = {
+      "${primaryUserName}" = {
         hashedPassword = "$6$iKfcfUgbNFtHGTRj$Ie1425E0xPZG.FUlw4KLsofQdTL2rELJ17xtJKuUD7AifiEUZoE3jQag2lDG7ahfgkHjJPTFNuZETUFHbMuJ01";
         isNormalUser = true;
         extraGroups = [
