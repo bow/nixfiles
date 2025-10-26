@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-local,
   ...
 }:
 {
@@ -16,7 +15,7 @@
         pkgs.nerd-fonts.ubuntu
         pkgs.nerd-fonts.ubuntu-sans
         (pkgs.iosevka-bin.override { variant = "SS03"; })
-        pkgs-local.titillium-fonts
+        pkgs.titillium-fonts
       ];
       fontconfig.defaultFonts = {
         monospace = [ "Iosevka SS03" ];

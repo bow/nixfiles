@@ -4,7 +4,6 @@
   outputs,
   pkgs,
   pkgs-unstable,
-  pkgs-local,
   stateVersion,
   ...
 }:
@@ -99,7 +98,6 @@ in
         inputs
         outputs
         pkgs-unstable
-        pkgs-local
         stateVersion
         ;
       userName = primaryUserName;
