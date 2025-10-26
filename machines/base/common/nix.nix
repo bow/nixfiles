@@ -4,6 +4,8 @@
 }:
 {
   nix = {
+    channel.enable = lib.mkDefault false;
+
     gc = {
       automatic = true;
       dates = "daily";
