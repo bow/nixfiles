@@ -5,6 +5,7 @@
   config,
   userName,
   stateVersion,
+  asStandalone ? true,
   ...
 }:
 
@@ -20,7 +21,7 @@
     homeDirectory = "/home/${userName}";
   };
 
-  nixpkgs = {
+  nixpkgs = lib.mkIf asStandalone {
     overlays = [
       outputs.overlays.additions
       outputs.overlays.modifications

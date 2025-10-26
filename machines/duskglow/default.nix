@@ -1,29 +1,23 @@
 {
   config,
   inputs,
+  outputs,
   pkgs,
+  pkgs-unstable,
+  pkgs-local,
   stateVersion,
   ...
 }:
 {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
+
     ../base/workstation
 
     ./hardware.nix
     ./disk.nix
     inputs.disko.nixosModules.disko
   ];
-
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "startx";
-        user = "bow";
-      };
-      default_session = initial_session;
-    };
-  };
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -99,6 +93,32 @@
     sudo = {
       enable = true;
       wheelNeedsPassword = false;
+    };
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "startx";
+        user = "bow";
+      };
+      default_session = initial_session;
+    };
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    extraSpecialArgs = {
+      inherit
+        inputs
+        outputs
+        pkgs-unstable
+        pkgs-local
+        stateVersion
+        ;
+      asStandalone = false;
+      userName = "bow";
     };
   };
 

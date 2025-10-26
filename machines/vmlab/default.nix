@@ -1,12 +1,17 @@
 {
   config,
   inputs,
+  outputs,
   pkgs,
+  pkgs-unstable,
+  pkgs-local,
   stateVersion,
   ...
 }:
 {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
+
     ../base/workstation
 
     ./hardware.nix
@@ -115,18 +120,23 @@
         PermitRootLogin = "no";
       };
     };
-    greetd = {
-      enable = true;
-      settings = rec {
-        initial_session = {
-          command = "startx";
-          user = "bow";
-        };
-        default_session = initial_session;
-      };
-    };
     spice-vdagentd.enable = true;
     qemuGuest.enable = true;
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    extraSpecialArgs = {
+      inherit
+        inputs
+        outputs
+        pkgs-unstable
+        pkgs-local
+        stateVersion
+        ;
+      asStandalone = false;
+      userName = "bow";
+    };
   };
 
   users = {
