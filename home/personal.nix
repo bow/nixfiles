@@ -5,6 +5,7 @@
   config,
   userName,
   stateVersion,
+  asStandalone ? true,
   ...
 }:
 
@@ -18,6 +19,11 @@
     stateVersion = stateVersion;
     username = userName;
     homeDirectory = "/home/${userName}";
+  };
+
+  nixpkgs = lib.mkIf asStandalone {
+    overlays = builtins.attrValues outputs.overlays;
+    config.allowUnfree = true;
   };
 
   # Reload systemd units on config change.

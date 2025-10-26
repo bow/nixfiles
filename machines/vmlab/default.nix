@@ -100,6 +100,7 @@ in
         pkgs-unstable
         stateVersion
         ;
+      asStandalone = false;
       userName = primaryUserName;
     };
   };
