@@ -44,18 +44,6 @@ in
     networkmanager.enable = true;
   };
 
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [
-      (final: _: {
-        unstable = import inputs.nixpkgs-unstable {
-          inherit (final.stdenv.hostPlatform) system;
-          inherit (final) config;
-        };
-      })
-    ];
-  };
-
   programs = {
     gnupg = {
       agent = {
@@ -97,7 +85,6 @@ in
         pkgs-local
         stateVersion
         ;
-      asStandalone = false;
       userName = primaryUserName;
     };
   };
