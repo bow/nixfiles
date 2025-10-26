@@ -89,7 +89,6 @@ in
 
   local.i3 = {
     autoLoginUserName = primaryUserName;
-    modifierKey = "Mod1";
   };
 
   home-manager = {
@@ -104,6 +103,7 @@ in
       asStandalone = false;
       userName = primaryUserName;
     };
+    users.bow.local.i3.modifierKey = "Mod1";
   };
 
   users = {
