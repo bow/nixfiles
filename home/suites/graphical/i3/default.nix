@@ -1,48 +1,64 @@
 {
+  config,
   pkgs,
   pkgs-unstable,
+  lib,
   ...
 }:
+let
+  inherit (lib) types;
+  cfg = config.local.i3;
+in
 {
   imports = [
     ./polybar.nix
   ];
 
-  xsession.windowManager.i3 = {
-    enable = true;
-    package = pkgs.i3;
-    config = rec {
-      modifier = "Mod4";
-      keybindings = {
-        "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
-        "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
-        "${modifier}+Shift+q" = "kill";
-        "${modifier}+Tab" = "exec ${pkgs-unstable.rofi}/bin/rofi -show combi";
-      };
+  options = {
+    local.i3.modifierKey = lib.mkOption {
+      type = types.str;
+      default = "Mod4";
+      description = "Mod key for i3";
     };
   };
 
-  home.packages = [
-    # Image viewer.
-    pkgs.feh
+  config = {
+    xsession.windowManager.i3 = {
+      enable = true;
+      package = pkgs.i3;
+      config = rec {
+        modifier = cfg.modifierKey;
+        keybindings = {
+          "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
+          "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
+          "${modifier}+Shift+q" = "kill";
+          "${modifier}+Tab" = "exec ${pkgs-unstable.rofi}/bin/rofi -show combi";
+        };
+      };
+    };
 
-    # Screnshot tool.
-    pkgs.maim
+    home.packages = [
+      # Image viewer.
+      pkgs.feh
 
-    # Temperature-based screen light adjuster.
-    pkgs.redshift
+      # Screnshot tool.
+      pkgs.maim
 
-    # Launcher.
-    pkgs-unstable.rofi
-    pkgs-unstable.rofi-pass
+      # Temperature-based screen light adjuster.
+      pkgs.redshift
 
-    # File explorer.
-    pkgs.xfce.thunar
-  ];
+      # Launcher.
+      pkgs-unstable.rofi
+      pkgs-unstable.rofi-pass
 
-  home.file = {
-    ".xinitrc".source = ../../../../dotfiles/xorg/.xinitrc;
-    ".xmodmaprc".source = ../../../../dotfiles/xorg/.xmodmaprc;
-    ".Xdefaults".source = ../../../../dotfiles/xorg/.Xdefaults;
+      # File explorer.
+      pkgs.xfce.thunar
+    ];
+
+    home.file = {
+      ".xinitrc".source = ../../../../dotfiles/xorg/.xinitrc;
+      ".xmodmaprc".source = ../../../../dotfiles/xorg/.xmodmaprc;
+      ".Xdefaults".source = ../../../../dotfiles/xorg/.Xdefaults;
+    };
   };
 }
