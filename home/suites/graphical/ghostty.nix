@@ -1,11 +1,9 @@
 {
-  pkgs-unstable,
+  pkgs,
   ...
 }:
 {
-  home.packages = [
-    pkgs-unstable.ghostty
-  ];
+  home.packages = [ pkgs.ghostty ];
 
   home.file = {
     ".config/ghostty/config" = {

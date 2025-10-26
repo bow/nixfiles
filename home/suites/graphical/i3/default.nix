@@ -14,7 +14,7 @@
     config = rec {
       modifier = "Mod4";
       keybindings = {
-        "${modifier}+Return" = "exec ${pkgs-unstable.ghostty}/bin/ghostty";
+        "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
         "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
         "${modifier}+Shift+q" = "kill";
         "${modifier}+Tab" = "exec ${pkgs-unstable.rofi}/bin/rofi -show combi";
