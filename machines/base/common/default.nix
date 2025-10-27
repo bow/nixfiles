@@ -1,5 +1,10 @@
 {
+  inputs,
+  ...
+}:
+{
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./console.nix
     ./environment.nix
     ./localization.nix

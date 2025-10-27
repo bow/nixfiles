@@ -29,7 +29,6 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      sops-nix,
       home-manager,
       ...
     }@inputs:
@@ -87,10 +86,7 @@
               stateVersion
               ;
           };
-          modules = [
-            ./machines/duskglow
-            sops-nix.nixosModules.sops
-          ];
+          modules = [ ./machines/duskglow ];
         };
         # ISO installation media for nixos-anywhere
         # Build with: nix build .#nixosConfigurations.iso.config.system.build.isoImage
