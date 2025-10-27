@@ -3,7 +3,6 @@
   inputs,
   outputs,
   pkgs,
-  pkgs-unstable,
   stateVersion,
   ...
 }:
@@ -85,7 +84,6 @@ in
       inherit
         inputs
         outputs
-        pkgs-unstable
         stateVersion
         ;
       asStandalone = false;

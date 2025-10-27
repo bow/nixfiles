@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  pkgs-unstable,
   lib,
   ...
 }:
@@ -32,7 +31,7 @@ in
           "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
           "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
           "${modifier}+Shift+q" = "kill";
-          "${modifier}+Tab" = "exec ${pkgs-unstable.rofi}/bin/rofi -show combi";
+          "${modifier}+Tab" = "exec ${pkgs.rofi}/bin/rofi -show combi";
         };
       };
     };
@@ -48,8 +47,8 @@ in
       pkgs.redshift
 
       # Launcher.
-      pkgs-unstable.rofi
-      pkgs-unstable.rofi-pass
+      pkgs.rofi
+      pkgs.rofi-pass
 
       # File explorer.
       pkgs.xfce.thunar

@@ -58,6 +58,7 @@
         inherit system;
         config.allowUnfree = true;
       };
+      pkgs-local = import ./pkgs { inherit pkgs; };
     in
     {
       inherit lib;
@@ -128,7 +129,7 @@
       };
 
       # Re-exported attributes.
-      overlays = import ./overlays { inherit inputs pkgs-unstable; };
+      overlays = import ./overlays { inherit inputs pkgs-unstable pkgs-local; };
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 

@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   ...
 }:
 {
@@ -9,11 +8,11 @@
     viAlias = false;
     vimAlias = false;
     vimdiffAlias = true;
-    plugins = with pkgs-unstable; [
+    plugins = with pkgs.unstable; [
       vimPlugins.nvim-treesitter.withAllGrammars
       vimPlugins.nvim-treesitter
     ];
-    extraPackages = with pkgs-unstable; [
+    extraPackages = with pkgs.unstable; [
       # Shared
       fzf
       ripgrep

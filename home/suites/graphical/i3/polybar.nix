@@ -1,10 +1,10 @@
 {
-  pkgs-unstable,
+  pkgs,
   ...
 }:
 {
   home.packages = [
-    (pkgs-unstable.polybar.override {
+    (pkgs.polybar.override {
       iwSupport = true;
       i3Support = true;
       pulseSupport = true;
