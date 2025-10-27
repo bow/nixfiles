@@ -9,6 +9,7 @@
 }:
 let
   primaryUserName = "bow";
+  hostName = "vmlab";
 in
 {
   imports = [
@@ -25,47 +26,26 @@ in
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
     growPartition = true;
-    initrd = {
-      availableKernelModules = [
-        "virtio_net"
-        "virtio_pci"
-        "virtio_mmio"
-        "virtio_blk"
-        "virtio_scsi"
-        "9p"
-        "9pnet_virtio"
-      ];
-      kernelModules = [
-        "virtio_balloon"
-        "virtio_console"
-        "virtio_rng"
-        "virtio_gpu"
-      ];
-    };
     loader = {
       timeout = 1;
       systemd-boot = {
         enable = true;
         consoleMode = "auto";
       };
-      efi = {
-        canTouchEfiVariables = true;
-      };
+      efi.canTouchEfiVariables = true;
     };
     tmp.cleanOnBoot = true;
   };
 
   networking = {
-    hostName = "vmlab";
+    inherit hostName;
     networkmanager.enable = true;
   };
 
-  programs = {
-    gnupg = {
-      agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
+  programs.gnupg = {
+    agent = {
+      enable = true;
+      enableSSHSupport = true;
     };
   };
 
@@ -76,16 +56,24 @@ in
     };
   };
 
-  services = {
-    openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "no";
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "startx";
+        user = primaryUserName;
       };
+      default_session = initial_session;
     };
-    spice-vdagentd.enable = true;
-    qemuGuest.enable = true;
   };
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+    };
+  };
+  services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
 
   local.i3 = {
     autoLoginUserName = primaryUserName;

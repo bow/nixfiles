@@ -9,6 +9,7 @@
 }:
 let
   primaryUserName = "bow";
+  hostName = "duskglow";
 in
 {
   imports = [
@@ -31,24 +32,20 @@ in
         enable = true;
         consoleMode = "auto";
       };
-      efi = {
-        canTouchEfiVariables = true;
-      };
+      efi.canTouchEfiVariables = true;
     };
     tmp.cleanOnBoot = true;
   };
 
   networking = {
-    hostName = "duskglow";
+    inherit hostName;
     networkmanager.enable = true;
   };
 
-  programs = {
-    gnupg = {
-      agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
+  programs.gnupg = {
+    agent = {
+      enable = true;
+      enableSSHSupport = true;
     };
   };
 
@@ -106,6 +103,8 @@ in
       };
     };
   };
+
+  virtualisation.docker.enable = true;
 
   system.stateVersion = stateVersion;
 }
