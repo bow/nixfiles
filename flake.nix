@@ -29,12 +29,18 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      home-manager,
       ...
     }@inputs:
     let
       inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
+      lib = nixpkgs.lib.extend (
+        final: _prev: {
+          repo = import ./lib {
+            inherit inputs;
+            lib = final;
+          };
+        }
+      );
 
       stateVersion = "25.05";
 
