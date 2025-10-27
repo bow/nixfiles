@@ -4,7 +4,11 @@
 }:
 {
   home.packages = [
-    (pkgs-unstable.polybar.override { iwSupport = true; i3Support = true; pulseSupport = true; })
+    (pkgs-unstable.polybar.override {
+      iwSupport = true;
+      i3Support = true;
+      pulseSupport = true;
+    })
   ];
 
   home.file = {
