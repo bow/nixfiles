@@ -1,17 +1,23 @@
 {
   inputs,
-  pkgs-unstable,
-  pkgs-local,
   ...
 }:
+let
+  pkgsUnstableForSystem =
+    system:
+    import inputs.nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+in
 {
-  additions = final: _prev: {
-    unstable = pkgs-unstable;
-    local = pkgs-local;
+  additions = final: prev: {
+    unstable = pkgsUnstableForSystem prev.system;
+    local = import ../pkgs { pkgs = final; };
   };
 
-  replacements = _final: _prev: {
-    inherit (pkgs-unstable)
+  replacements = _final: prev: {
+    inherit (pkgsUnstableForSystem prev.system)
       asdf-vm
       ghostty
       poetry
@@ -24,5 +30,5 @@
       ;
   };
 
-  modifications = final: prev: { };
+  modifications = _final: _prev: { };
 }
