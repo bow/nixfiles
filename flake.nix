@@ -84,14 +84,14 @@
         };
         # ISO installation media for nixos-anywhere
         # Build with: nix build .#nixosConfigurations.iso.config.system.build.isoImage
-        # Then run with: nix run github:nix-community/nixos-anywhere -- --flake .#vmlab --target-host root@127.0.0.1 -p 2200
+        # Then run with: nix run github:nix-community/nixos-anywhere -- --flake .#vmlab --target-host <user>@<host>
         iso = lib.nixosSystem {
-          system = "x86_64-linux";
           modules = [
             (
               { pkgs, modulesPath, ... }:
               {
                 imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+                nixpkgs.hostPlatform = "x86_64-linux";
                 networking.networkmanager.enable = true;
                 networking.wireless.enable = false;
                 systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
