@@ -41,8 +41,6 @@
         }
       );
 
-      stateVersion = "25.05";
-
       supportedSystems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -68,7 +66,7 @@
       homeConfigurations = {
         bow = lib.homeManagerConfiguration {
           extraSpecialArgs = {
-            inherit inputs outputs stateVersion;
+            inherit inputs outputs;
             userName = "bow";
           };
           modules = [ ./home/personal.nix ];
@@ -79,7 +77,7 @@
       # usage: sudo nixos-rebuild switch --flake .#machinename
       nixosConfigurations = {
         duskglow = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs stateVersion; };
+          specialArgs = { inherit inputs outputs; };
           modules = [ ./machines/duskglow ];
         };
         # ISO installation media for nixos-anywhere
@@ -103,7 +101,7 @@
           ];
         };
         vmlab = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs stateVersion; };
+          specialArgs = { inherit inputs outputs; };
           modules = [ ./machines/vmlab ];
         };
       };

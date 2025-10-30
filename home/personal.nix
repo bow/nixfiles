@@ -4,19 +4,19 @@
   lib,
   config,
   userName,
-  stateVersion,
   asStandalone ? true,
   ...
 }:
 
 {
+  home.stateVersion = "25.05";
+
   imports = [
     suites/console
     suites/graphical
   ];
 
   home = {
-    stateVersion = stateVersion;
     username = userName;
     homeDirectory = "/home/${userName}";
   };

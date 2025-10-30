@@ -3,7 +3,6 @@
   inputs,
   outputs,
   pkgs,
-  stateVersion,
   ...
 }:
 let
@@ -11,6 +10,8 @@ let
   hostName = "duskglow";
 in
 {
+  system.stateVersion = "25.05";
+
   imports = [
     inputs.home-manager.nixosModules.home-manager
 
@@ -73,11 +74,7 @@ in
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = {
-      inherit
-        inputs
-        outputs
-        stateVersion
-        ;
+      inherit inputs outputs;
       asStandalone = false;
       userName = primaryUserName;
     };
@@ -103,6 +100,4 @@ in
   };
 
   virtualisation.docker.enable = true;
-
-  system.stateVersion = stateVersion;
 }
