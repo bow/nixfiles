@@ -66,7 +66,7 @@
       homeConfigurations = {
         bow = lib.homeManagerConfiguration {
           extraSpecialArgs = {
-            inherit inputs outputs;
+            inherit inputs outputs lib;
             userName = "bow";
           };
           modules = [ ./home/personal.nix ];
@@ -77,7 +77,7 @@
       # usage: sudo nixos-rebuild switch --flake .#machinename
       nixosConfigurations = {
         duskglow = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
+          specialArgs = { inherit inputs outputs lib; };
           modules = [ ./machines/duskglow ];
         };
         # ISO installation media for nixos-anywhere
@@ -101,7 +101,7 @@
           ];
         };
         vmlab = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
+          specialArgs = { inherit inputs outputs lib; };
           modules = [ ./machines/vmlab ];
         };
       };
