@@ -145,7 +145,7 @@
       tree-sitter-grammars.tree-sitter-scala
 
       # SQL
-      postgres-lsp
+      postgres-language-server
       tree-sitter-grammars.tree-sitter-sql
 
       # TOML
