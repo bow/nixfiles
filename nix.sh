@@ -19,8 +19,7 @@ __USAGE__
 }
 
 run_rebuild() {
-    machine=${1}
-    test -n "${machine}" || exit_err "machine is required for rebuild"
+    machine=${1:-${HOSTNAME}}
 
     show_msg "Starting rebuild for machine=${machine}"
     sudo nixos-rebuild --flake "${REPO_DIR}"\#"${machine}" --fast switch
