@@ -92,6 +92,35 @@
   };
 
   /**
+    Enable a module option with the specified attributes.
+
+    # Example
+
+    ```nix
+    enabledWith { foo = "bar"; baz = { x = 100; }; }
+    => {
+      enable = true;
+      foo = "bar";
+      baz = {
+        x = 100;
+      };
+    }
+    ```
+
+    # Type
+
+    ```
+    enabledWith :: AttrSet -> AttrSet
+    ```
+
+    # Arguments
+
+    **attrs**
+    : The attribute set that will be used for the enabled module.
+  */
+  enabledWith = attrs: { enable = true; } // attrs;
+
+  /**
     Shorthand for disabling a module option.
 
     # Example

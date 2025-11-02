@@ -3,9 +3,11 @@
   inputs,
   outputs,
   pkgs,
+  lib,
   ...
 }:
 let
+  inherit (lib.nixsys) enabledWith;
   primaryUserName = "bow";
   hostName = "duskglow";
 in
@@ -23,8 +25,7 @@ in
   ];
 
   nixsys = {
-    users = {
-      enable = true;
+    users = enabledWith {
       mutable = true;
       normalUsers = {
         "${primaryUserName}" = {
