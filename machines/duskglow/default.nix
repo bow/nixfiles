@@ -26,10 +26,10 @@ in
 
   nixsys = {
     users = enabledWith {
-      mutable = true;
+      mutable = false;
       normalUsers = {
         "${primaryUserName}" = {
-          isTrusted = true;
+          trusted = true;
           extraGroups = [
             "docker"
             "libvirtd"

@@ -19,11 +19,13 @@ in
     type = types.submodule {
       options = {
         enable = mkEnableOption "Enable users module";
+
         mutable = mkOption {
           type = types.bool;
+          description = "Sets users.mutableUsers in NixOS config";
           default = false;
-          description = "Same as users.mutableUsers in NixOS config";
         };
+
         normalUsers = mkOption {
           type = types.attrsOf (
             types.submodule (
@@ -33,13 +35,13 @@ in
                   name = mkOpt types.str name "User name";
                   homeDir = mkOpt types.str "/home/${name}" "Path to home directory";
                   extraGroups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
-                  isTrusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
+                  trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
                 };
               }
             )
           );
-          default = { };
           description = "Normal user configurations";
+          default = { };
         };
       };
     };
@@ -66,8 +68,6 @@ in
         ) cfg.normalUsers;
       };
 
-      nix.settings.trusted-users = attrNames (
-        filterAttrs (_: userCfg: userCfg.isTrusted) cfg.normalUsers
-      );
+      nix.settings.trusted-users = attrNames (filterAttrs (_: userCfg: userCfg.trusted) cfg.normalUsers);
     };
 }
