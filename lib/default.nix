@@ -139,4 +139,59 @@
   disabled = {
     enable = false;
   };
+
+  /**
+    Return a list of absolute string paths to all default.nix files that are children of the given directory.
+
+    # Example
+
+    ```nix
+    lookupDefaultNixFiles ./.
+    => [
+      ".../modules/nixos/default.nix"
+      ".../modules/nixos/users/default.nix"
+    ]
+    ```
+
+    # Type
+
+    ```
+    defaultNixFilesIn :: Path -> [String]
+    ```
+
+    # Arguments
+
+    **dir**
+    : The starting path from which the lookup starts.
+  */
+  # Credit: https://github.com/thursdaddy/nixos-config/blob/1ac56531349c75dc69eadee6f99e2a2006e1246e/modules/nixos/import.nix
+  lookupDefaultNixFiles =
+    let
+      inherit (lib)
+        collect
+        concatStringsSep
+        isString
+        mapAttrsRecursive
+        mapAttrs
+        ;
+
+      # Recursively collect all files from a starting dir.
+      walkDir =
+        dir:
+        mapAttrs (file: type: if type == "directory" then walkDir "${dir}/${file}" else type) (
+          builtins.readDir dir
+        );
+
+      # Create a list of file paths that are children of the given dir.
+      lookupFiles =
+        dir: collect isString (mapAttrsRecursive (path: _type: concatStringsSep "/" path) (walkDir dir));
+
+      # Create a list of list paths with the given name that are children of the given dir.
+      lookupFilesNamed =
+        name: dir:
+        builtins.map (file: dir + "/${file}") (
+          builtins.filter (file: builtins.baseNameOf file == name) (lookupFiles dir)
+        );
+    in
+    dir: lookupFilesNamed "default.nix" dir;
 }

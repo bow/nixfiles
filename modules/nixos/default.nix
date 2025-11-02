@@ -1,7 +1,0 @@
-{
-  imports = [
-    ./users
-  ];
-
-  users = ./users;
-}

@@ -15,6 +15,6 @@
     ./services-keyd.nix
     ./services-nixos-cli.nix
 
-    outputs.nixosModules.users
+    outputs.nixosModules.default
   ];
 }
