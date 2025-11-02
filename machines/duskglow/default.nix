@@ -7,7 +7,7 @@
   ...
 }:
 let
-  inherit (lib.nixsys) enabledWith;
+  inherit (lib.nixsys) enabled enabledWith;
   primaryUserName = "bow";
   hostName = "duskglow";
 in
@@ -25,6 +25,9 @@ in
   ];
 
   nixsys = {
+    system = {
+      boot.systemd = enabled;
+    };
     users = enabledWith {
       mutable = false;
       normalUsers = {
@@ -41,20 +44,7 @@ in
     };
   };
 
-  boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = [ ];
-    growPartition = true;
-    loader = {
-      timeout = 1;
-      systemd-boot = {
-        enable = true;
-        consoleMode = "auto";
-      };
-      efi.canTouchEfiVariables = true;
-    };
-    tmp.cleanOnBoot = true;
-  };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking = {
     inherit hostName;
