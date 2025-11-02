@@ -19,14 +19,10 @@ in
     type = types.submodule {
       options = {
         enable = mkEnableOption "Enable users module";
-
-        mutable = mkOption {
-          type = types.bool;
-          description = "Sets users.mutableUsers in NixOS config";
-          default = false;
-        };
-
+        mutable = mkOpt types.bool false "Sets users.mutableUsers in NixOS config";
         normalUsers = mkOption {
+          description = "Normal user configurations";
+          default = { };
           type = types.attrsOf (
             types.submodule (
               { name, ... }:
@@ -40,8 +36,6 @@ in
               }
             )
           );
-          description = "Normal user configurations";
-          default = { };
         };
       };
     };
