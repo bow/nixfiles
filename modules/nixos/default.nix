@@ -1,1 +1,7 @@
-{ }
+{
+  imports = [
+    ./users
+  ];
+
+  users = ./users;
+}

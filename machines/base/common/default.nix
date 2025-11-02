@@ -1,5 +1,6 @@
 {
   inputs,
+  outputs,
   ...
 }:
 {
@@ -13,5 +14,7 @@
     ./programs-nix-ld.nix
     ./services-keyd.nix
     ./services-nixos-cli.nix
+
+    outputs.nixosModules.users
   ];
 }

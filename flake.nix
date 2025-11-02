@@ -34,7 +34,7 @@
       inherit (self) outputs;
       lib = nixpkgs.lib.extend (
         final: _prev: {
-          repo = import ./lib {
+          nixsys = import ./lib {
             inherit inputs;
             lib = final;
           };
