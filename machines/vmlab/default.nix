@@ -25,7 +25,7 @@ in
   ];
 
   nixsys = {
-    system = {
+    system = enabledWith {
       boot.systemd = enabled;
     };
     users = enabledWith {
@@ -43,8 +43,6 @@ in
       };
     };
   };
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking = {
     inherit hostName;
