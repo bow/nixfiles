@@ -7,7 +7,7 @@
   ...
 }:
 let
-  inherit (lib.nixsys) enabled enabledWith;
+  inherit (lib.nixsys) attrsByName enabled enabledWith;
   primaryUserName = "bow";
   hostName = "vmlab";
 in
@@ -29,9 +29,9 @@ in
       boot.systemd = enabled;
     };
     users = enabledWith {
-      mutable = false;
-      normalUsers = {
-        "${primaryUserName}" = {
+      normalUsers = attrsByName [
+        {
+          name = primaryUserName;
           trusted = true;
           extraGroups = [
             "docker"
@@ -39,8 +39,8 @@ in
             "networkmanager"
             "wheel"
           ];
-        };
-      };
+        }
+      ];
     };
   };
 
