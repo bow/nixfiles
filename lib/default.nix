@@ -194,4 +194,45 @@
         );
     in
     dir: lookupFilesNamed "default.nix" dir;
+
+  /**
+    Create an attribute set from a list of attribute sets, keyed by the `name` attribute of each item.
+    If there are multiple items with the same name, this function throws an error.
+
+    # Example
+
+    ```nix
+    attrsByName [ { name = "foo"; x = 1; y = true; } { name = "bar"; x = 2; y = true; } ]
+    => {
+      foo = { ... };
+      bar = { ... };
+    }
+    ```
+
+    # Type
+
+    ```
+    attrsByName :: [ AttrSet ] -> AttrSet
+    ```
+
+    # Arguments
+
+    **list**
+    : The list containing attribute sets to transform.
+  */
+  attrsByName =
+    list:
+    let
+      grouped = builtins.groupBy (item: item.name) list;
+      dups = builtins.attrNames (lib.filterAttrs (_: v: builtins.length v > 1) grouped);
+    in
+    if builtins.length dups > 0 then
+      throw "found duplicates with names: ${dups}"
+    else
+      builtins.listToAttrs (
+        builtins.map (item: {
+          name = item.name;
+          value = item;
+        }) list
+      );
 }
