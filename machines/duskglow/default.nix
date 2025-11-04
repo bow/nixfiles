@@ -39,6 +39,11 @@ in
             "networkmanager"
             "wheel"
           ];
+          desktop = enabledWith {
+            windowManager = "i3";
+            loginManager = "greetd";
+            autoLogin = true;
+          };
         }
       ];
     };
@@ -60,21 +65,6 @@ in
     sudo = {
       enable = true;
       wheelNeedsPassword = false;
-    };
-  };
-
-  local.i3 = {
-    autoLoginUserName = primaryUserName;
-  };
-
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "startx";
-        user = primaryUserName;
-      };
-      default_session = initial_session;
     };
   };
 

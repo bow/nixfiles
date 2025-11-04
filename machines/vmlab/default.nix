@@ -39,6 +39,11 @@ in
             "networkmanager"
             "wheel"
           ];
+          desktop = enabledWith {
+            windowManager = "i3";
+            loginManager = "greetd";
+            autoLogin = true;
+          };
         }
       ];
     };
@@ -63,16 +68,6 @@ in
     };
   };
 
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "startx";
-        user = primaryUserName;
-      };
-      default_session = initial_session;
-    };
-  };
   services.openssh = {
     enable = true;
     settings = {
@@ -81,10 +76,6 @@ in
   };
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
-
-  local.i3 = {
-    autoLoginUserName = primaryUserName;
-  };
 
   home-manager = {
     useGlobalPkgs = true;
