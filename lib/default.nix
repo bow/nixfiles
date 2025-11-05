@@ -5,6 +5,29 @@
 }:
 {
   /**
+    Return the first item from the list or null if the list is empty.
+
+    ```nix
+    headOrNull [ ]
+    => null
+    headOrNull [ "foo" ]
+    => "foo"
+    ```
+
+    # Type
+
+    ```
+    headOrNull :: [ Any ] -> Any
+    ```
+
+    # Arguments
+
+    **list**
+    : A list of items.
+  */
+  headOrNull = list: if list == [ ] then null else builtins.head list;
+
+  /**
     Create a NixOS module option.
 
     # Example
