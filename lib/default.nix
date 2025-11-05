@@ -28,6 +28,36 @@
   headOrNull = list: if list == [ ] then null else builtins.head list;
 
   /**
+    Throw an error if the list has more than one items with the given message. Otherwise,
+    return the list unchanged.
+
+    # Example
+
+    ```nix
+    checkAtMostOne [ "bar" ] "more than one!"
+    => [ "bar" ]
+    checkAtMostOne [ "bar" "baz" ] "more than one!"
+    error:
+      ...
+      error: more than one!
+    ```
+
+    # Type
+    ```
+    checkAtMostOne :: [ Any ] -> String -> [ Any ]
+    ```
+
+    # Arguments
+
+    **list**
+    : A list of items to check.
+
+    **msg**
+    : The error message if the list has more than one item.
+  */
+  checkAtMostOne = list: msg: if builtins.length list > 1 then throw msg else list;
+
+  /**
     Create a NixOS module option.
 
     # Example
