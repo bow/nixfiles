@@ -57,41 +57,37 @@ in
         nameValuePair
         mapAttrs'
         ;
+      inherit (lib.nixsys) coalesce headOrNull checkAtMostOne;
 
-      filterUsersWith = f: filterAttrs (_: userCfg: f userCfg) cfg.normalUsers;
-      existUserWith = f: builtins.length (builtins.attrNames (filterUsersWith f)) > 0;
-      existUserWithWM =
-        wm: existUserWith (userCfg: with userCfg; desktop.enable && desktop.windowManager == wm);
-      existUserWithLM =
-        lm: existUserWith (userCfg: with userCfg; desktop.enable && desktop.loginManager == lm);
+      filterUserAttrs = f: filterAttrs (_: user: f user) cfg.normalUsers;
+      existUser = f: (filterUserAttrs f) != { };
+      existDesktop = f: existUser (user: with user; desktop.enable && (f desktop));
 
-      i3Enabled = existUserWithWM "i3";
-      greetdEnabled = existUserWithLM "greetd";
-      autoLoginUser =
-        let
-          names = builtins.attrNames (filterUsersWith (userCfg: userCfg.desktop.autoLogin));
-        in
-        if builtins.length names > 1 then
-          throw "there can only be at most one user with autologin"
-        else
-          (if builtins.length names == 0 then null else builtins.head names);
+      i3Enabled = existDesktop (desktop: desktop.windowManager == "i3");
+      greetdEnabled = existDesktop (desktop: desktop.loginManager == "greetd");
+      userNamesWith = f: attrNames (filterUserAttrs f);
+
+      userHasAutoLogin = user: with user.desktop; enable && loginManager == "greetd" && autoLogin;
+      autoLoginUserName = headOrNull (
+        checkAtMostOne (userNamesWith userHasAutoLogin) "there can only be at most one user with autoLogin"
+      );
     in
     mkIf cfg.enable {
       users = {
         mutableUsers = cfg.mutable;
         users = mapAttrs' (
-          name: userCfg:
+          name: user:
           nameValuePair name {
-            inherit (userCfg) extraGroups;
+            inherit (user) extraGroups;
             isNormalUser = true;
           }
         ) cfg.normalUsers;
       };
 
-      nix.settings.trusted-users = attrNames (filterAttrs (_: userCfg: userCfg.trusted) cfg.normalUsers);
+      nix.settings.trusted-users = userNamesWith (user: user.trusted);
 
       # window manager: i3
-      environment.pathsToLink = lib.optionals i3Enabled [ "/libexec" ];
+      environment.pathsToLink = mkIf i3Enabled [ "/libexec" ];
       services.xserver = mkIf i3Enabled {
         enable = true;
         autorun = false;
@@ -106,9 +102,9 @@ in
         };
       };
       services.displayManager.defaultSession = mkIf i3Enabled "none+i3";
-      services.displayManager.autoLogin = mkIf i3Enabled {
+      services.displayManager.autoLogin = mkIf (i3Enabled && autoLoginUserName != null) {
         enable = true;
-        user = "bow";
+        user = autoLoginUserName;
       };
       programs.i3lock.enable = i3Enabled;
       security.pam.services.i3lock-color.enable = i3Enabled;
@@ -117,11 +113,12 @@ in
       services.greetd = mkIf greetdEnabled {
         enable = true;
         settings = rec {
+          terminal.vt = 7;
           default_session = mkIf i3Enabled {
             command = "startx";
-            user = autoLoginUser;
+            user = coalesce autoLoginUserName "greetd";
           };
-          initial_session = mkIf (autoLoginUser != null) default_session;
+          initial_session = mkIf (autoLoginUserName != null) default_session;
         };
       };
     };
