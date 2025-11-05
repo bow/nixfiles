@@ -22,21 +22,33 @@ let
         homeDir = mkOpt types.str "/home/${name}" "Path to home directory";
         extraGroups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
-        desktop = mkOpt (desktopSubmoduleFor name) { } "Desktop configurations";
+        desktop = mkOpt desktopSubmodule { } "Desktop configurations";
       };
     }
   );
 
-  desktopSubmoduleFor =
-    name:
-    types.submodule {
-      options = {
-        enable = mkEnableOption "Enable users.desktop submodule";
-        windowManager = mkOpt' (types.enum [ "i3" ]) "The name of the desktop window manager";
-        loginManager = mkOpt' (types.enum [ "greetd" ]) "The name of the login manager";
-        autoLogin = mkOpt types.bool false "Whether to enable autologin or not";
-      };
+  desktopSubmodule = types.submodule {
+    options = {
+      enable = mkEnableOption "Enable users.desktop submodule";
+      windowManager = mkOpt windowManagerSubmodule { } "Window manager configurations";
+      loginManager = mkOpt loginManagerSubmodule { } "Loginmanager configurations";
     };
+  };
+
+  windowManagerSubmodule = types.submodule {
+    options = {
+      enable = mkEnableOption "Enable users.desktop.windowManager submodule";
+      name = mkOpt (types.enum [ "i3" ]) "i3" "The name of the desktop window manager";
+    };
+  };
+
+  loginManagerSubmodule = types.submodule {
+    options = {
+      enable = mkEnableOption "Enable users.desktop.loginManager submodule";
+      name = mkOpt (types.enum [ "greetd" ]) "greetd" "The name of the login manager";
+      settings = mkOpt types.attrs { } "The login manager settings";
+    };
+  };
 in
 {
   options.nixsys.users = mkOption {

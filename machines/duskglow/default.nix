@@ -40,9 +40,13 @@ in
             "wheel"
           ];
           desktop = enabledWith {
-            windowManager = "i3";
-            loginManager = "greetd";
-            autoLogin = true;
+            windowManager = enabledWith {
+              name = "i3";
+            };
+            loginManager = enabledWith {
+              name = "greetd";
+              settings.autoLogin = true;
+            };
           };
         }
       ];
