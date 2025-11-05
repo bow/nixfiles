@@ -57,20 +57,32 @@ in
         nameValuePair
         mapAttrs'
         ;
-      inherit (lib.nixsys) coalesce headOrNull checkAtMostOne;
+      inherit (lib.nixsys)
+        coalesce
+        getAttrOr
+        headOrNull
+        checkAtMostOne
+        ;
 
-      filterUserAttrs = f: filterAttrs (_: user: f user) cfg.normalUsers;
-      existUser = f: (filterUserAttrs f) != { };
-      existDesktop = f: existUser (user: with user; desktop.enable && (f desktop));
+      usersWith = f: filterAttrs (_: user: f user) cfg.normalUsers;
+      existUserWith = f: (usersWith f) != { };
+      existDesktopWith = f: existUserWith (user: with user; desktop.enable && (f desktop));
 
-      i3Enabled = existDesktop (desktop: desktop.windowManager == "i3");
-      greetdEnabled = existDesktop (desktop: desktop.loginManager == "greetd");
-      userNamesWith = f: attrNames (filterUserAttrs f);
+      i3Enabled = existDesktopWith (desktop: with desktop.windowManager; enable && name == "i3");
+      greetdEnabled = existDesktopWith (desktop: with desktop.loginManager; enable && name == "greetd");
 
-      userHasAutoLogin = user: with user.desktop; enable && loginManager == "greetd" && autoLogin;
+      userHasAutoLogin =
+        user:
+        with user.desktop;
+        enable && loginManager.enable && (getAttrOr "autoLogin" loginManager.settings false);
+
+      usersWithAutoLogin = (usersWith userHasAutoLogin);
+
       autoLoginUserName = headOrNull (
-        checkAtMostOne (userNamesWith userHasAutoLogin) "there can only be at most one user with autoLogin"
+        checkAtMostOne (attrNames usersWithAutoLogin) "there can only be at most one user with autoLogin"
       );
+
+      userNamesWith = f: attrNames (usersWith f);
     in
     mkIf cfg.enable {
       users = {
