@@ -55,6 +55,40 @@
   headOrNull = list: if list == [ ] then null else builtins.head list;
 
   /**
+    Return the named attribute value from the attribute set, or the default value if the
+    attribute set has no such named attribute.
+
+    # Example
+
+    ```nix
+    getAttrOr "foo" { foo = 1; bar = 2; } 3
+    => 1
+    getAttrOr "baz" { foo = 1; bar = 2; } 3
+    => 3
+    ```
+
+    # Type
+
+    ```
+    getAttrOr :: String -> AttrSet -> Any
+    ```
+
+    # Arguments
+
+    **name**
+    : The name of the attribute whose value we want to get.
+
+    **attrs**
+    : The attribute set to query.
+
+    **default**
+    : The return value if the attribute set does not contain the named attribute.
+  */
+  getAttrOr =
+    name: attrs: default:
+    if lib.hasAttr name attrs then lib.getAttr name attrs else default;
+
+  /**
     Throw an error if the list has more than one items with the given message. Otherwise,
     return the list unchanged.
 
