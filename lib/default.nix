@@ -5,6 +5,33 @@
 }:
 {
   /**
+    Return the value if it is not-null. Otherwise return the default.
+
+    # Example
+
+    ```
+    coalesce "foo" "bar"
+    => "foo"
+    coalesce null "bar"
+    => "bar"
+    ```
+
+    # Type
+    ```
+    coalesce :: Any -> Any -> Any
+    ```
+
+    # Arguments
+
+    **value**
+    : The value to check for nullness.
+
+    **default**
+    : The return value if the earlier value is null.
+  */
+  coalesce = value: default: if value == null then default else value;
+
+  /**
     Return the first item from the list or null if the list is empty.
 
     ```nix
