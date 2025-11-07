@@ -121,6 +121,7 @@ in
                   "google-chrome"
                 ];
           };
+          defaultWorkspace = keybindings."${modifier}+2";
           keybindings = {
             # Navigation.
             "${modifier}+j" = "focus left";
