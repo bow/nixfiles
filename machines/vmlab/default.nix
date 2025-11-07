@@ -29,27 +29,25 @@ in
       boot.systemd = enabled;
     };
     users = enabledWith {
-      normalUsers = attrsByName [
-        {
-          name = primaryUserName;
-          trusted = true;
-          extraGroups = [
-            "docker"
-            "libvirtd"
-            "networkmanager"
-            "wheel"
-          ];
-          desktop = enabledWith {
-            windowManager = enabledWith {
-              name = "i3";
-            };
-            loginManager = enabledWith {
-              name = "greetd";
-              settings.autoLogin = true;
-            };
+      mutable = false;
+      main = {
+        name = "bow";
+        extraGroups = [
+          "docker"
+          "libvirtd"
+          "networkmanager"
+          "wheel"
+        ];
+        desktop = {
+          windowManager = {
+            name = "i3";
           };
-        }
-      ];
+          loginManager = {
+            name = "greetd";
+            settings.autoLogin = true;
+          };
+        };
+      };
     };
   };
 
