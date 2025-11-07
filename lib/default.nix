@@ -155,7 +155,8 @@
     lib.mkOption { inherit type default description; };
 
   /**
-    Create a NixOS module option with a null default.
+    Create a NixOS module option with a null default, wrapping the specified type with
+    `nixpkgs.lib.types.nullOr`.
 
     # Example
 
@@ -183,7 +184,12 @@
     **description**
     : A human-readable description of the option.
   */
-  mkOpt' = type: description: lib.mkOption { inherit type description; };
+  mkOpt' =
+    type: description:
+    lib.mkOption {
+      inherit description;
+      type = (lib.types.nullOr type);
+    };
 
   /**
     Shorthand for enabling a module option.
