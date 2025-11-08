@@ -3,6 +3,7 @@
   lib,
   pkgs,
   options,
+  inputs,
   ...
 }:
 let
@@ -15,6 +16,11 @@ let
   cfg = config.nixsys.system;
 in
 {
+  # Default external modules.
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
+
   options.nixsys.system = mkOption {
     default = { };
     description = "System settings";

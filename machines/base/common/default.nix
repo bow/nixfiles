@@ -1,11 +1,9 @@
 {
-  inputs,
   outputs,
   ...
 }:
 {
   imports = [
-    inputs.sops-nix.nixosModules.sops
     ./environment.nix
     ./localization.nix
     ./nix.nix
