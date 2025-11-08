@@ -4,7 +4,6 @@
 }:
 {
   imports = [
-    ./localization.nix
     ./nix.nix
     ./nixpkgs.nix
     ./programs-nix-ld.nix
