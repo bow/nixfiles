@@ -4,7 +4,6 @@
 }:
 {
   imports = [
-    ./environment.nix
     ./localization.nix
     ./nix.nix
     ./nixpkgs.nix
