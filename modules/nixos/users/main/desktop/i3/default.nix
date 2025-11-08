@@ -1,0 +1,41 @@
+{
+  config,
+  lib,
+  ...
+}:
+let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfgUsers = config.nixsys.users;
+  cfg = config.nixsys.users.main.desktop.i3;
+in
+{
+  options.nixsys.users.main.desktop.i3 = {
+    enable = mkEnableOption "Enable this module";
+  };
+
+  config = mkIf (cfg.enable && cfgUsers.enable) {
+
+    environment.pathsToLink = [ "/libexec" ];
+
+    services.xserver = {
+      enable = true;
+      autorun = false;
+      displayManager.startx = {
+        enable = true;
+      };
+      desktopManager = {
+        xterm.enable = false;
+      };
+      windowManager.i3 = {
+        enable = true;
+      };
+    };
+
+    services.displayManager.defaultSession = "none+i3";
+
+    programs.i3lock.enable = true;
+
+    security.pam.services.i3lock-color.enable = true;
+  };
+}

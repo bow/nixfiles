@@ -37,11 +37,8 @@ in
           "wheel"
         ];
         desktop = {
-          windowManager = {
-            name = "i3";
-          };
-          loginManager = {
-            name = "greetd";
+          i3 = enabled;
+          greetd = enabledWith {
             settings.autoLogin = true;
           };
         };
