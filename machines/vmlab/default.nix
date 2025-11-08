@@ -1,13 +1,11 @@
 {
-  config,
   inputs,
   outputs,
-  pkgs,
   lib,
   ...
 }:
 let
-  inherit (lib.nixsys) attrsByName enabled enabledWith;
+  inherit (lib.nixsys) enabled enabledWith;
   primaryUserName = "bow";
   hostName = "vmlab";
 in
