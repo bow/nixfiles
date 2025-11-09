@@ -1,31 +1,33 @@
 {
+  config,
+  lib,
   pkgs,
   ...
 }:
 {
   config = {
     environment = {
-      systemPackages = with pkgs; [
-        curl
-        findutils
-        file
-        fzf
-        gcc
-        gdb
-        git
-        gnugrep
-        gnumake
-        gnupg
-        gnused
-        home-manager
-        jq
-        neovim
-        readline
-        ripgrep
-        unzip
-        vim
-        wget
-      ];
+      systemPackages =
+        with pkgs;
+        [
+          curl
+          findutils
+          file
+          fzf
+          git
+          gnugrep
+          gnupg
+          gnused
+          iputils
+          jq
+          neovim
+          readline
+          ripgrep
+          unzip
+          vim
+          wget
+        ]
+        ++ (lib.optionals (config.nixsys.system.kind == "workstation") [ pkgs.home-manager ]);
       variables = {
         EDITOR = "nvim";
       };

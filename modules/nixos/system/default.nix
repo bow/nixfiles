@@ -1,18 +1,11 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
-  cfg = config.nixsys.system;
+  inherit (lib) mkOption types;
 in
 {
   # Default external modules.
@@ -25,12 +18,12 @@ in
     description = "System settings";
     type = types.submodule {
       options = {
-        enable = mkEnableOption "Enable system module";
+        kind = mkOption { type = types.enum ["workstation" "node"]; };
       };
     };
   };
 
-  config = mkIf (cfg.enable) {
+  config = {
 
     console = {
       earlySetup = true;

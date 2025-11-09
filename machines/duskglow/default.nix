@@ -23,7 +23,8 @@ in
   ];
 
   nixsys = {
-    system = enabledWith {
+    system = {
+      kind = "workstation";
       boot.systemd = enabled;
     };
     users = enabledWith {
