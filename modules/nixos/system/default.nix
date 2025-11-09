@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   inputs,
   ...
 }:
@@ -18,15 +17,13 @@ in
     description = "System settings";
     type = types.submodule {
       options = {
-        kind = mkOption { type = types.enum ["workstation" "node"]; };
+        kind = mkOption {
+          type = types.enum [
+            "workstation"
+            "node"
+          ];
+        };
       };
     };
-  };
-
-  config = {
-
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    time.timeZone = "Europe/Copenhagen";
   };
 }
