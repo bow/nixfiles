@@ -39,33 +39,6 @@ in
       packages = [ pkgs.terminus_font ];
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        curl
-        findutils
-        file
-        fzf
-        gcc
-        gdb
-        git
-        gnugrep
-        gnumake
-        gnupg
-        gnused
-        home-manager
-        jq
-        neovim
-        readline
-        ripgrep
-        unzip
-        vim
-        wget
-      ];
-      variables = {
-        EDITOR = "nvim";
-      };
-    };
-
     i18n.defaultLocale = "en_US.UTF-8";
 
     time.timeZone = "Europe/Copenhagen";
