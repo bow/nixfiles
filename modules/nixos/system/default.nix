@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  options,
   inputs,
   ...
 }:
@@ -27,17 +26,11 @@ in
     type = types.submodule {
       options = {
         enable = mkEnableOption "Enable system module";
-        linuxPackages = options.boot.kernelPackages // {
-          description = "Sets boot.kernelPackages";
-          default = pkgs.linuxPackages_latest;
-        };
       };
     };
   };
 
   config = mkIf (cfg.enable) {
-
-    boot.kernelPackages = cfg.linuxPackages;
 
     console = {
       earlySetup = true;
