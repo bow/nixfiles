@@ -29,7 +29,7 @@ in
       boot.systemd = enabled;
       nix.nixos-cli = enabled;
     };
-    users = enabledWith {
+    users = {
       mutable = false;
       main = {
         name = "bow";

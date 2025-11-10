@@ -4,14 +4,13 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf types;
+  inherit (lib) mkIf types;
   inherit (lib.nixsys) mkOpt mkOpt';
 
   cfg = config.nixsys.users;
 in
 {
   options.nixsys.users = {
-    enable = mkEnableOption "Enable users module";
     mutable = mkOpt types.bool false "Sets users.mutableUsers in NixOS config";
     main = mkOpt (types.submodule {
       options = {
@@ -23,7 +22,7 @@ in
     }) { } "Main user configurations";
   };
 
-  config = mkIf (cfg.enable && cfg.main.name != null) {
+  config = mkIf (cfg.main.name != null) {
 
     users = {
       mutableUsers = cfg.mutable;

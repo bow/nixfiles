@@ -6,7 +6,6 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfgUsers = config.nixsys.users;
   cfg = config.nixsys.users.main.desktop.i3;
 in
 {
@@ -14,7 +13,7 @@ in
     enable = mkEnableOption "Enable this module";
   };
 
-  config = mkIf (cfg.enable && cfgUsers.enable) {
+  config = mkIf cfg.enable {
 
     environment.pathsToLink = [ "/libexec" ];
 

@@ -25,7 +25,7 @@ in
     settings = mkOpt types.attrs { } "greetd settings";
   };
 
-  config = mkIf (cfg.enable && cfgUsers.enable) {
+  config = mkIf cfg.enable {
 
     services.displayManager.autoLogin = mkIf autologinEnabled {
       enable = true;
