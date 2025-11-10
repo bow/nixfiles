@@ -17,6 +17,7 @@ in
 
     ../base/workstation
 
+    outputs.nixosModules.default
     ./hardware.nix
     ./disk.nix
     inputs.disko.nixosModules.disko
