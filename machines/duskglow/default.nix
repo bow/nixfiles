@@ -26,6 +26,7 @@ in
     system = {
       kind = "workstation";
       boot.systemd = enabled;
+      nix.nixos-cli = enabled;
     };
     users = enabledWith {
       mutable = false;
