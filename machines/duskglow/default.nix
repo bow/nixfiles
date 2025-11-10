@@ -33,6 +33,7 @@ in
       mutable = false;
       main = {
         name = "bow";
+        trusted = true;
         extraGroups = [
           "docker"
           "libvirtd"
