@@ -15,8 +15,8 @@ in
     main = mkOpt (types.submodule {
       options = {
         name = mkOpt' types.str "The name of the main user.";
-        homeDir = mkOpt types.str "/home/${cfg.main.name}" "Path to home directory";
-        extraGroups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
+        home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to home directory";
+        extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
       };
     }) { } "Main user configurations";
@@ -27,7 +27,7 @@ in
     users = {
       mutableUsers = cfg.mutable;
       users.${cfg.main.name} = {
-        inherit (cfg.main) extraGroups;
+        extraGroups = cfg.main.extra-groups;
         isNormalUser = true;
       };
     };

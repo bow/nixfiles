@@ -17,7 +17,7 @@ let
   cfg = config.nixsys.users.main.desktop.greetd;
 
   xorgEnabled = cfgUsers.main.desktop.i3.enable;
-  autologinEnabled = hasAttr "autoLogin" cfg.settings && cfg.settings.autoLogin;
+  autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
 {
   options.nixsys.users.main.desktop.greetd = {

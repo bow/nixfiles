@@ -16,17 +16,17 @@ in
     description = "Nix settings";
     type = types.submodule {
       options = {
-        downloadBufferSize = mkOption {
+        download-buffer-size = mkOption {
           type = types.ints.positive;
           default = 134217728; # 128 MiB
           description = "Sets nix.settings.download-buffer-size";
         };
-        gcMaxRetentionDays = mkOption {
+        gc-max-retention-days = mkOption {
           type = types.ints.positive;
           default = 30;
           description = "The age of the oldest item to keep (in days) after garbage collection";
         };
-        gcMinFreeSpace = mkOption {
+        gc-min-free-space = mkOption {
           type = types.ints.positive;
           default = 1073741824; # 1 GiB
           description = "Sets nix.settings.min-free";
@@ -46,19 +46,19 @@ in
       gc = {
         automatic = true;
         dates = "daily";
-        options = "--delete-older-than ${builtins.toString cfg.gcMaxRetentionDays}";
+        options = "--delete-older-than ${builtins.toString cfg.gc-max-retention-days}";
       };
 
       settings = {
         auto-optimise-store = true;
-        download-buffer-size = cfg.downloadBufferSize;
+        download-buffer-size = cfg.download-buffer-size;
         experimental-features = [
           "ca-derivations" # content-addressed derivations.
           "flakes" # nix flakes.
           "nix-command" # new nix subcommands.
         ];
         max-jobs = "auto";
-        min-free = cfg.gcMinFreeSpace;
+        min-free = cfg.gc-min-free-space;
         trusted-users = [ "root" ];
       };
     };

@@ -34,7 +34,7 @@ in
       main = {
         name = "bow";
         trusted = true;
-        extraGroups = [
+        extra-groups = [
           "docker"
           "libvirtd"
           "networkmanager"
@@ -43,7 +43,7 @@ in
         desktop = {
           i3 = enabled;
           greetd = enabledWith {
-            settings.autoLogin = true;
+            settings.auto-login = true;
           };
         };
       };

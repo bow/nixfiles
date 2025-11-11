@@ -21,8 +21,8 @@ in
     type = types.submodule {
       options = {
         enable = mkEnableOption "Enable boot module";
-        loaderTimeout = mkOpt (types.nullOr types.int) 1 "Sets boot.loader.timeout";
-        consoleMode = mkOpt types.str "auto" "Sets boot.loader.systemd-boot.consoleMode";
+        loader-timeout = mkOpt (types.nullOr types.int) 1 "Sets boot.loader.timeout";
+        console-mode = mkOpt types.str "auto" "Sets boot.loader.systemd-boot.consoleMode";
       };
     };
   };
@@ -30,10 +30,10 @@ in
   config = mkIf cfg.enable {
     boot = {
       loader = {
-        timeout = cfg.loaderTimeout;
+        timeout = cfg.loader-timeout;
         systemd-boot = {
           enable = true;
-          consoleMode = cfg.consoleMode;
+          consoleMode = cfg.console-mode;
         };
         efi.canTouchEfiVariables = true;
       };
