@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  default = {
+  all = {
     imports = lib.nixsys.lookupDefaultNixFiles ./.;
   };
 }

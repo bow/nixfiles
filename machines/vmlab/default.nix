@@ -13,7 +13,7 @@ in
   system.stateVersion = "25.05";
 
   imports = [
-    outputs.nixosModules.default
+    outputs.nixosModules.all
     ./hardware.nix
     ./disk.nix
     inputs.disko.nixosModules.disko
