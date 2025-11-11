@@ -13,10 +13,6 @@ in
   system.stateVersion = "25.05";
 
   imports = [
-    inputs.home-manager.nixosModules.home-manager
-
-    ../base/workstation
-
     outputs.nixosModules.default
     ./hardware.nix
     ./disk.nix
@@ -34,18 +30,19 @@ in
       main = {
         name = "bow";
         trusted = true;
-        extra-groups = [
-          "docker"
-          "libvirtd"
-          "networkmanager"
-          "wheel"
-        ];
+        home-manager = enabled;
         desktop = {
           i3 = enabled;
           greetd = enabledWith {
             settings.auto-login = true;
           };
         };
+        extra-groups = [
+          "docker"
+          "libvirtd"
+          "networkmanager"
+          "wheel"
+        ];
       };
     };
   };
@@ -66,15 +63,6 @@ in
     sudo = {
       enable = true;
       wheelNeedsPassword = false;
-    };
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    extraSpecialArgs = {
-      inherit inputs outputs;
-      asStandalone = false;
-      userName = primaryUserName;
     };
   };
 

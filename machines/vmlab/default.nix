@@ -13,10 +13,6 @@ in
   system.stateVersion = "25.05";
 
   imports = [
-    inputs.home-manager.nixosModules.home-manager
-
-    ../base/workstation
-
     outputs.nixosModules.default
     ./hardware.nix
     ./disk.nix
@@ -34,21 +30,24 @@ in
       main = {
         name = "bow";
         trusted = true;
-        extra-groups = [
-          "docker"
-          "libvirtd"
-          "networkmanager"
-          "wheel"
-        ];
+        home-manager = enabled;
         desktop = {
           i3 = enabled;
           greetd = enabledWith {
             settings.auto-login = true;
           };
         };
+        extra-groups = [
+          "docker"
+          "libvirtd"
+          "networkmanager"
+          "wheel"
+        ];
       };
     };
   };
+
+  home-manager.users.bow.local.i3.modifierKey = "Mod1";
 
   networking = {
     inherit hostName;
@@ -77,16 +76,6 @@ in
   };
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
-
-  home-manager = {
-    useGlobalPkgs = true;
-    extraSpecialArgs = {
-      inherit inputs outputs;
-      asStandalone = false;
-      userName = primaryUserName;
-    };
-    users.bow.local.i3.modifierKey = "Mod1";
-  };
 
   users = {
     users = {

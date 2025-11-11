@@ -67,9 +67,13 @@
         bow = lib.homeManagerConfiguration {
           extraSpecialArgs = {
             inherit inputs outputs lib;
-            userName = "bow";
+            user = rec {
+              name = "bow";
+              home-directory = "/home/${name}";
+            };
+            asStandalone = true;
           };
-          modules = [ ./home/personal.nix ];
+          modules = [ ./modules/nixos/users/main/home-manager/home.nix ];
         };
       };
 
