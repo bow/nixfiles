@@ -9,6 +9,7 @@ let
     hasAttr
     mkEnableOption
     mkIf
+    mkOption
     types
     ;
   inherit (lib.nixsys) mkOpt;
@@ -20,9 +21,13 @@ let
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
 {
-  options.nixsys.users.main.desktop.greetd = {
-    enable = mkEnableOption "Enable this module";
-    settings = mkOpt types.attrs { } "greetd settings";
+  options.nixsys.users.main.desktop.greetd = mkOption {
+    type = types.submodule {
+      options = {
+        enable = mkEnableOption "Enable this module";
+        settings = mkOpt types.attrs { } "greetd settings";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
