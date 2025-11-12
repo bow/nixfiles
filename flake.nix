@@ -113,7 +113,7 @@
       # Re-exported attributes.
       overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules/nixos/mod.nix { inherit inputs outputs lib; };
-      homeManagerModules = import ./modules/home;
+      homeManagerModules = import ./modules/home/mod.nix { inherit inputs outputs lib; };
 
       # Reusable apps.
       apps = forEachSupportedSystem (
