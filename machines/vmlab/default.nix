@@ -5,11 +5,12 @@
   ...
 }:
 let
+  inherit (lib) mkIf;
   inherit (lib.nixsys) enabled enabledWith;
   primaryUserName = "bow";
   hostName = "vmlab";
 in
-{
+rec {
   system.stateVersion = "25.05";
 
   imports = [
@@ -26,7 +27,6 @@ in
       nix.nixos-cli = enabled;
     };
     users = {
-      mutable = false;
       main = {
         name = "bow";
         trusted = true;
@@ -47,7 +47,15 @@ in
     };
   };
 
-  home-manager.users.bow.local.i3.modifierKey = "Mod1";
+  home-manager.users.${nixsys.users.main.name} = mkIf nixsys.users.main.home-manager.enable {
+    nixsys.home = {
+      desktop = {
+        i3 = enabledWith {
+          mod-key = "Mod1";
+        };
+      };
+    };
+  };
 
   networking = {
     inherit hostName;

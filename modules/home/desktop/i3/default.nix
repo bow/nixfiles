@@ -2,26 +2,35 @@
   config,
   pkgs,
   lib,
+  user,
   ...
 }:
 let
-  inherit (lib) types;
-  cfg = config.local.i3;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
+  inherit (lib.nixsys) mkOpt;
+
+  cfg = config.nixsys.home.desktop.i3;
 in
 {
   imports = [
     ./polybar.nix
   ];
 
-  options = {
-    local.i3.modifierKey = lib.mkOption {
-      type = types.str;
-      default = "Mod4";
-      description = "Mod key for i3";
+  options.nixsys.home.desktop.i3 = mkOption {
+    type = types.submodule {
+      options = {
+        enable = mkEnableOption "Enable this module";
+        mod-key = mkOpt types.str "Mod4" "Mod key for i3";
+      };
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     xsession.windowManager.i3 = {
       enable = true;
       package = pkgs.i3;
@@ -41,7 +50,7 @@ in
           };
         in
         rec {
-          modifier = cfg.modifierKey;
+          modifier = cfg.mod-key;
           colors = {
             focused = {
               border = pallete.focusedBG;

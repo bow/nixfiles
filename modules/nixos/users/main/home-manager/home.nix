@@ -2,7 +2,7 @@
   user,
   lib,
   outputs,
-  asStandalone ? false,
+  asStandalone,
   ...
 }:
 {

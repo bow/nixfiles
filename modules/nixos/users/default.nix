@@ -18,7 +18,6 @@ in
         home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to home directory";
         extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
-        home-manager.enable = mkEnableOption "Enable nixsys.users.main.home-manager module";
       };
     }) { } "Main user configurations";
   };
