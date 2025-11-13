@@ -10,11 +10,12 @@ let
     mkEnableOption
     mkIf
     mkOption
+    removeAttrs
     types
     ;
 
   cfgUsers = config.nixsys.users;
-  cfg = config.nixsys.users.main.home-manager;
+  cfg = cfgUsers.main.home-manager;
 in
 {
   imports = [
@@ -24,20 +25,19 @@ in
   options.nixsys.users.main.home-manager = mkOption {
     default = { };
     type = types.submodule {
+      freeformType = types.attrsOf types.anything;
       options = {
         enable = mkEnableOption "Enable this module";
-        desktop = mkOption {
-          type = types.submodule {
-            options = { };
-          };
-        };
       };
     };
   };
 
   config = mkIf cfg.enable {
+
     home-manager = {
+
       useGlobalPkgs = true;
+
       extraSpecialArgs = {
         inherit inputs outputs;
         user = {
@@ -45,10 +45,16 @@ in
         };
         asStandalone = false;
       };
-      users.${cfgUsers.main.name}.imports = [
-        outputs.homeManagerModules.all
-        ./home.nix
-      ];
+
+      users.${cfgUsers.main.name} = {
+        imports = [
+          outputs.homeManagerModules.all
+          ./home.nix
+        ];
+
+        # Everything in cfg that is not `enable` is meant for nixsys.home.
+        nixsys.home = removeAttrs cfg [ "enable" ];
+      };
     };
   };
 }
