@@ -13,7 +13,7 @@ in
 {
   additions = final: prev: {
     unstable = pkgsUnstableForSystem prev.system;
-    local = import ../pkgs { pkgs = final; };
+    local = import ../packages { pkgs = final; };
   };
 
   replacements = _final: prev: {
