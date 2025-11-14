@@ -24,30 +24,26 @@ rec {
       boot.systemd = enabled;
       nix.nixos-cli = enabled;
     };
-    users = {
-      main = {
-        name = "bow";
-        trusted = true;
-        home-manager = enabledWith {
-          desktop = {
-            i3 = enabledWith {
-              mod-key = "Mod1";
-            };
-          };
+    users.main = {
+      name = "bow";
+      trusted = true;
+      home-manager = enabledWith {
+        desktop.i3 = enabledWith {
+          mod-key = "Mod1";
         };
-        desktop = {
-          i3 = enabled;
-          greetd = enabledWith {
-            settings.auto-login = true;
-          };
-        };
-        extra-groups = [
-          "docker"
-          "libvirtd"
-          "networkmanager"
-          "wheel"
-        ];
       };
+      desktop = {
+        i3 = enabled;
+        greetd = enabledWith {
+          settings.auto-login = true;
+        };
+      };
+      extra-groups = [
+        "docker"
+        "libvirtd"
+        "networkmanager"
+        "wheel"
+      ];
     };
   };
 
