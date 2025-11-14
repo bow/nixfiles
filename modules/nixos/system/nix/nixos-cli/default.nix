@@ -20,7 +20,6 @@ in
   ];
 
   options.nixsys.system.nix.nixos-cli = mkOption {
-    default = { };
     description = "Settings for nixos-cli tool";
     type = types.submodule {
       options = {

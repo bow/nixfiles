@@ -14,17 +14,17 @@ let
     ;
   inherit (lib.nixsys) mkOpt;
 
-  cfgUsers = config.nixsys.users;
-  cfg = config.nixsys.users.main.desktop.greetd;
+  cfgMainUser = config.nixsys.users.main;
+  cfg = cfgMainUser.desktop.greetd;
 
-  xorgEnabled = cfgUsers.main.desktop.i3.enable;
+  xorgEnabled = cfgMainUser.desktop.i3.enable;
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
 {
   options.nixsys.users.main.desktop.greetd = mkOption {
     type = types.submodule {
       options = {
-        enable = mkEnableOption "Enable this module";
+        enable = mkEnableOption "nixsys.users.main.desktop.greetd";
         settings = mkOpt types.attrs { } "greetd settings";
       };
     };
@@ -34,7 +34,7 @@ in
 
     services.displayManager.autoLogin = mkIf autologinEnabled {
       enable = true;
-      user = cfgUsers.main.name;
+      user = cfgMainUser.name;
     };
 
     services.greetd = mkIf cfg.enable {
@@ -46,7 +46,7 @@ in
         };
         initial_session = mkIf (autologinEnabled && xorgEnabled) {
           command = "${pkgs.xorg.xinit}/bin/startx";
-          user = cfgUsers.main.name;
+          user = cfgMainUser.name;
         };
       };
     };

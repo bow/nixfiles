@@ -15,7 +15,7 @@ in
     description = "System kernel";
     type = types.submodule {
       options = {
-        pkg = options.boot.kernelPackages // {
+        package = options.boot.kernelPackages // {
           description = "Sets the system kernel";
           default = pkgs.linuxPackages_latest;
         };
@@ -24,6 +24,6 @@ in
   };
 
   config = {
-    boot.kernelPackages = cfg.pkg;
+    boot.kernelPackages = cfg.package;
   };
 }

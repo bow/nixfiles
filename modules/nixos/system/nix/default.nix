@@ -12,7 +12,6 @@ let
 in
 {
   options.nixsys.system.nix = mkOption {
-    default = { };
     description = "Nix settings";
     type = types.submodule {
       options = {

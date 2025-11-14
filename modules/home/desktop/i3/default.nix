@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  user,
   ...
 }:
 let
@@ -24,7 +23,7 @@ in
   options.nixsys.home.desktop.i3 = mkOption {
     type = types.submodule {
       options = {
-        enable = mkEnableOption "Enable this module";
+        enable = mkEnableOption "nixsys.home.desktop.i3";
         mod-key = mkOpt types.str "Mod4" "Mod key for i3";
       };
     };

@@ -14,8 +14,8 @@ let
     types
     ;
 
-  cfgUsers = config.nixsys.users;
-  cfg = cfgUsers.main.home-manager;
+  cfgMainUser = config.nixsys.users.main;
+  cfg = cfgMainUser.home-manager;
 in
 {
   imports = [
@@ -23,11 +23,10 @@ in
   ];
 
   options.nixsys.users.main.home-manager = mkOption {
-    default = { };
     type = types.submodule {
       freeformType = types.attrsOf types.anything;
       options = {
-        enable = mkEnableOption "Enable this module";
+        enable = mkEnableOption "nixsys.users.main.home-manager";
       };
     };
   };
@@ -41,12 +40,12 @@ in
       extraSpecialArgs = {
         inherit inputs outputs;
         user = {
-          inherit (cfgUsers.main) name home-directory;
+          inherit (cfgMainUser) name home-directory;
         };
         asStandalone = false;
       };
 
-      users.${cfgUsers.main.name} = {
+      users.${cfgMainUser.name} = {
         imports = [
           outputs.homeManagerModules.all
           ./home.nix

@@ -5,6 +5,9 @@
   asStandalone,
   ...
 }:
+let
+  inherit (lib) mkIf;
+in
 {
   imports = [
     ../../../../../home/suites/console
@@ -18,7 +21,7 @@
       homeDirectory = user.home-directory;
     };
 
-    nixpkgs = lib.mkIf asStandalone {
+    nixpkgs = mkIf asStandalone {
       overlays = builtins.attrValues outputs.overlays;
       config.allowUnfree = true;
     };

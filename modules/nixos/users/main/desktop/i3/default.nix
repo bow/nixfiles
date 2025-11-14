@@ -4,7 +4,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.nixsys.users.main.desktop.i3;
 in
@@ -12,7 +17,7 @@ in
   options.nixsys.users.main.desktop.i3 = mkOption {
     type = types.submodule {
       options = {
-        enable = mkEnableOption "Enable this module";
+        enable = mkEnableOption "nixsys.user.main.desktop.i3";
       };
     };
   };
