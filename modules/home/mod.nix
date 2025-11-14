@@ -1,6 +1,6 @@
 { lib, ... }:
 {
   all = {
-    imports = lib.nixsys.lookupDefaultNixFiles ./.;
+    imports = lib.nixsys.listDefaultNixFilesRecursive ./.;
   };
 }

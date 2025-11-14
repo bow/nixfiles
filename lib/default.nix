@@ -147,7 +147,7 @@
     # Example
 
     ```nix
-    lookupDefaultNixFiles ./.
+    listDefaultNixFilesRecursive ./.
     => [
       ".../modules/nixos/default.nix"
       ".../modules/nixos/users/default.nix"
@@ -157,7 +157,7 @@
     # Type
 
     ```
-    defaultNixFilesIn :: Path -> [String]
+    listDefaultNixFilesRecursive :: Path -> [String]
     ```
 
     # Arguments
@@ -166,7 +166,7 @@
     : The starting path from which the lookup starts.
   */
   # Credit: https://github.com/thursdaddy/nixos-config/blob/1ac56531349c75dc69eadee6f99e2a2006e1246e/modules/nixos/import.nix
-  lookupDefaultNixFiles =
+  listDefaultNixFilesRecursive =
     let
       inherit (lib)
         collect
@@ -184,15 +184,15 @@
         );
 
       # Create a list of file paths that are children of the given dir.
-      lookupFiles =
+      listFilesRecursive =
         dir: collect isString (mapAttrsRecursive (path: _type: concatStringsSep "/" path) (walkDir dir));
 
       # Create a list of list paths with the given name that are children of the given dir.
-      lookupFilesNamed =
+      listFilesNamedRecursive =
         name: dir:
         builtins.map (file: dir + "/${file}") (
-          builtins.filter (file: builtins.baseNameOf file == name) (lookupFiles dir)
+          builtins.filter (file: builtins.baseNameOf file == name) (listFilesRecursive dir)
         );
     in
-    dir: lookupFilesNamed "default.nix" dir;
+    dir: listFilesNamedRecursive "default.nix" dir;
 }
