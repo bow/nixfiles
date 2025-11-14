@@ -18,7 +18,7 @@ rec {
     inputs.disko.nixosModules.disko
   ];
 
-  nixsys = {
+  nixsys = enabledWith {
     system = {
       kind = "workstation";
       boot.systemd = enabled;

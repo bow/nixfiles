@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkIf mkOption types;
   cfg = config.nixsys.system.kernel;
 in
 {
@@ -23,7 +23,7 @@ in
     };
   };
 
-  config = {
+  config = mkIf config.nixsys.enable {
     boot.kernelPackages = cfg.package;
   };
 }

@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkIf mkOption types;
 
   cfg = config.nixsys.system.nix;
 in
@@ -34,7 +34,7 @@ in
     };
   };
 
-  config = {
+  config = mkIf config.nixsys.enable {
     environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
 
     nix = {

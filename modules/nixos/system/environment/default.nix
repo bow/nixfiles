@@ -4,8 +4,11 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) mkIf;
+in
 {
-  config = {
+  config = mkIf config.nixsys.enable {
     environment = {
       systemPackages =
         with pkgs;
