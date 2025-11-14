@@ -58,7 +58,6 @@ in
         ];
         max-jobs = "auto";
         min-free = cfg.gc-min-free-space;
-        trusted-users = [ "root" ];
       };
     };
 
