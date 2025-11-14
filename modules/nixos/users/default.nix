@@ -4,8 +4,8 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf types;
-  inherit (lib.nixsys) mkOpt mkOpt';
+  inherit (lib) mkIf types;
+  inherit (lib.nixsys) mkOpt;
 
   cfg = config.nixsys.users;
 in
@@ -14,8 +14,8 @@ in
     mutable = mkOpt types.bool false "Sets users.mutableUsers in NixOS config";
     main = mkOpt (types.submodule {
       options = {
-        name = mkOpt' types.str "The name of the main user.";
-        home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to home directory";
+        name = mkOpt types.str null "Name of the main user";
+        home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to the user's home directory";
         extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
       };
