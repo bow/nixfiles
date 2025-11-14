@@ -41,8 +41,7 @@
     lib.mkOption { inherit type default description; };
 
   /**
-    Create a NixOS module option with a null default, wrapping the specified type with
-    `nixpkgs.lib.types.nullOr`.
+    Create a NixOS module option with no defaults.
 
     # Example
 
@@ -50,7 +49,6 @@
     mkOpt' nixpkgs.lib.types.str "Description"
     => {
       _type = "option";
-      default = null;
       description = "Description";
       type = { ... };
     }
@@ -72,10 +70,7 @@
   */
   mkOpt' =
     type: description:
-    lib.mkOption {
-      inherit description;
-      type = (lib.types.nullOr type);
-    };
+    lib.mkOption { inherit type description; };
 
   /**
     Shorthand for enabling a module option.
