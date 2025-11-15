@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib.nixsys) enabled enabledWith;
-  hostName = "vmlab";
 in
 rec {
   system.stateVersion = "25.05";
@@ -20,8 +19,11 @@ rec {
 
   nixsys = enabledWith {
     system = {
+      hostname = "vmlab";
       kind = "workstation";
+
       boot.systemd = enabled;
+      networking.networkmanager = enabled;
       nix.nixos-cli = enabled;
     };
     users.main = {
@@ -41,15 +43,9 @@ rec {
       extra-groups = [
         "docker"
         "libvirtd"
-        "networkmanager"
         "wheel"
       ];
     };
-  };
-
-  networking = {
-    inherit hostName;
-    networkmanager.enable = true;
   };
 
   programs.gnupg = {

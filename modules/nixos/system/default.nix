@@ -16,6 +16,7 @@ in
             "node"
           ];
         };
+        hostname = mkOption { type = types.str; };
       };
     };
   };
