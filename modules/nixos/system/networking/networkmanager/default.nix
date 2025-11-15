@@ -13,6 +13,7 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
+  inherit (lib.nixsys.cfg) isXorgEnabled;
 
   hostname = config.nixsys.system.hostname;
   mainUser = config.nixsys.users.main;
@@ -52,6 +53,6 @@ in
     };
 
     systemd.services.NetworkManager-wait-online.enable = mkForce false;
-    programs.nm-applet.enable = mkIf (mainUser.desktop.i3.enable) true;
+    programs.nm-applet.enable = mkIf (isXorgEnabled config) true;
   };
 }

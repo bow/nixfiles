@@ -13,11 +13,11 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
+  inherit (lib.nixsys.cfg) isXorgEnabled;
 
   cfgMainUser = config.nixsys.users.main;
   cfg = cfgMainUser.desktop.greetd;
 
-  xorgEnabled = cfgMainUser.desktop.i3.enable;
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
 {
@@ -41,10 +41,10 @@ in
       enable = true;
       settings = {
         terminal.vt = 7;
-        default_session = mkIf xorgEnabled {
+        default_session = mkIf (isXorgEnabled config) {
           command = "${pkgs.xorg.xinit}/bin/startx";
         };
-        initial_session = mkIf (autologinEnabled && xorgEnabled) {
+        initial_session = mkIf (autologinEnabled && (isXorgEnabled config)) {
           command = "${pkgs.xorg.xinit}/bin/startx";
           user = cfgMainUser.name;
         };
