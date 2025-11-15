@@ -26,30 +26,28 @@ rec {
       networking.networkmanager = enabled;
       nix.nixos-cli = enabled;
     };
-    users.main = {
-      name = "bow";
-      trusted = true;
-      home-manager = enabledWith {
-        desktop.i3 = enabled;
-      };
-      desktop = {
-        i3 = enabled;
-        greetd = enabledWith {
-          settings.auto-login = true;
+    users = {
+      main = {
+        name = "bow";
+        trusted = true;
+        home-manager = enabledWith {
+          desktop.i3 = enabled;
         };
+        desktop = {
+          i3 = enabled;
+          greetd = enabledWith {
+            settings.auto-login = true;
+          };
+        };
+        extra-groups = [
+          "docker"
+          "libvirtd"
+          "wheel"
+        ];
       };
-      extra-groups = [
-        "docker"
-        "libvirtd"
-        "wheel"
-      ];
-    };
-  };
-
-  programs.gnupg = {
-    agent = {
-      enable = true;
-      enableSSHSupport = true;
+      programs = {
+        gnupg = enabled;
+      };
     };
   };
 

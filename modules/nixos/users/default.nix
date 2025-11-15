@@ -20,6 +20,7 @@ in
         trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
       };
     }) { } "Main user configurations";
+    programs = mkOpt (types.submodule { }) { } "Programs common for all users";
   };
 
   config = mkIf (cfg.main.name != null) {
