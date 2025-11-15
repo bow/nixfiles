@@ -10,7 +10,7 @@ in
     description = "System settings";
     type = types.submodule {
       options = {
-        kind = mkOption {
+        profile = mkOption {
           type = types.enum [
             "workstation"
             "node"

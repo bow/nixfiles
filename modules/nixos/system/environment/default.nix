@@ -30,7 +30,7 @@ in
           vim
           wget
         ]
-        ++ (lib.optionals (config.nixsys.system.kind == "workstation") [ pkgs.home-manager ]);
+        ++ (lib.optionals (config.nixsys.system.profile == "workstation") [ pkgs.home-manager ]);
       variables = {
         EDITOR = "nvim";
       };

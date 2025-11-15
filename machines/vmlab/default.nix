@@ -20,7 +20,7 @@ rec {
   nixsys = enabledWith {
     system = {
       hostname = "vmlab";
-      kind = "workstation";
+      profile = "workstation";
 
       boot.systemd = enabled;
       networking.networkmanager = enabled;

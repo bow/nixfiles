@@ -8,7 +8,7 @@ let
   inherit (lib) mkIf;
 in
 {
-  config = mkIf (config.nixsys.system.kind == "workstation") {
+  config = mkIf (config.nixsys.system.profile == "workstation") {
     fonts = {
       enableDefaultPackages = true;
       packages = with pkgs; [
