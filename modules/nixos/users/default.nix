@@ -28,7 +28,7 @@ in
     users = {
       mutableUsers = cfg.mutable;
       users.${cfg.main.name} = {
-        extraGroups = cfg.main.extra-groups;
+        extraGroups = cfg.main.extra-groups ++ (lib.optionals cfg.main.trusted [ "wheel" ]);
         isNormalUser = true;
       };
     };

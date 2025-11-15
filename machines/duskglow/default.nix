@@ -44,15 +44,7 @@ rec {
       extra-groups = [
         "docker"
         "libvirtd"
-        "wheel"
       ];
-    };
-  };
-
-  security = {
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
     };
   };
 

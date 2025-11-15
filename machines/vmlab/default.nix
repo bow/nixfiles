@@ -46,15 +46,7 @@ rec {
       extra-groups = [
         "docker"
         "libvirtd"
-        "wheel"
       ];
-    };
-  };
-
-  security = {
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
     };
   };
 
@@ -64,6 +56,7 @@ rec {
       PermitRootLogin = "no";
     };
   };
+
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
 
