@@ -6,9 +6,10 @@
 }:
 let
   inherit (lib) mkIf;
+  inherit (lib.nixsys.cfg) hasProfileWorkstation;
 in
 {
-  config = mkIf (config.nixsys.system.profile == "workstation") {
+  config = mkIf (hasProfileWorkstation config) {
     fonts = {
       enableDefaultPackages = true;
       packages = with pkgs; [
