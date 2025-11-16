@@ -13,6 +13,16 @@
     if name == null then throw "nixsys.system.hostname is undefined" else name;
 
   /**
+    Return the main user if its name is not null. Otherwise return null.
+  */
+  getMainUserOrNull =
+    config:
+    let
+      user = config.nixsys.users.main;
+    in
+    if user.name == null then null else user;
+
+  /**
     Return the name of the main user. If it is null, an error will be thrown.
   */
   getMainUserName =
