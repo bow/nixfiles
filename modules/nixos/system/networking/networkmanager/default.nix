@@ -13,9 +13,8 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) getMainUserName isMainUserDefined isXorgEnabled;
+  inherit (lib.nixsys.cfg) getHostName getMainUserName isMainUserDefined isXorgEnabled;
 
-  hostname = config.nixsys.system.hostname;
   cfg = config.nixsys.system.networking.networkmanager;
 in
 {
@@ -37,7 +36,7 @@ in
 
   config = mkIf cfg.enable {
     networking = {
-      hostName = hostname;
+      hostName = getHostName config;
       networkmanager.enable = true;
       networkmanager.plugins = [
         pkgs.networkmanager-openvpn

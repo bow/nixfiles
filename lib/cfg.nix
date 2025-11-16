@@ -3,6 +3,16 @@
 }:
 {
   /**
+    Return the system hostname. If it is null, an error will be thrown.
+  */
+  getHostName =
+    config:
+    let
+      name = config.nixsys.system.hostname;
+    in
+    if name == null then throw "nixsys.system.hostname is undefined" else name;
+
+  /**
     Return the name of the main user. If it is null, an error will be thrown.
   */
   getMainUserName =
