@@ -6,6 +6,7 @@
 let
   inherit (lib) mkIf types;
   inherit (lib.nixsys) mkOpt;
+  inherit (lib.nixsys.cfg) isMainUserDefined;
 
   cfg = config.nixsys.users;
 in
@@ -23,7 +24,7 @@ in
     programs = mkOpt (types.submodule { }) { } "Programs common for all users";
   };
 
-  config = mkIf (cfg.main.name != null) {
+  config = mkIf (isMainUserDefined config) {
 
     users = {
       mutableUsers = cfg.mutable;

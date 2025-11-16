@@ -13,7 +13,7 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) isXorgEnabled;
+  inherit (lib.nixsys.cfg) isMainUserDefined isXorgEnabled;
 
   hostname = config.nixsys.system.hostname;
   mainUser = config.nixsys.users.main;
@@ -48,7 +48,7 @@ in
       networkmanager.insertNameservers = cfg.insert-nameservers;
     };
 
-    users.users = mkIf (mainUser.name != null) {
+    users.users = mkIf (isMainUserDefined config) {
       ${mainUser.name}.extraGroups = [ "networkmanager" ];
     };
 
