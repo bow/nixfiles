@@ -7,12 +7,12 @@ REPO_DIR="$(dirname "$(readlink -f "$0")")"
 show_usage() {
     cat <<__USAGE__
 $(fmt_section "SYNOPSIS")
-    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[rebuild|update|gc]")
+    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[build-machine|rebuild|update|gc]")
 
     Helper script for common Nix tasks.
 
 $(fmt_section "OPTIONS")
-    $(fmt_subcommand "build-nixos|bn") $(fmt_param "machine")      \`nix build .#nixosConfigurations.$(fmt_param "machine").config.system.build.toplevel\`
+    $(fmt_subcommand "build-machine|bm") $(fmt_param "machine")    \`nix build .#nixosConfigurations.$(fmt_param "machine").config.system.build.toplevel\`
     $(fmt_subcommand "rebuild|r") $(fmt_param "machine")           \`nixos-rebuild --flake #.$(fmt_param "machine")\`
     $(fmt_subcommand "update|u") $(fmt_param "target")             \`nix flake update $(fmt_param "target")\`
     $(fmt_subcommand "gc")                          \`nix-store --gc\`
@@ -26,11 +26,11 @@ run_rebuild() {
     sudo nixos-rebuild --flake "${REPO_DIR}"\#"${machine}" --fast switch
 }
 
-run_build_nixos() {
+run_build_machine() {
     machine=${1}
     test -n "${machine}" || exit_err "machine not specified"
 
-    show_msg "Starting build-nixos for machine=${machine}"
+    show_msg "Starting build-machine for machine=${machine}"
     nix build ".#nixosConfigurations.${machine}.config.system.build.toplevel"
 }
 
@@ -81,8 +81,8 @@ parse_opts() {
     fi
     while [ "${#}" -gt 0 ]; do
         case "${1}" in
-        build-nixos | bn)
-            run_build_nixos "${2}"
+        build-machine | bm)
+            run_build_machine "${2}"
             exit 0
             ;;
         rebuild | r)
