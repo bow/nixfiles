@@ -10,7 +10,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.cfg) isXorgEnabled;
+  inherit (lib.nixsys.nixos) isXorgEnabled;
 
   cfg = config.nixsys.system.virtualized;
 in

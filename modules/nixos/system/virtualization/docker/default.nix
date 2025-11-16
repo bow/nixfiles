@@ -10,7 +10,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.cfg) getMainUserOrNull;
+  inherit (lib.nixsys.nixos) getMainUserOrNull;
 
   mainUser = getMainUserOrNull config;
   cfg = config.nixsys.system.virtualization.docker;

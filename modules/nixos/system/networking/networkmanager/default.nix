@@ -13,7 +13,7 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) getHostName getMainUserName isMainUserDefined isXorgEnabled;
+  inherit (lib.nixsys.nixos) getHostName getMainUserName isMainUserDefined isXorgEnabled;
 
   cfg = config.nixsys.system.networking.networkmanager;
 in

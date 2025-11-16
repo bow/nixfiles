@@ -4,8 +4,8 @@
   ...
 }:
 {
-  # Config-related library functions.
-  cfg = import ./cfg.nix { inherit lib; };
+  # nixos modules config-related library functions.
+  nixos = import ./nixos.nix { inherit lib; };
 
   /**
     Create a NixOS module option.

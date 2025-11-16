@@ -13,7 +13,7 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) isXorgEnabled;
+  inherit (lib.nixsys.nixos) isXorgEnabled;
 
   cfgMainUser = config.nixsys.users.main;
   cfg = cfgMainUser.desktop.greetd;

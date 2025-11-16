@@ -6,7 +6,7 @@
 let
   inherit (lib) mkIf types;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) isMainUserDefined;
+  inherit (lib.nixsys.nixos) isMainUserDefined;
 
   cfg = config.nixsys.users;
 in

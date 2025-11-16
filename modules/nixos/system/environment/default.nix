@@ -6,7 +6,7 @@
 }:
 let
   inherit (lib) mkIf;
-  inherit (lib.nixsys.cfg) hasProfileWorkstation;
+  inherit (lib.nixsys.nixos) hasProfileWorkstation;
 in
 {
   config = mkIf config.nixsys.enable {
