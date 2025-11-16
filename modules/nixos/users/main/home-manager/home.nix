@@ -11,7 +11,6 @@ let
 in
 {
   imports = [
-    ../../../../../home/suites/console
     ../../../../../home/suites/graphical
   ];
 
