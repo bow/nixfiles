@@ -25,6 +25,7 @@ rec {
       boot.systemd = enabled;
       networking.networkmanager = enabled;
       nix.nixos-cli = enabled;
+      virtualization.docker = enabled;
     };
     users.main = {
       name = "bow";
@@ -41,10 +42,6 @@ rec {
           settings.auto-login = true;
         };
       };
-      extra-groups = [
-        "docker"
-        "libvirtd"
-      ];
     };
   };
 
@@ -58,6 +55,4 @@ rec {
       };
     };
   };
-
-  virtualisation.docker.enable = true;
 }
