@@ -7,11 +7,12 @@ REPO_DIR="$(dirname "$(readlink -f "$0")")"
 show_usage() {
     cat <<__USAGE__
 $(fmt_section "SYNOPSIS")
-    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[build-machine|rebuild|update|gc]")
+    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[build-iso|build-machine|rebuild|update|gc]")
 
     Helper script for common Nix tasks.
 
 $(fmt_section "OPTIONS")
+    $(fmt_subcommand "build-iso|bi")                \`nix build .#nixosConfigurations.iso.config.system.build.isoImage\`
     $(fmt_subcommand "build-machine|bm") $(fmt_param "machine")    \`nix build .#nixosConfigurations.$(fmt_param "machine").config.system.build.toplevel\`
     $(fmt_subcommand "rebuild|r") $(fmt_param "machine")           \`nixos-rebuild --flake #.$(fmt_param "machine")\`
     $(fmt_subcommand "update|u") $(fmt_param "target")             \`nix flake update $(fmt_param "target")\`
@@ -24,6 +25,11 @@ run_rebuild() {
 
     show_msg "Starting rebuild for machine=${machine}"
     sudo nixos-rebuild --flake "${REPO_DIR}"\#"${machine}" --fast switch
+}
+
+run_build_iso() {
+    show_msg "Starting ISO installer build"
+    nix build .#nixosConfigurations.iso.config.system.build.isoImage
 }
 
 run_build_machine() {
@@ -81,6 +87,10 @@ parse_opts() {
     fi
     while [ "${#}" -gt 0 ]; do
         case "${1}" in
+        build-iso | bi)
+            run_build_iso
+            exit 0
+            ;;
         build-machine | bm)
             run_build_machine "${2}"
             exit 0

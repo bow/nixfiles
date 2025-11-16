@@ -141,31 +141,17 @@
       devShells = forEachSupportedSystem (
         { pkgs, ... }:
         {
-          default =
-            let
-              localScripts = [
-                (pkgs.writeShellApplication {
-                  name = "nxf-build-iso";
-                  text = ''
-                    nix build .#nixosConfigurations.iso.config.system.build.isoImage
-                  '';
-                })
-              ];
-            in
-            pkgs.mkShellNoCC {
-              packages =
-                with pkgs;
-                [
-                  age
-                  sops
-                  ssh-to-age
+          default = pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              age
+              sops
+              ssh-to-age
 
-                  nixfmt-rfc-style
-                  deadnix
-                  statix
-                ]
-                ++ localScripts;
-            };
+              nixfmt-rfc-style
+              deadnix
+              statix
+            ];
+          };
         }
       );
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
