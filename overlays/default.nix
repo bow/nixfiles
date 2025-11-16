@@ -30,5 +30,10 @@ in
       ;
   };
 
-  modifications = _final: _prev: { };
+  modifications = _final: prev: {
+    # To speed up builds.
+    terraform = prev.terraform.overrideAttrs (_: {
+      doCheck = false;
+    });
+  };
 }
