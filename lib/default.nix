@@ -7,6 +7,9 @@
   # nixos modules config-related library functions.
   nixos = import ./nixos.nix { inherit lib; };
 
+  # home modules config-related library functions.
+  home = import ./home.nix { inherit lib; };
+
   /**
     Create a NixOS module option.
 

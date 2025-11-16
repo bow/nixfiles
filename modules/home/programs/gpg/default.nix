@@ -12,9 +12,7 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-
-  # FIXME: Merge with isXorgEnabled and/or move to lib.cfg.
-  isXorgEnabled = config: config.nixsys.home.desktop.i3.enable;
+  inherit (lib.nixsys.home) isXorgEnabled;
 
   cfg = config.nixsys.home.programs.gpg;
 in
