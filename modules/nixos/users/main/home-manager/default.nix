@@ -40,7 +40,7 @@ in
       extraSpecialArgs = {
         inherit inputs outputs;
         user = {
-          inherit (cfgMainUser) name home-directory;
+          inherit (cfgMainUser) name home-directory shell;
         };
         asStandalone = false;
       };

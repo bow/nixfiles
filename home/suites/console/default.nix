@@ -4,7 +4,6 @@
 }:
 {
   imports = [
-    ./bash.nix
     ./direnv.nix
     ./git.nix
     ./nvim.nix
