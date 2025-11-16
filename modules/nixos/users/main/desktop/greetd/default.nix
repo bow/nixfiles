@@ -13,10 +13,10 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.nixos) isXorgEnabled;
+  inherit (lib.nixsys.nixos) getMainUserOrNull isXorgEnabled;
 
-  cfgMainUser = config.nixsys.users.main;
-  cfg = cfgMainUser.desktop.greetd;
+  user = getMainUserOrNull config;
+  cfg = user.desktop.greetd;
 
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
@@ -34,7 +34,7 @@ in
 
     services.displayManager.autoLogin = mkIf autologinEnabled {
       enable = true;
-      user = cfgMainUser.name;
+      user = user.name;
     };
 
     services.greetd = mkIf cfg.enable {
@@ -46,7 +46,7 @@ in
         };
         initial_session = mkIf (autologinEnabled && (isXorgEnabled config)) {
           command = "${pkgs.xorg.xinit}/bin/startx";
-          user = cfgMainUser.name;
+          user = user.name;
         };
       };
     };
