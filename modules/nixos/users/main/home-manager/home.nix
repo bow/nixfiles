@@ -170,10 +170,6 @@ let
   ];
 in
 {
-  imports = [
-    ../../../../../home/suites/graphical
-  ];
-
   config = {
     home = {
       stateVersion = "25.05";
