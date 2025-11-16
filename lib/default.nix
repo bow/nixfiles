@@ -71,9 +71,7 @@
     **description**
     : A human-readable description of the option.
   */
-  mkOpt' =
-    type: description:
-    lib.mkOption { inherit type description; };
+  mkOpt' = type: description: lib.mkOption { inherit type description; };
 
   /**
     Shorthand for enabling a module option.
