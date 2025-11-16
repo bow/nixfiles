@@ -21,6 +21,9 @@ rec {
     system = {
       hostname = "vmlab";
       profile = "workstation";
+      virtualized = enabledWith {
+        guest-type = "qemu";
+      };
 
       boot.systemd = enabled;
       networking.networkmanager = enabled;
@@ -47,9 +50,6 @@ rec {
       };
     };
   };
-
-  services.spice-vdagentd.enable = true;
-  services.qemuGuest.enable = true;
 
   users = {
     users = {
