@@ -33,9 +33,6 @@ rec {
       trusted = true;
       home-manager = enabledWith {
         desktop.i3 = enabled;
-        programs = {
-          gpg = enabled;
-        };
       };
       desktop = {
         i3 = enabled;

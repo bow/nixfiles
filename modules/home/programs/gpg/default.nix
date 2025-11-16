@@ -23,7 +23,9 @@ in
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.gpg";
+        enable = mkEnableOption "nixsys.home.programs.gpg" // {
+          default = true;
+        };
 
         default-cache-ttl =
           mkOpt (types.nullOr types.ints.positive) 86400

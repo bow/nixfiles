@@ -38,9 +38,6 @@ rec {
         desktop.i3 = enabledWith {
           mod-key = "Mod1";
         };
-        programs = {
-          gpg = enabled;
-        };
       };
       desktop = {
         i3 = enabled;
