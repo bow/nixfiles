@@ -25,6 +25,7 @@ rec {
       boot.systemd = enabled;
       networking.networkmanager = enabled;
       nix.nixos-cli = enabled;
+      servers.ssh = enabled;
       virtualization.docker = enabled;
     };
     users.main = {
@@ -44,13 +45,6 @@ rec {
           settings.auto-login = true;
         };
       };
-    };
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
     };
   };
 
