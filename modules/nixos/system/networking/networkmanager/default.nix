@@ -13,10 +13,9 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.cfg) isMainUserDefined isXorgEnabled;
+  inherit (lib.nixsys.cfg) getMainUserName isMainUserDefined isXorgEnabled;
 
   hostname = config.nixsys.system.hostname;
-  mainUser = config.nixsys.users.main;
   cfg = config.nixsys.system.networking.networkmanager;
 in
 {
@@ -49,7 +48,7 @@ in
     };
 
     users.users = mkIf (isMainUserDefined config) {
-      ${mainUser.name}.extraGroups = [ "networkmanager" ];
+      ${getMainUserName config}.extraGroups = [ "networkmanager" ];
     };
 
     systemd.services.NetworkManager-wait-online.enable = mkForce false;

@@ -3,7 +3,7 @@
 }:
 {
   /**
-    Return the name of the main user. If it is not defined, an error will be thrown.
+    Return the name of the main user. If it is null, an error will be thrown.
   */
   getMainUserName =
     config:
