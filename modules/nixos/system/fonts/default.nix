@@ -13,11 +13,17 @@ in
     fonts = {
       enableDefaultPackages = true;
       packages = with pkgs; [
+        (iosevka-bin.override { variant = "SS03"; })
         nerd-fonts.droid-sans-mono
         nerd-fonts.inconsolata
         nerd-fonts.ubuntu
         nerd-fonts.ubuntu-sans
-        (iosevka-bin.override { variant = "SS03"; })
+        noto-fonts
+        noto-fonts-emoji
+        noto-fonts-cjk-sans
+        noto-fonts-cjk-serif
+        siji
+
         local.awesome-terminal-fonts
         local.titillium-fonts
       ];
