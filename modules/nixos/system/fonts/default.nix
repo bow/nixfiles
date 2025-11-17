@@ -18,6 +18,7 @@ in
         nerd-fonts.ubuntu
         nerd-fonts.ubuntu-sans
         (iosevka-bin.override { variant = "SS03"; })
+        local.awesome-terminal-fonts
         local.titillium-fonts
       ];
       fontconfig.defaultFonts = {
