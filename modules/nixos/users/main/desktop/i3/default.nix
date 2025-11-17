@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -45,5 +46,10 @@ in
     programs.i3lock.enable = true;
 
     security.pam.services.i3lock-color.enable = true;
+
+    services.udev.extraRules = ''
+      SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.local.polybar-module-battery-combined} --update"
+      SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.local.polybar-module-battery-combined} --update"
+    '';
   };
 }

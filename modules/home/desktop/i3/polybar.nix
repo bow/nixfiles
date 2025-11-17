@@ -6,24 +6,392 @@
 }:
 let
   inherit (lib) mkIf;
+  inherit (lib.strings) concatStringsSep;
 
   cfg = config.nixsys.home.desktop.i3;
+
+  module-cpu-load-avg = pkgs.writeShellScript "polybar-module-cpu-load-avg.sh" ''
+    ${pkgs.gawk}/bin/awk '{printf("%{F#665c54} %{F#e8e8d3}%2.1f · %2.1f", $1, $2)}' < /proc/loadavg
+  '';
 in
 {
   config = mkIf cfg.enable {
-    home.packages = [
-      (pkgs.polybar.override {
+
+    services.polybar = {
+      enable = true;
+
+      package = pkgs.polybar.override {
+        alsaSupport = true;
+        githubSupport = true;
         iwSupport = true;
         i3Support = true;
+        mpdSupport = true;
+        nlSupport = true;
         pulseSupport = true;
-      })
-    ];
-
-    home.file = {
-      ".config/polybar" = {
-        source = ../../../../dotfiles/polybar;
-        recursive = true;
       };
+
+      settings = {
+
+        "global/wm" = {
+          margin = {
+            top = 0;
+            bottom = 0;
+          };
+        };
+
+        "colors" = {
+          background = {
+            text = "#151515";
+            alt = "#333";
+          };
+          foreground = {
+            text = "#e8e8d3";
+            alt = "#504945";
+          };
+          primary = "#007c5b";
+          secondary = "#e3ac2d";
+          alert = "#bd2c40";
+        };
+
+        "bar/top" = {
+          monitor = ''''${env:POLYBAR_MONITOR}'';
+          width = "100%";
+          height = 33;
+          radius = 0;
+          fixed.center = true;
+          background = ''''${colors.background}'';
+          foreground = ''''${colors.foreground}'';
+
+          line = {
+            size = 2;
+            color = "#f00";
+          };
+
+          border = {
+            size = 0;
+            bottom.size = 0;
+          };
+
+          padding = {
+            left = 1;
+            right = 1;
+          };
+
+          module.margin = 2;
+
+          font = [
+            "Titillium:pixelsize=12;2"
+            "FontAwesome:style=Regular:pixelsize=12;2"
+            "icomoon:style=Regular:pixelsize=12;2"
+            "octicons:style=Medium:pixelsize=12;2"
+            "Siji:style=Regular:pixelsize=12;2"
+            "Noto Color Emoji:scale=15:antialias=false;0"
+          ];
+
+          modules = {
+            left = "i3";
+            center = "date";
+            right = concatStringsSep " " [
+              "cpu"
+              "memory"
+              "loadavg"
+              "wlan"
+              "eth"
+              "battery-combined"
+              "temperature"
+              "pulseaudio"
+              "tray"
+            ];
+          };
+        };
+
+        "module/battery-combined" = {
+          type = "custom/script";
+          exec = "${pkgs.local.polybar-module-battery-combined}";
+          tail = true;
+        };
+
+        "module/loadavg" = {
+          type = "custom/script";
+          exec = "${module-cpu-load-avg}";
+          interval = 1;
+        };
+
+        "module/filesystem" = {
+          type = "internal/fs";
+          interval = 25;
+          mount = [
+            "/"
+            "/var"
+            "/tmp"
+          ];
+          label = {
+            mounted = "%{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%";
+            unmounted = {
+              text = "%mountpoint% not mounted";
+              foreground = ''''${colors.foreground-alt}'';
+            };
+          };
+        };
+
+        "module/i3" = {
+          type = "internal/i3";
+          format = "<label-mode> <label-state> <label-mode>";
+          strip.wsnumbers = true;
+          index.sort = true;
+          wrapping.scroll = false;
+
+          ws.icon = [
+            "1;"
+            "2;"
+            "3;"
+            "4;"
+            "5;"
+            "6;•"
+            "7;•"
+            "8;•"
+            "9;•"
+            "10;•"
+            "11;"
+            "12;"
+            "13;"
+          ];
+
+          label = {
+            mode = {
+              padding = 2;
+              foreground = "#000";
+              background = ''''${colors.primary}'';
+            };
+            # focused: active workspace on focused monitor.
+            focused = {
+              text = "%name%";
+              padding = 6;
+              foreground = ''''${colors.foreground}'';
+              underline = ''''${colors.foreground}'';
+            };
+            # unfocused: inactive workspace on any monitor.
+            unfocused = {
+              text = ''''${self.label-focused}'';
+              foreground = ''''${colors.foreground-alt}'';
+              padding = ''''${self.label-focused-padding}'';
+            };
+            # visible = active workspace on unfocused monitor.
+            visible = {
+              text = ''''${self.label-focused}'';
+              padding = ''''${self.label-focused-padding}'';
+              foreground = ''''${colors.foreground-alt}'';
+              underline = ''''${colors.foreground-alt}'';
+            };
+            # urgent = workspace with urgency hint set.
+            urgent = {
+              text = ''''${self.label-focused}'';
+              padding = ''''${self.label-focused-padding}'';
+              foreground = ''''${colors.secondary}'';
+              underline = ''''${colors.secondary}'';
+            };
+          };
+        };
+
+        "module/cpu" = {
+          type = "internal/cpu";
+          interval = 2;
+          label = "%percentage%%";
+          format = {
+            text = "<label>";
+            prefix = {
+              text = " ";
+              foreground = ''''${colors.foreground-alt}'';
+            };
+          };
+          bar = {
+            load = {
+              width = 5;
+              empty = "━";
+              fill = "━";
+              indicator = "┃";
+            };
+          };
+          ramp = {
+            coreload = [
+              "▁"
+              "▂"
+              "▄"
+              "▆"
+              "█"
+            ];
+          };
+        };
+
+        "module/memory" = {
+          type = "internal/memory";
+          interval = 2;
+          warn.percentage = 85;
+          label = {
+            text = "%percentage_used%% · %gb_used%";
+            warn = "%percentage_used%% · %gb_used%";
+          };
+          format = {
+            text = "<label>";
+            prefix = {
+              text = " ";
+              foreground = ''''${colors.foreground-alt}'';
+            };
+            warn = {
+              text = "<label-warn>";
+              prefix = {
+                text = " ";
+                foreground = ''''${colors.alert}'';
+              };
+            };
+          };
+        };
+
+        "module/wlan" = {
+          type = "internal/network";
+          interface = ''''${env:POLYBAR_WIRELESS_IF}'';
+          interval = 3;
+
+          format = {
+            connected = "%{A:nm-connection-editor&:}<ramp-signal> <label-connected>%{A}";
+            disconnected = "%{A:nm-connection-editor&:}<label-disconnected>%{A}";
+          };
+
+          label = {
+            connected = "%signal%% · %essid%";
+            disconnected = {
+              text = " ";
+              foreground = ''''${colors.alert}'';
+            };
+          };
+
+          ramp = {
+            signal = [ " " ];
+            foreground = ''''${colors.foreground-alt}'';
+          };
+        };
+
+        "module/eth" = {
+          type = "internal/network";
+          interface = ''''${env:POLYBAR_ETH_IF}'';
+          interval = 3;
+          format = {
+            connected.prefix = {
+              text = "";
+              foreground = ''''${colors.foreground-alt}'';
+            };
+          };
+          label.connected = "%local_ip%";
+          format.disconnected = "";
+        };
+
+        "module/date" = {
+          type = "internal/date";
+          interval = 1;
+          format.prefix = {
+            text = "  ";
+            foreground = ''''${colors.foreground-alt}'';
+          };
+          label = "%date%%time%";
+          date = {
+            text = "%a, %e %b %y - ";
+            alt = "%FT";
+          };
+          time = {
+            text = "%H:%M";
+            alt = "%T%z / W%V";
+          };
+        };
+
+        "module/pulseaudio" = {
+          type = "internal/pulseaudio";
+
+          format = {
+            volume = "<ramp-volume> <label-volume>";
+            muted = {
+              prefix = " ";
+              foreground = ''''${colors.foreground-alt}'';
+            };
+          };
+
+          label = {
+            volume = "%percentage%%";
+            muted = " -";
+          };
+
+          ramp.volume = {
+            foreground = ''''${colors.foreground-alt}'';
+            text = [
+              ""
+              ""
+              ""
+            ];
+          };
+        };
+
+        "module/temperature" = {
+          type = "internal/temperature";
+          thermal.zone = 0;
+          warn.temperature = 60;
+
+          format = {
+            text = "<ramp> <label>";
+            warn = "<ramp> <label-warn>";
+          };
+
+          label = {
+            text = "%temperature-c%";
+            warn = {
+              text = "%temperature-c%";
+              foreground = ''''${colors.secondary}'';
+            };
+          };
+
+          ramp = {
+            text = [
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
+            foreground = ''''${colors.foreground-alt}'';
+          };
+        };
+
+        "module/tray" = {
+          type = "internal/tray";
+          tray-padding = 2;
+          tray-size = "50%";
+        };
+
+        "settings" = {
+          screenchange.reload = true;
+        };
+      };
+
+      script = ''
+        #!/usr/bin/env sh
+
+        # Terminate already running bar instances
+        killall -q polybar
+
+        # Wait until the processes have been shut down
+        while pgrep -x polybar >/dev/null; do sleep 1; done
+
+        # Get network interface names that might be shown
+        wireless_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/wl|wlan/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ')"
+        eth_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/^( *[0-9]+: (en|eth))/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ' | ${pkgs.coreutils}/bin/head -n1)"
+
+        # Launch polybar in all connected monitors
+        for mon in ''$(${pkgs.xorg.xrandr}/bin/xrandr | ${pkgs.gnugrep}/bin/grep " connected " | ${pkgs.gawk}/bin/awk '{ print $1 }' | ${pkgs.coreutils}/bin/sort -r); do
+            POLYBAR_MONITOR="''${mon}" POLYBAR_WIRELESS_IF="''${wireless_if}" POLYBAR_ETH_IF="''${eth_if}" polybar top &
+        done
+      '';
+    };
+
+    systemd.user.services.polybar = {
+      Service.Environment = [ "DISPLAY=:0" ];
     };
   };
 }
