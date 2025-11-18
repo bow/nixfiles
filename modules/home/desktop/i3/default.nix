@@ -250,6 +250,12 @@ in
           startup = [
             {
               command = "${polybar-start}";
+              notification = false;
+              always = true;
+            }
+            {
+              command = "${pkgs.networkmanagerapplet}/bin/nm-applet";
+              notification = false;
               always = true;
             }
           ];
