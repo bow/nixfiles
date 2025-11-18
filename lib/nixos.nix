@@ -1,7 +1,7 @@
 {
   ...
 }:
-{
+rec {
   /**
     Return the system hostname. If it is null, an error will be thrown.
   */
@@ -11,6 +11,16 @@
       name = config.nixsys.system.hostname;
     in
     if name == null then throw "nixsys.system.hostname is undefined" else name;
+
+  /**
+    Return the main user. Throw an error if the name is null.
+  */
+  getMainUser =
+    config:
+    let
+      user = config.nixsys.users.main;
+    in
+    if user.name == null then throw "nixsys.user.main.name is undefined" else user;
 
   /**
     Return the main user if its name is not null. Otherwise return null.
@@ -25,12 +35,7 @@
   /**
     Return the name of the main user. If it is null, an error will be thrown.
   */
-  getMainUserName =
-    config:
-    let
-      name = config.nixsys.users.main.name;
-    in
-    if name == null then throw "nixsys.user.main.name is undefined" else name;
+  getMainUserName = config: (getMainUser config).name;
 
   /**
     Return whether this config defines main user or not.
