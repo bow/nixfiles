@@ -13,9 +13,9 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.nixos) getMainUserOrNull isXorgEnabled;
+  inherit (lib.nixsys.nixos) getMainUser isXorgEnabled;
 
-  user = getMainUserOrNull config;
+  user = getMainUser config;
   cfg = user.desktop.greetd;
 
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
