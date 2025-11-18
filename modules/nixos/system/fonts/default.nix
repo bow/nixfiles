@@ -24,6 +24,8 @@ in
         noto-fonts-cjk-serif
         siji
 
+        unstable.font-awesome
+
         local.awesome-terminal-fonts
         local.titillium-fonts
       ];
