@@ -82,6 +82,7 @@ in
           font = [
             "Titillium:pixelsize=12;2"
             "FontAwesome:style=Regular:pixelsize=12;2"
+            "Font Awesome 7 Free Solid:style=Solid,Regular:pixelsize=12;2"
             "icomoon:style=Regular:pixelsize=12;2"
             "octicons:style=Medium:pixelsize=12;2"
             "Siji:style=Regular:pixelsize=12;2"
@@ -195,7 +196,7 @@ in
 
         "module/cpu" = {
           type = "internal/cpu";
-          interval = 2;
+          interval = 1;
           label = "%percentage%%";
           format = {
             text = "<label>";
@@ -225,8 +226,8 @@ in
 
         "module/memory" = {
           type = "internal/memory";
-          interval = 2;
-          warn.percentage = 85;
+          interval = 1;
+          warn.percentage = 80;
           label = {
             text = "%percentage_used%% · %gb_used%";
             warn = "%percentage_used%% · %gb_used%";
@@ -249,7 +250,10 @@ in
 
         "module/wlan" = {
           type = "internal/network";
-          interface = ''''${env:POLYBAR_WIRELESS_IF}'';
+          interface = {
+            text = ''''${env:POLYBAR_WIRELESS_IF}'';
+            type = "wireless";
+          };
           interval = 3;
 
           format = {
@@ -261,7 +265,7 @@ in
             connected = "%signal%% · %essid%";
             disconnected = {
               text = " ";
-              foreground = ''''${colors.alert}'';
+              foreground = ''''${colors.foreground-alt}'';
             };
           };
 
@@ -276,13 +280,19 @@ in
           interface = ''''${env:POLYBAR_ETH_IF}'';
           interval = 3;
           format = {
+            disconnected.prefix = {
+              text = "";
+              foreground = ''''${colors.foreground-alt}'';
+            };
             connected.prefix = {
               text = "";
               foreground = ''''${colors.foreground-alt}'';
             };
           };
-          label.connected = "%local_ip%";
-          format.disconnected = "";
+          label = {
+            disconnected = "";
+            connected = "%local_ip%";
+          };
         };
 
         "module/date" = {
@@ -374,10 +384,10 @@ in
         #!/usr/bin/env sh
 
         # Terminate already running bar instances
-        killall -q polybar
+        ${pkgs.coreutils}/bin/pkill polybar
 
         # Wait until the processes have been shut down
-        while pgrep -x polybar >/dev/null; do sleep 1; done
+        while ${pkgs.procps}/bin/pgrep -x polybar >/dev/null; do sleep 1; done
 
         # Get network interface names that might be shown
         wireless_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/wl|wlan/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ')"
