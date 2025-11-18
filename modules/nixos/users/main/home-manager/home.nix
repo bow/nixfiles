@@ -22,6 +22,7 @@ let
     ccls
     clangStdenv
     cloc
+    coreutils-full
     curl
     curlie
     deadnix
