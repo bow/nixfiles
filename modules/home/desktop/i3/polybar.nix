@@ -404,6 +404,8 @@ in
 
     systemd.user.services.polybar = {
       Service.Environment = [ "DISPLAY=:0" ];
+      # NOTE: upower dependency is explicit in battery script.
+      Unit.After = [ "upower.service" ];
     };
   };
 }
