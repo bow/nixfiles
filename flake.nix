@@ -114,6 +114,7 @@
       overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules/nixos/mod.nix { inherit inputs outputs lib; };
       homeManagerModules = import ./modules/home/mod.nix { inherit inputs outputs lib; };
+      packages = forEachSupportedSystem ({ pkgs, ... }: import ./packages { inherit pkgs; });
 
       # Reusable apps.
       apps = forEachSupportedSystem (
