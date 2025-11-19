@@ -239,6 +239,11 @@ in
               notification = false;
               always = true;
             }
+            {
+              command = "${pkgs.feh}/bin/feh --bg-scale ${pkgs.local.wallpapers.duskglow}";
+              notification = false;
+              always = true;
+            }
           ];
         };
     };
