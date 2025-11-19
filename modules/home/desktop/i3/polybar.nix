@@ -270,8 +270,10 @@ in
           };
 
           ramp = {
-            signal = [ " " ];
-            foreground = ''''${colors.foreground-alt}'';
+            signal = {
+              text = [ " " ];
+              foreground = ''''${colors.foreground-alt}'';
+            };
           };
         };
 
