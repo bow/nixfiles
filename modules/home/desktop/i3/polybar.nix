@@ -10,7 +10,7 @@ let
 
   cfg = config.nixsys.home.desktop.i3;
 
-  polybar-module-load-avg-script = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
+  polybar-module-load-avg-sh = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
     ${pkgs.gawk}/bin/awk '{printf("%{F#665c54} %{F#e8e8d3}%2.1f · %2.1f", $1, $2)}' < /proc/loadavg
   '';
 in
@@ -108,13 +108,13 @@ in
 
         "module/battery-combined" = {
           type = "custom/script";
-          exec = "${pkgs.local.polybar-module-battery-combined-script}";
+          exec = "${pkgs.local.polybar-module-battery-combined-sh}";
           tail = true;
         };
 
         "module/loadavg" = {
           type = "custom/script";
-          exec = "${polybar-module-load-avg-script}";
+          exec = "${polybar-module-load-avg-sh}";
           interval = 1;
         };
 
