@@ -14,25 +14,6 @@ let
   inherit (lib.nixsys) mkOpt;
 
   cfg = config.nixsys.home.desktop.i3;
-
-  polybar-start = pkgs.writeShellScript "polybar-start" ''
-    #!/usr/bin/env sh
-
-    # Terminate already running bar instances
-    ${pkgs.coreutils}/bin/pkill polybar
-
-    # Wait until the processes have been shut down
-    while ${pkgs.procps}/bin/pgrep -x polybar >/dev/null; do sleep 1; done
-
-    # Get network interface names that might be shown
-    wireless_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/wl|wlan/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ')"
-    eth_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/^( *[0-9]+: (en|eth))/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ' | ${pkgs.coreutils}/bin/head -n1)"
-
-    # Launch polybar in all connected monitors
-    for mon in ''$(${pkgs.xorg.xrandr}/bin/xrandr | ${pkgs.gnugrep}/bin/grep " connected " | ${pkgs.gawk}/bin/awk '{ print $1 }' | ${pkgs.coreutils}/bin/sort -r); do
-        POLYBAR_MONITOR="''${mon}" POLYBAR_WIRELESS_IF="''${wireless_if}" POLYBAR_ETH_IF="''${eth_if}" polybar top &
-    done
-  '';
 in
 {
   imports = [
@@ -249,7 +230,7 @@ in
           };
           startup = [
             {
-              command = "${polybar-start}";
+              command = "${pkgs.systemd}/bin/systemctl --user restart polybar";
               notification = false;
               always = true;
             }
