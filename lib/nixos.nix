@@ -50,5 +50,10 @@ rec {
   /**
     Return whether the current config enables Xorg.
   */
-  isXorgEnabled = config: config.nixsys.users.main.desktop.i3.enable;
+  isI3Enabled = config: config.nixsys.users.main.desktop.i3.enable;
+
+  /**
+    Return whether the current config enables i3.
+  */
+  isXorgEnabled = config: isI3Enabled config;
 }

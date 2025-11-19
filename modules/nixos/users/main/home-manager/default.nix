@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   inputs,
   outputs,
   ...
@@ -13,6 +14,7 @@ let
     removeAttrs
     types
     ;
+  inherit (lib.nixsys.nixos) isI3Enabled;
 
   cfgMainUser = config.nixsys.users.main;
   cfg = cfgMainUser.home-manager;
@@ -32,6 +34,15 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    services = {
+      upower.enable = true;
+
+      udev.extraRules = mkIf (isI3Enabled config) ''
+        SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
+        SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
+      '';
+    };
 
     home-manager = {
 
