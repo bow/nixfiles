@@ -392,8 +392,8 @@ in
         while ${pkgs.procps}/bin/pgrep -x polybar >/dev/null; do sleep 1; done
 
         # Get network interface names that might be shown
-        wireless_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/wl|wlan/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ')"
-        eth_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F: '/^( *[0-9]+: (en|eth))/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ' | ${pkgs.coreutils}/bin/head -n1)"
+        wireless_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gnugrep}/bin/grep ' state UP ' | ${pkgs.gawk}/bin/awk -F: '/wl|wlan/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ')"
+        eth_if="''$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gnugrep}/bin/grep ' state UP ' | ${pkgs.gawk}/bin/awk -F: '/^( *[0-9]+: (en|eth))/ {print $2}' | ${pkgs.coreutils}/bin/tr -d ' ' | ${pkgs.coreutils}/bin/head -n1)"
 
         # Launch polybar in all connected monitors
         for mon in ''$(${pkgs.xorg.xrandr}/bin/xrandr | ${pkgs.gnugrep}/bin/grep " connected " | ${pkgs.gawk}/bin/awk '{ print $1 }' | ${pkgs.coreutils}/bin/sort -r); do
