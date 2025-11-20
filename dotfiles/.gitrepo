@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/bow/dotfiles.git
 	branch = master
-	commit = 943d0cf2d2c4ba7a349451e2f821544dc08e862d
-	parent = 9e4c9667d3da0a570a954da391ac456f88c3240a
+	commit = 8bdaec29efa02e9575c22400c2cc0ccc16ccfd58
+	parent = a02e18aa8e32d29dc01b7efaaf940e1aba775a02
 	method = merge
 	cmdver = 0.4.9
