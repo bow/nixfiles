@@ -4,14 +4,27 @@
 }:
 let
   inherit (pkgs.lib) listToAttrs importJSON;
-in
-listToAttrs (
-  builtins.map (wallpaper: {
+
+  mkWallpaperPkg = wallpaper: {
     inherit (wallpaper) name;
-    value = pkgs.fetchurl {
-      inherit (wallpaper) sha256;
-      name = "${wallpaper.filename}";
-      url = "${wallpaper.url}";
+    value = pkgs.stdenvNoCC.mkDerivation {
+      pname = "${wallpaper.name}";
+      version = "0.0.0";
+
+      src = pkgs.fetchurl {
+        inherit (wallpaper) sha256;
+        name = "${wallpaper.filename}";
+        url = "${wallpaper.url}";
+      };
+
+      unpackPhase = "true";
+
+      buildPhase = ''
+        mkdir -p $out
+        cp $src $out/image
+        ${pkgs.imagemagick}/bin/magick $src -blur 0x8 $out/image-blurred
+      '';
     };
-  }) (importJSON ./wallpapers.json)
-)
+  };
+in
+listToAttrs (builtins.map (mkWallpaperPkg) (importJSON ./wallpapers.json))

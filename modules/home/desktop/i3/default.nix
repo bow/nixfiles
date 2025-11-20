@@ -13,6 +13,8 @@ let
     ;
   inherit (lib.nixsys) mkOpt;
 
+  wallpaper = pkgs.local.wallpapers.duskglow;
+
   cfg = config.nixsys.home.desktop.i3;
 in
 {
@@ -255,7 +257,7 @@ in
               always = true;
             }
             {
-              command = "${pkgs.feh}/bin/feh --bg-scale ${pkgs.local.wallpapers.duskglow}";
+              command = "${pkgs.feh}/bin/feh --bg-scale ${wallpaper}/image";
               notification = false;
               always = true;
             }
