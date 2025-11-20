@@ -21,6 +21,7 @@ rec {
     system = {
       hostname = "duskglow";
       profile = "workstation";
+      hardware.touchpad = enabled;
 
       boot.systemd = enabled;
       networking.networkmanager = enabled;
