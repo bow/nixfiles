@@ -27,21 +27,38 @@ pkgs.writeShellScript "polybar-module-battery-combined.sh" ''
           total_full=''$(${pkgs.coreutils}/bin/echo "''$total_full + ''$full" | ${pkgs.bc}/bin/bc)
       done
 
-      ${pkgs.coreutils}/bin/echo "''$total_energy / ''$total_full" | ${pkgs.bc}/bin/bc -l | ${pkgs.gawk}/bin/awk '{printf("%.0f\n", ''$1 * 100)}'
+      total_full_int="''$(printf "%.0f" "''$total_full")"
+
+      if [ "''$total_full_int" -gt 0 ]; then
+          ${pkgs.coreutils}/bin/echo "''$total_energy / ''$total_full" | ${pkgs.bc}/bin/bc -l | ${pkgs.gawk}/bin/awk '{printf("%.0f\n", ''$1 * 100)}'
+      fi
   }
 
   # Prints the power status for display in polybar.
   print_power_status() {
       battery_percent=''$(calc_battery_percent)
-      if [ "''$(get_ac_status)" -eq 1 ]; then
-          icon=""
 
-          if [ "''$battery_percent" -ge 99 ]; then
+      # System does not have battery.
+      if [ -z "''$battery_percent" ]; then
+          icon=""
+          ${pkgs.coreutils}/bin/echo "%{F#504945}''$icon"
+
+      # System has battery and it is plugged in.
+      elif [ "''$(get_ac_status)" -eq 1 ]; then
+
+          # Battery is (close to) full.
+          if [ "''$battery_percent" -ge 99 ] || [ -z "''$battery_percent" ] ; then
+              icon=""
               ${pkgs.coreutils}/bin/echo "%{F#504945}''$icon"
+
+          # Battery is charging.
           else
+              icon=""
               ${pkgs.coreutils}/bin/echo "%{F#504945}''$icon %{F#e8e8d3}''$battery_percent%"
           fi
-      else
+
+      # System has battery and it is not plugged in.
+      elif [ "''$battery_percent" -ge 0 ]; then
           if [ "''$battery_percent" -ge 85 ]; then
               icon=" "
           elif [ "''$battery_percent" -ge 60 ]; then
@@ -55,6 +72,11 @@ pkgs.writeShellScript "polybar-module-battery-combined.sh" ''
           fi
 
           ${pkgs.coreutils}/bin/echo "%{F#504945}''$icon %{F#e8e8d3}''$battery_percent%"
+
+      # Error state.
+      else
+          icon=""
+          ${pkgs.coreutils}/bin/echo "%{F#bd2c40}''$icon"
       fi
   }
 
