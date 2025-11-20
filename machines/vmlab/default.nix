@@ -33,6 +33,7 @@ rec {
     };
     users.main = {
       name = "bow";
+      full-name = "Wibowo Arindrarto";
       trusted = true;
       home-manager = enabledWith {
         desktop.i3 = enabledWith {

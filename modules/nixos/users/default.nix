@@ -15,7 +15,8 @@ in
     mutable = mkOpt types.bool false "Sets users.mutableUsers in NixOS config";
     main = mkOpt (types.submodule {
       options = {
-        name = mkOpt types.str null "Name of the main user";
+        name = mkOpt types.str null "User name of the main user";
+        full-name = mkOpt types.str "" "Full name of the main user";
         home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to the user's home directory";
         extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         shell = mkOpt (types.enum [ "bash" ]) "bash" "Login shell of the user";
@@ -30,6 +31,7 @@ in
     users = {
       mutableUsers = cfg.mutable;
       users.${cfg.main.name} = {
+        description = cfg.main.full-name;
         extraGroups = cfg.main.extra-groups ++ (lib.optionals cfg.main.trusted [ "wheel" ]);
         isNormalUser = true;
       };
