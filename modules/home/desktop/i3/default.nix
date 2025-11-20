@@ -2,6 +2,8 @@
   config,
   pkgs,
   lib,
+  theme,
+  user,
   ...
 }:
 let
@@ -13,7 +15,70 @@ let
     ;
   inherit (lib.nixsys) mkOpt;
 
-  wallpaper = pkgs.local.wallpapers.duskglow;
+  lock-sh =
+    with theme.lock-screen;
+    pkgs.writeShellScript "lock.sh" ''
+      FONT="${font-name}"
+      COLOR_BG='${colors.dark}'
+      COLOR_FG='${colors.light}'
+      COLOR_RING='${colors.ring}'
+      COLOR_RING_HL='${colors.ring-hl}'
+      COLOR_RING_BS='${colors.ring-bs}'
+      COLOR_RING_SEP='${colors.ring-sep}'
+      COLOR_RING_VER="''${COLOR_RING_HL}"
+      COLOR_RING_WRONG="''${COLOR_RING_BS}"
+
+      NOFORK=''${NOFORK:-1}
+
+      playing="''$([[ "''$(${pkgs.playerctl}/bin/playerctl status)" == "Playing" ]] && echo 1 || echo 0)"
+
+      [[ "''${NOFORK}" -eq 1 ]] && [[ "''${playing}" -eq 1 ]] && ${pkgs.playerctl}/bin/playerctl play-pause
+
+      ${pkgs.i3lock-color}/bin/i3lock \
+          "''$( ([[ "''${NOFORK}" -eq 1 ]] && echo "\--nofork") || echo "" )" \
+          -i "${theme.lock-screen.bg}" \
+          --scale \
+          --ignore-empty-password \
+          --show-failed-attempts \
+          --verif-text "" \
+          --wrong-text "" \
+          --noinput-text "" \
+          --lock-text "locking" \
+          --lockfailed-text "locking failed" \
+          --radius 100 \
+          --ring-color "''${COLOR_RING}" \
+          --inside-color "''${COLOR_BG}" \
+          --keyhl-color "''${COLOR_RING_HL}" \
+          --bshl-color "''${COLOR_RING_BS}" \
+          --line-color "''${COLOR_RING_SEP}" \
+          --verif-color "''${COLOR_FG}" \
+          --ringver-color "''${COLOR_RING_VER}" \
+          --insidever-color "''${COLOR_BG}" \
+          --verif-font "''${FONT}" \
+          --wrong-color "''${COLOR_FG}" \
+          --ringwrong-color "''${COLOR_RING_WRONG}" \
+          --insidewrong-color "''${COLOR_BG}" \
+          --wrong-font "''${FONT}" \
+          --clock \
+          --force-clock \
+          --time-str "%H:%M" \
+          --time-pos "ix:iy-240" \
+          --time-color "''${COLOR_FG}" \
+          --time-size 140 \
+          --time-font "''${FONT}" \
+          --date-str "%A, %d %B %Y" \
+          --date-pos "tx:ty+50" \
+          --date-color "''${COLOR_FG}" \
+          --date-size 30 \
+          --date-font "''${FONT}" \
+          --greeter-text "${user.full-name} (${user.name}) · ''$(hostname)" \
+          --greeter-pos "15:h-15" \
+          --greeter-align 1 \
+          --greeter-color "''${COLOR_FG}" \
+          --greeter-size 20 \
+          --greeter-font "''${FONT}" \
+          && ( ([[ "''${NOFORK}" -eq 1 ]] && [[ "''${playing}" -eq 1 ]] && ${pkgs.playerctl}/bin/playerctl play-pause) || true )
+    '';
 
   cfg = config.nixsys.home.desktop.i3;
 in
@@ -244,6 +309,7 @@ in
 
             # System controls.
             "${modifier}+Shift+z" = "exec ${pkgs.systemd}/bin/systemctl suspend";
+            "${modifier}+Shift+x" = "exec ${lock-sh}";
           };
           startup = [
             {
@@ -257,7 +323,7 @@ in
               always = true;
             }
             {
-              command = "${pkgs.feh}/bin/feh --bg-scale ${wallpaper}/image";
+              command = "${pkgs.feh}/bin/feh --bg-scale ${theme.desktop.bg}";
               notification = false;
               always = true;
             }
