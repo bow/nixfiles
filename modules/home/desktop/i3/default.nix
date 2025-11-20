@@ -224,9 +224,24 @@ in
             "${modifier}+Shift+q" = "kill";
             "${modifier}+r" = ''mode "resize"'';
 
+            # Interact with applications.
             "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
             "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
             "${modifier}+Tab" = "exec ${pkgs.rofi}/bin/rofi -show combi";
+
+            # Audio + video controls.
+            "XF86AudioRaiseVolume" =
+              "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
+            "XF86AudioLowerVolume" =
+              "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
+            "XF86AudioMute" =
+              "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+            "XF86AudioMicMute" = "exec --no-startup-id ${pkgs.alsa-utils}/bin/amixer set Capture toggle";
+            "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s +5%";
+            "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 5%-";
+
+            # System controls.
+            "${modifier}+Shift+z" = "exec ${pkgs.systemd}/bin/systemctl suspend";
           };
           startup = [
             {
