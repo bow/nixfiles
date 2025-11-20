@@ -38,10 +38,14 @@ in
     services = {
       upower.enable = true;
 
-      udev.extraRules = mkIf (isI3Enabled config) ''
-        SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
-        SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
-      '';
+      udev = mkIf (isI3Enabled config) {
+        enable = true;
+        extraRules = ''
+          SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
+          SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
+        '';
+      };
+
     };
 
     home-manager = {
