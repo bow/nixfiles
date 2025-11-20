@@ -28,7 +28,6 @@ let
     deadnix
     delve
     difftastic
-    direnv
     distrobox
     dmidecode
     dnsmasq
@@ -50,7 +49,6 @@ let
     gcc
     gdb
     gh
-    ghostty
     glow
     gnugrep
     gnumake
@@ -84,6 +82,7 @@ let
     mtr
     ncmpcpp
     nerdctl
+    nh
     nixfmt-rfc-style
     nmap
     nodejs
@@ -105,7 +104,6 @@ let
     sequoia-sq
     shfmt
     socat
-    starship
     stow
     strace
     stylua
@@ -134,8 +132,6 @@ let
     zip
     zoxide
     zstd
-
-    nh
   ];
 
   desktopPackages = with pkgs; [
