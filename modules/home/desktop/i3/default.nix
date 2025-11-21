@@ -71,7 +71,7 @@ let
           --date-color "''${COLOR_FG}" \
           --date-size 30 \
           --date-font "''${FONT}" \
-          --greeter-text "${user.full-name} (${user.name}) · ''$(hostname)" \
+          --greeter-text "${user.full-name} (${user.name}) · ''$(${pkgs.inetutils}/bin/hostname)" \
           --greeter-pos "15:h-15" \
           --greeter-align 1 \
           --greeter-color "''${COLOR_FG}" \
