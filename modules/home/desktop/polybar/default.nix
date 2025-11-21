@@ -5,16 +5,33 @@
   ...
 }:
 let
-  inherit (lib) mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   inherit (lib.strings) concatStringsSep;
 
-  cfg = config.nixsys.home.desktop.i3;
+  cfg = config.nixsys.home.desktop.polybar;
+  i3Cfg = config.nixsys.home.desktop.i3;
 
   polybar-module-load-avg-sh = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
     ${pkgs.gawk}/bin/awk '{printf("%{F#665c54} %{F#e8e8d3}%2.1f · %2.1f", $1, $2)}' < /proc/loadavg
   '';
 in
 {
+  options.nixsys.home.desktop.polybar = mkOption {
+    default = { };
+    type = types.submodule {
+      options = {
+        enable = mkEnableOption "nixsys.home.desktop.polybar" // {
+          default = i3Cfg.enable;
+        };
+      };
+    };
+  };
+
   config = mkIf cfg.enable {
 
     services.polybar = {
@@ -24,7 +41,7 @@ in
         alsaSupport = true;
         githubSupport = true;
         iwSupport = true;
-        i3Support = true;
+        i3Support = i3Cfg.enable;
         mpdSupport = true;
         nlSupport = true;
         pulseSupport = true;
@@ -90,7 +107,7 @@ in
           ];
 
           modules = {
-            left = "i3";
+            left = lib.strings.optionalString i3Cfg.enable "i3";
             center = "date";
             right = concatStringsSep " " [
               "cpu"
@@ -131,65 +148,6 @@ in
             unmounted = {
               text = "%mountpoint% not mounted";
               foreground = ''''${colors.foreground-alt}'';
-            };
-          };
-        };
-
-        "module/i3" = {
-          type = "internal/i3";
-          format = "<label-mode> <label-state> <label-mode>";
-          strip.wsnumbers = true;
-          index.sort = true;
-          wrapping.scroll = false;
-
-          ws.icon = [
-            "1;"
-            "2;"
-            "3;"
-            "4;"
-            "5;"
-            "6;•"
-            "7;•"
-            "8;•"
-            "9;•"
-            "10;•"
-            "11;"
-            "12;"
-            "13;"
-          ];
-
-          label = {
-            mode = {
-              padding = 2;
-              foreground = "#000";
-              background = ''''${colors.primary}'';
-            };
-            # focused: active workspace on focused monitor.
-            focused = {
-              text = "%name%";
-              padding = 6;
-              foreground = ''''${colors.foreground}'';
-              underline = ''''${colors.foreground}'';
-            };
-            # unfocused: inactive workspace on any monitor.
-            unfocused = {
-              text = ''''${self.label-focused}'';
-              foreground = ''''${colors.foreground-alt}'';
-              padding = ''''${self.label-focused-padding}'';
-            };
-            # visible = active workspace on unfocused monitor.
-            visible = {
-              text = ''''${self.label-focused}'';
-              padding = ''''${self.label-focused-padding}'';
-              foreground = ''''${colors.foreground-alt}'';
-              underline = ''''${colors.foreground-alt}'';
-            };
-            # urgent = workspace with urgency hint set.
-            urgent = {
-              text = ''''${self.label-focused}'';
-              padding = ''''${self.label-focused-padding}'';
-              foreground = ''''${colors.secondary}'';
-              underline = ''''${colors.secondary}'';
             };
           };
         };
@@ -379,6 +337,66 @@ in
 
         "settings" = {
           screenchange.reload = true;
+        };
+      };
+
+      settings."module/i3" = mkIf i3Cfg.enable {
+        type = "internal/i3";
+        format = "<label-mode> <label-state> <label-mode>";
+        strip.wsnumbers = true;
+        index.sort = true;
+        wrapping.scroll = false;
+
+        # FIXME: How to sync with i3 workspaces?
+        ws.icon = [
+          "1;"
+          "2;"
+          "3;"
+          "4;"
+          "5;"
+          "6;•"
+          "7;•"
+          "8;•"
+          "9;•"
+          "10;•"
+          "11;"
+          "12;"
+          "13;"
+        ];
+
+        label = {
+          mode = {
+            padding = 2;
+            foreground = "#000";
+            background = ''''${colors.primary}'';
+          };
+          # focused: active workspace on focused monitor.
+          focused = {
+            text = "%name%";
+            padding = 6;
+            foreground = ''''${colors.foreground}'';
+            underline = ''''${colors.foreground}'';
+          };
+          # unfocused: inactive workspace on any monitor.
+          unfocused = {
+            text = ''''${self.label-focused}'';
+            foreground = ''''${colors.foreground-alt}'';
+            padding = ''''${self.label-focused-padding}'';
+          };
+          # visible = active workspace on unfocused monitor.
+          visible = {
+            text = ''''${self.label-focused}'';
+            padding = ''''${self.label-focused-padding}'';
+            foreground = ''''${colors.foreground-alt}'';
+            underline = ''''${colors.foreground-alt}'';
+          };
+          # urgent = workspace with urgency hint set.
+          urgent = {
+            text = ''''${self.label-focused}'';
+            padding = ''''${self.label-focused-padding}'';
+            foreground = ''''${colors.secondary}'';
+            underline = ''''${colors.secondary}'';
+          };
         };
       };
 

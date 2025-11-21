@@ -83,10 +83,6 @@ let
   cfg = config.nixsys.home.desktop.i3;
 in
 {
-  imports = [
-    ./polybar.nix
-  ];
-
   options.nixsys.home.desktop.i3 = mkOption {
     type = types.submodule {
       options = {
@@ -241,6 +237,7 @@ in
             "${modifier}+a" = "focus parent";
 
             # Switch to workspace.
+            # FIXME: How to sync with polybar workspaces?
             "${modifier}+1" = "workspace 1:";
             "${modifier}+2" = "workspace 2:";
             "${modifier}+3" = "workspace 3:";
