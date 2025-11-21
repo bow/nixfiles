@@ -18,9 +18,12 @@ let
 in
 {
   options.nixsys.users.main.session.i3 = mkOption {
+    default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.user.main.session.i3";
+        enable = mkEnableOption "nixsys.user.main.session.i3" // {
+          default = config.nixsys.users.main.home-manager.desktop.i3.enable;
+        };
       };
     };
   };

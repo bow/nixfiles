@@ -84,6 +84,7 @@ let
 in
 {
   options.nixsys.home.desktop.i3 = mkOption {
+    default = { };
     type = types.submodule {
       options = {
         enable = mkEnableOption "nixsys.home.desktop.i3";
