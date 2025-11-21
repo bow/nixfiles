@@ -41,25 +41,7 @@ in
       };
     };
 
-    services = {
-      displayManager.defaultSession = "none+i3";
-
-      udev = {
-        enable = true;
-        packages = [
-          (pkgs.writeTextFile {
-            name = "polybar-module-battery-combined-sh-udev-rules";
-            destination = "/etc/udev/rules.d/95-polybar-battery.rules";
-            text = ''
-              SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
-              SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.local.polybar-module-battery-combined-sh} --update"
-            '';
-          })
-        ];
-      };
-
-      upower.enable = true;
-    };
+    services.displayManager.defaultSession = "none+i3";
 
     programs.i3lock = {
       enable = true;
