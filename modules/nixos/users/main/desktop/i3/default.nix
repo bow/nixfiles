@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -42,7 +43,10 @@ in
 
     services.displayManager.defaultSession = "none+i3";
 
-    programs.i3lock.enable = true;
+    programs.i3lock = {
+      enable = true;
+      package = pkgs.i3lock-color;
+    };
 
     security.pam.services.i3lock-color.enable = true;
   };
