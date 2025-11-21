@@ -18,7 +18,7 @@ let
   lock-sh =
     with theme.lock-screen;
     pkgs.writeShellScript "lock.sh" ''
-      FONT="${font-name}"
+      FONT="${font.name}"
       COLOR_BG='${colors.dark}'
       COLOR_FG='${colors.light}'
       COLOR_RING='${colors.ring}'

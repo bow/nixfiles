@@ -49,10 +49,13 @@ in
             ;
         };
         theme = {
-          desktop.bg = "${pkgs.local.wallpapers.duskglow}/image";
+          desktop.bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash}/desktop-bg";
           lock-screen = {
-            bg = "${pkgs.local.wallpapers.duskglow}/image-blurred";
-            font-name = "Titillium";
+            bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash}/lock-screen-bg";
+            font = {
+              name = "Titillium";
+              package = pkgs.local.titillium-font;
+            };
             colors = rec {
               time = light;
               greeter = dark;
