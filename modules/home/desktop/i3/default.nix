@@ -88,6 +88,7 @@ in
       options = {
         enable = mkEnableOption "nixsys.home.desktop.i3";
         mod-key = mkOpt types.str "Mod4" "Mod key for i3";
+        lock-script = mkOpt types.package lock-sh "Screen lock script";
       };
     };
   };

@@ -51,4 +51,18 @@ rec {
     Return whether the current config enables Xorg.
   */
   isXorgEnabled = config: config.nixsys.users.main.session.i3.enable;
+
+  /**
+    Return the nixsys home-manager config if it is enabled and a main user is defined,
+    otherwise return null.
+  */
+  getHomeConfig =
+    config:
+    let
+      mainUser = (getMainUserOrNull config);
+    in
+    if mainUser != null && mainUser.home-manager.enable then
+      config.home-manager.users.${mainUser.name}.nixsys.home
+    else
+      null;
 }
