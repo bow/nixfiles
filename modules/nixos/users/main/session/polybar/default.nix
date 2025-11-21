@@ -12,15 +12,15 @@ let
     types
     ;
 
-  cfg = config.nixsys.users.main.desktop.polybar;
-  i3Cfg = config.nixsys.users.main.desktop.i3;
+  cfg = config.nixsys.users.main.session.polybar;
+  i3Cfg = config.nixsys.users.main.session.i3;
 in
 {
-  options.nixsys.users.main.desktop.polybar = mkOption {
+  options.nixsys.users.main.session.polybar = mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.user.main.desktop.polybar" // {
+        enable = mkEnableOption "nixsys.user.main.session.polybar" // {
           default = i3Cfg.enable;
         };
       };

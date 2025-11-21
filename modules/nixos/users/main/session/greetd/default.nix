@@ -16,15 +16,15 @@ let
   inherit (lib.nixsys.nixos) getMainUser isXorgEnabled;
 
   user = getMainUser config;
-  cfg = user.desktop.greetd;
+  cfg = user.session.greetd;
 
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
 in
 {
-  options.nixsys.users.main.desktop.greetd = mkOption {
+  options.nixsys.users.main.session.greetd = mkOption {
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.users.main.desktop.greetd";
+        enable = mkEnableOption "nixsys.users.main.session.greetd";
         settings = mkOpt types.attrs { } "greetd settings";
       };
     };

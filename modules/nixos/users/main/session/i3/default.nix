@@ -12,13 +12,13 @@ let
     types
     ;
 
-  cfg = config.nixsys.users.main.desktop.i3;
+  cfg = config.nixsys.users.main.session.i3;
 in
 {
-  options.nixsys.users.main.desktop.i3 = mkOption {
+  options.nixsys.users.main.session.i3 = mkOption {
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.user.main.desktop.i3";
+        enable = mkEnableOption "nixsys.user.main.session.i3";
       };
     };
   };

@@ -35,15 +35,15 @@ rec {
       name = "bow";
       full-name = "Wibowo Arindrarto";
       trusted = true;
-      home-manager = enabledWith {
-        desktop.i3 = enabledWith {
-          mod-key = "Mod1";
-        };
-      };
-      desktop = {
+      session = {
         i3 = enabled;
         greetd = enabledWith {
           settings.auto-login = true;
+        };
+      };
+      home-manager = enabledWith {
+        desktop.i3 = enabledWith {
+          mod-key = "Mod1";
         };
       };
     };
