@@ -421,7 +421,8 @@ in
     };
 
     systemd.user.services.polybar = {
-      Service.Environment = [ "DISPLAY=:0" ];
+      # FIXME: This should be systemctl --user import-environment DISPLAY XAUTHORITY somewhere.
+      Service.Environment = ["DISPLAY=:0"];
       # NOTE: upower dependency is explicit in battery script.
       Unit.After = [ "upower.service" ];
     };
