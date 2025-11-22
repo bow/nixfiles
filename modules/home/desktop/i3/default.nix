@@ -326,6 +326,11 @@ in
               notification = false;
               always = true;
             }
+            {
+              command = "${pkgs.systemd}/bin/systemctl --user start picom";
+              notification = false;
+              always = true;
+            }
           ];
         };
     };

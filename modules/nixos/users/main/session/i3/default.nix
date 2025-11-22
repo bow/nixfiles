@@ -30,27 +30,31 @@ in
 
   config = mkIf cfg.enable {
 
-    environment.pathsToLink = [ "/libexec" ];
+    services = {
 
-    services.xserver = {
-      enable = true;
-      autorun = false;
-      displayManager.startx = {
+      displayManager.defaultSession = "none+i3";
+
+      xserver = {
         enable = true;
-      };
-      desktopManager = {
-        xterm.enable = false;
-      };
-      windowManager.i3 = {
-        enable = true;
+        autorun = false;
+        displayManager.startx = {
+          enable = true;
+        };
+        desktopManager = {
+          xterm.enable = false;
+        };
+        windowManager.i3 = {
+          enable = true;
+        };
       };
     };
 
-    services.displayManager.defaultSession = "none+i3";
-
-    programs.i3lock = {
-      enable = true;
-      package = pkgs.i3lock-color;
+    programs = {
+      dconf.enable = true;
+      i3lock = {
+        enable = true;
+        package = pkgs.i3lock-color;
+      };
     };
 
     security.pam.services.i3lock-color.enable = true;
