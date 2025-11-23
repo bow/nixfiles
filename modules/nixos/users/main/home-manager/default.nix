@@ -28,6 +28,10 @@ in
       freeformType = types.attrsOf types.anything;
       options = {
         enable = mkEnableOption "nixsys.users.main.home-manager";
+        system = mkOption {
+          type = types.attrsOf types.anything;
+          default = { };
+        };
       };
     };
   };
@@ -79,7 +83,12 @@ in
         ];
 
         # Everything in cfg that is not `enable` is meant for nixsys.home.
-        nixsys.home = removeAttrs cfg [ "enable" ];
+        nixsys.home = removeAttrs cfg [ "enable" ] // {
+          # Façade for system-level config.
+          system = {
+            docker.enable = config.nixsys.system.virtualization.docker.enable;
+          };
+        };
       };
     };
   };

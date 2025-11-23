@@ -13,6 +13,16 @@ rec {
   isDesktopEnabled = config: isXorgEnabled config;
 
   /**
+    Return whether the current config enables docker.
+  */
+  isDockerEnabled =
+    config:
+    let
+      sys = config.nixsys.home.system;
+    in
+    sys != { } && sys.docker.enable;
+
+  /**
     Return whether the current config enables the given program.
   */
   isProgramEnabled = config: name: config.nixsys.home.programs.${name}.enable;

@@ -8,7 +8,7 @@
   ...
 }:
 let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkOption types;
   inherit (lib.nixsys.home) isDesktopEnabled;
 
   cliPackages = with pkgs; [
@@ -167,6 +167,14 @@ let
   ];
 in
 {
+  options.nixsys.home.system = mkOption {
+    description = "Container for copied system-level settings";
+    default = { };
+    type = types.submodule {
+      freeformType = types.attrsOf types.anything;
+    };
+  };
+
   config = {
     home = {
       stateVersion = "25.05";
