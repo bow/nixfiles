@@ -4,7 +4,7 @@
   pkgs,
   outputs,
   user,
-  asStandalone,
+  asStandalone ? true,
   ...
 }:
 let
