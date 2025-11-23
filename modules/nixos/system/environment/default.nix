@@ -11,6 +11,7 @@ in
 {
   config = mkIf config.nixsys.enable {
     environment = {
+      pathsToLink = [ "/share/bash-completion" ];
       systemPackages =
         with pkgs;
         [
