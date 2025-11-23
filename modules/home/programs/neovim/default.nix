@@ -156,6 +156,7 @@ in
         pyrefly
         python313Packages.python-lsp-server
         ruff
+        uv
         tree-sitter-grammars.tree-sitter-python
 
         # Regex

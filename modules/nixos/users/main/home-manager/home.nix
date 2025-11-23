@@ -116,7 +116,6 @@ let
     unrar
     unzip
     usbutils
-    uv
     valgrind
     vim
     virt-manager
@@ -189,7 +188,10 @@ in
       config.allowUnfree = true;
     };
 
-    programs.home-manager.enable = true;
+    programs = {
+      home-manager.enable = true;
+      uv.enable = true;
+    };
 
     # Reload systemd units on config change.
     systemd.user.startServices = "sd-switch";
