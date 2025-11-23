@@ -21,4 +21,9 @@ rec {
     Return whether the current config enables neovim.
   */
   isNeovimEnabled = config: isProgramEnabled config "neovim";
+
+  /**
+    Return whether the current user enables a bash shell.
+  */
+  usesBash = user: user.shell == "bash";
 }
