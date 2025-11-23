@@ -172,9 +172,9 @@ in
       stateVersion = "25.05";
       username = user.name;
       homeDirectory = user.home-directory;
+      packages = cliPackages ++ (lib.optionals (isDesktopEnabled config) desktopPackages);
+      preferXdgDirectories = true;
     };
-
-    home.packages = cliPackages ++ (lib.optionals (isDesktopEnabled config) desktopPackages);
 
     nixpkgs = mkIf asStandalone {
       overlays = builtins.attrValues outputs.overlays;
