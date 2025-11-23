@@ -23,6 +23,11 @@ rec {
   isNeovimEnabled = config: isProgramEnabled config "neovim";
 
   /**
+    Return whether the current config enables zoxide.
+  */
+  isZoxideEnabled = config: isProgramEnabled config "zoxide";
+
+  /**
     Return whether the current user enables a bash shell.
   */
   usesBash = user: user.shell == "bash";
