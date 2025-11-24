@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  user,
   ...
 }:
 let
@@ -10,6 +11,7 @@ let
     mkOption
     types
     ;
+  inherit (lib.nixsys.home) usesBash;
 
   cfg = config.nixsys.home.programs.direnv;
 in
@@ -28,14 +30,14 @@ in
   config = mkIf cfg.enable {
     programs.direnv = {
       enable = true;
-      nix-direnv.enable = true;
-    };
-
-    home.file = {
-      ".config/direnv" = {
-        source = ../../../../dotfiles/direnv;
-        recursive = true;
+      enableBashIntegration = usesBash user;
+      config = {
+        global = {
+          warn_timeout = "5m";
+          hide_env_diff = false;
+        };
       };
+      nix-direnv.enable = true;
     };
   };
 }
