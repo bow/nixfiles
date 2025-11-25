@@ -16,6 +16,7 @@ let
 in
 {
   options.nixsys.system.servers.ssh = mkOption {
+    default = { };
     type = types.submodule {
       options = {
         enable = mkEnableOption "nixsys.system.servers.ssh";

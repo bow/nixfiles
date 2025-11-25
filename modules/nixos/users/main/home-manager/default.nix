@@ -24,6 +24,7 @@ in
   ];
 
   options.nixsys.users.main.home-manager = mkOption {
+    default = { };
     type = types.submodule {
       freeformType = types.attrsOf types.anything;
       options = {

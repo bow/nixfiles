@@ -22,6 +22,7 @@ let
 in
 {
   options.nixsys.users.main.session.greetd = mkOption {
+    default = { };
     type = types.submodule {
       options = {
         enable = mkEnableOption "nixsys.users.main.session.greetd";
