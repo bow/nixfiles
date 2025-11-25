@@ -48,6 +48,7 @@ in
         "--glob=!**/target/*"
         "--glob=!**/vendor/*"
         "--glob=!**/sandbox/*"
+        "--glob=!**/result/*"
 
         # Exclude files.
         "--glob=!{poetry.lock,.dmypy.json,.junit.xml}"
