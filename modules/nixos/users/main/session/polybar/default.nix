@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkIf
     mkOption
@@ -30,7 +31,7 @@ in
   config = mkIf cfg.enable {
     services = {
       udev = {
-        enable = true;
+        enable = mkDefault true;
         packages = [
           (pkgs.writeTextFile {
             name = "polybar-module-battery-combined-sh-udev-rules";

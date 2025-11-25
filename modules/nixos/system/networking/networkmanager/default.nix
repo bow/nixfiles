@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkForce
     mkIf
@@ -51,7 +52,7 @@ in
       networkmanager.plugins = [
         pkgs.networkmanager-openvpn
       ];
-      networkmanager.dns = cfg.dns;
+      networkmanager.dns = mkDefault cfg.dns;
       networkmanager.appendNameservers = cfg.append-nameservers;
       networkmanager.insertNameservers = cfg.insert-nameservers;
     };

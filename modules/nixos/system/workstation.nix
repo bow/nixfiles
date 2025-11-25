@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib) mkIf;
+  inherit (lib) mkDefault mkIf;
   inherit (lib.nixsys.nixos) hasProfileWorkstation;
 
   profileWorkstation = hasProfileWorkstation config;
@@ -14,7 +14,7 @@ in
   config = mkIf profileWorkstation {
     services = {
       udev = {
-        enable = true;
+        enable = mkDefault true;
         packages = [
           (pkgs.writeTextFile {
             name = "wake-on-device-udev-rules";
