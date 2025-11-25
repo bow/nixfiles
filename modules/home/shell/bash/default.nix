@@ -14,9 +14,15 @@ let
     isZoxideEnabled
     isShellBash
     ;
+
+  dockerEnabled = isDockerEnabled config;
+  neovimEnabled = isNeovimEnabled config;
+  shellBash = isShellBash user;
+  xorgEnabled = isXorgEnabled config;
+  zoxideEnabled = isZoxideEnabled config;
 in
 {
-  config = mkIf (isShellBash user) {
+  config = mkIf shellBash {
 
     programs.bat = {
       enable = true;
@@ -54,11 +60,11 @@ in
       sessionVariables = {
         PAGER = "less";
         LESS = "-F -X -g -S -w -z-2 -#.1 -M -R";
-        EDITOR = if (isNeovimEnabled config) then "nvim" else "vi";
+        EDITOR = if neovimEnabled then "nvim" else "vi";
 
         PYTHONPYCACHEPREFIX = ''${config.xdg.cacheHome}/python/pycache'';
       }
-      // optionalAttrs (isZoxideEnabled config) { _ZO_ECHO = 1; };
+      // optionalAttrs zoxideEnabled { _ZO_ECHO = 1; };
 
       shellAliases = {
         # chmod +x.
@@ -99,10 +105,10 @@ in
         # grep history.
         grest = "history | ${pkgs.gnugrep}/bin/grep";
       }
-      // optionalAttrs (isXorgEnabled config) {
+      // optionalAttrs xorgEnabled {
         clip = "${pkgs.findutils}/bin/xargs ${pkgs.coreutils}/bin/echo -n | ${pkgs.xclip}/bin/xclip -selection c";
       }
-      // optionalAttrs (isDockerEnabled config) {
+      // optionalAttrs dockerEnabled {
         # List container processes.
         dps = "${pkgs.docker}/bin/docker ps";
         # List container processes including stopped containers.
@@ -325,7 +331,7 @@ in
         # shellcheck disable=SC1091
         [[ -f ~/.bash_private ]] && . "''${HOME}/.bash_private"
       ''
-      + optionalString (isXorgEnabled config) ''
+      + optionalString xorgEnabled ''
 
         # Resolve path and copy it to clipboard.
         function pcp() {
@@ -352,7 +358,7 @@ in
             fi
         }
       ''
-      + optionalString (isDockerEnabled config) ''
+      + optionalString dockerEnabled ''
 
         # Execute interactive container, e.g. dexi base /bin/bash
         function dexi() { ${pkgs.docker}/bin/docker exec -it "''${1}" "''${2:-/bin/bash}"; }

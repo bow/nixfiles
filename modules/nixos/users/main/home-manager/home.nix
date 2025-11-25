@@ -11,6 +11,8 @@ let
   inherit (lib) mkIf mkOption types;
   inherit (lib.nixsys.home) isDesktopEnabled;
 
+  desktopEnabled = isDesktopEnabled config;
+
   cliPackages = with pkgs; [
     age
     asdf-vm
@@ -179,7 +181,7 @@ in
       stateVersion = "25.05";
       username = user.name;
       homeDirectory = user.home-directory;
-      packages = cliPackages ++ (lib.optionals (isDesktopEnabled config) desktopPackages);
+      packages = cliPackages ++ (lib.optionals desktopEnabled desktopPackages);
       preferXdgDirectories = true;
     };
 

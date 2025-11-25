@@ -14,6 +14,8 @@ let
   inherit (lib.nixsys) mkOpt;
   inherit (lib.nixsys.home) isXorgEnabled;
 
+  xorgEnabled = isXorgEnabled config;
+
   cfg = config.nixsys.home.programs.gpg;
 in
 {
@@ -67,7 +69,7 @@ in
       enableSshSupport = true;
       maxCacheTtl = cfg.max-cache-ttl;
       maxCacheTtlSsh = cfg.max-cache-ttl-ssh;
-      pinentry.package = if (isXorgEnabled config) then pkgs.pinentry-gtk2 else pkgs.pinentry-tty;
+      pinentry.package = if xorgEnabled then pkgs.pinentry-gtk2 else pkgs.pinentry-tty;
       sshKeys = cfg.exported-as-ssh;
     };
   };
