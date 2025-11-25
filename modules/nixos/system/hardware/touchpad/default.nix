@@ -26,7 +26,7 @@ in
     };
   };
 
-  config = mkIf (cfg.enable && xorgEnabled){
+  config = mkIf (cfg.enable && xorgEnabled) {
     services.libinput = {
       enable = true;
       touchpad = {
