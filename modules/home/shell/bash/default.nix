@@ -8,28 +8,25 @@
 let
   inherit (lib) mkIf optionalAttrs optionalString;
   inherit (lib.nixsys.home)
+    isBatEnabled
     isDockerEnabled
     isNeovimEnabled
+    isRipgrepEnabled
     isXorgEnabled
     isZoxideEnabled
     isShellBash
     ;
 
+  batEnabled = isBatEnabled config;
   dockerEnabled = isDockerEnabled config;
   neovimEnabled = isNeovimEnabled config;
+  ripgrepEnabled = isRipgrepEnabled config;
   shellBash = isShellBash user;
   xorgEnabled = isXorgEnabled config;
   zoxideEnabled = isZoxideEnabled config;
 in
 {
   config = mkIf shellBash {
-
-    programs.bat = {
-      enable = true;
-      config = {
-        theme = "gruvbox-dark";
-      };
-    };
 
     programs.bash = rec {
       enable = true;
@@ -249,28 +246,6 @@ in
             ${pkgs.openssh}/bin/ssh "''${1}" -t -- /bin/sh -c 'tmux has-session && exec tmux attach || exec tmux'
         }
 
-        # Show help with colors.
-        function help() {
-            "''$@" --help 2>&1 | ${pkgs.bat}/bin/bat --plain --language=help
-        }
-
-        # Interactive text search and edit.
-        function frg() {
-            result=''$(
-                ${pkgs.ripgrep}/bin/rg --ignore-case --color=always --line-number --no-heading "''$@" \
-                | ${pkgs.fzf}/bin/fzf \
-                    --ansi --color 'hl:-1:underline,hl+:-1:underline:reverse' \
-                    --delimiter ':' \
-                    --preview "${pkgs.bat}/bin/bat --color=always {1} --theme='gruvbox-dark' --highlight-line {2}" \
-                    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
-            )
-            file="''${result%%:*}"
-            linenumber=''$(${pkgs.coreutils}/bin/echo "''${result}" | ${pkgs.coreutils}/bin/cut -d: -f2)
-            if [[ -n "''${file}" ]]; then
-                ''${EDITOR} +"''${linenumber}" "''${file}"
-            fi
-        }
-
         # Set file open handler.
         function open() { ${pkgs.handlr-regex}/bin/handlr open "''${1:-.}"; }
 
@@ -355,6 +330,32 @@ in
             else
                 ${pkgs.coreutils}/bin/echo "Error: ''${1} not found"
                 return 1
+            fi
+        }
+      ''
+      + optionalString batEnabled ''
+
+        # Show help with colors.
+        function help() {
+            "''$@" --help 2>&1 | ${pkgs.bat}/bin/bat --plain --language=help
+        }
+      ''
+      + optionalString (batEnabled && ripgrepEnabled) ''
+
+        # Interactive text search and edit.
+        function frg() {
+            result=''$(
+                ${pkgs.ripgrep}/bin/rg --ignore-case --color=always --line-number --no-heading "''$@" \
+                | ${pkgs.fzf}/bin/fzf \
+                    --ansi --color 'hl:-1:underline,hl+:-1:underline:reverse' \
+                    --delimiter ':' \
+                    --preview "${pkgs.bat}/bin/bat --color=always {1} --theme='gruvbox-dark' --highlight-line {2}" \
+                    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
+            )
+            file="''${result%%:*}"
+            linenumber=''$(${pkgs.coreutils}/bin/echo "''${result}" | ${pkgs.coreutils}/bin/cut -d: -f2)
+            if [[ -n "''${file}" ]]; then
+                ''${EDITOR} +"''${linenumber}" "''${file}"
             fi
         }
       ''

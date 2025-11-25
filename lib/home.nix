@@ -28,9 +28,19 @@ rec {
   isProgramEnabled = config: name: config.nixsys.home.programs.${name}.enable;
 
   /**
+    Return whether the current config enables bat.
+  */
+  isBatEnabled = config: isProgramEnabled config "bat";
+
+  /**
     Return whether the current config enables neovim.
   */
   isNeovimEnabled = config: isProgramEnabled config "neovim";
+
+  /**
+    Return whether the current config enables ripgrep.
+  */
+  isRipgrepEnabled = config: isProgramEnabled config "ripgrep";
 
   /**
     Return whether the current config enables zoxide.
