@@ -6,9 +6,9 @@
 }:
 let
   inherit (lib) mkDefault mkIf;
-  inherit (lib.nixsys.nixos) hasProfileWorkstation;
+  inherit (lib.nixsys.nixos) isProfileWorkstation;
 
-  profileWorkstation = hasProfileWorkstation config;
+  profileWorkstation = isProfileWorkstation config;
 in
 {
   config = mkIf profileWorkstation {
