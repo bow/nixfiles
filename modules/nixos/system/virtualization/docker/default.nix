@@ -28,7 +28,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    users.users = mkIf (mainUser != null) {
+    users.users = mkIf mainUserDefined {
       ${mainUser.name}.extraGroups = [ "docker" ];
     };
 

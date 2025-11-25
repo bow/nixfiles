@@ -13,7 +13,17 @@ let
     types
     ;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.nixos) getHostName getMainUserName isMainUserDefined isXorgEnabled;
+  inherit (lib.nixsys.nixos)
+    getHostName
+    getMainUserName
+    isMainUserDefined
+    isXorgEnabled
+    ;
+
+  hostName = getHostName config;
+  mainUserDefined = isMainUserDefined config;
+  mainUserName = getMainUserName config;
+  xorgEnabled = isXorgEnabled config;
 
   cfg = config.nixsys.system.networking.networkmanager;
 in
@@ -36,7 +46,7 @@ in
 
   config = mkIf cfg.enable {
     networking = {
-      hostName = getHostName config;
+      inherit hostName;
       networkmanager.enable = true;
       networkmanager.plugins = [
         pkgs.networkmanager-openvpn
@@ -46,11 +56,11 @@ in
       networkmanager.insertNameservers = cfg.insert-nameservers;
     };
 
-    users.users = mkIf (isMainUserDefined config) {
-      ${getMainUserName config}.extraGroups = [ "networkmanager" ];
+    users.users = mkIf mainUserDefined {
+      ${mainUserName}.extraGroups = [ "networkmanager" ];
     };
 
     systemd.services.NetworkManager-wait-online.enable = mkForce false;
-    programs.nm-applet.enable = mkIf (isXorgEnabled config) true;
+    programs.nm-applet.enable = mkIf xorgEnabled true;
   };
 }

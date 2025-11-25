@@ -12,6 +12,8 @@ let
     ;
   inherit (lib.nixsys.nixos) isXorgEnabled;
 
+  xorgEnabled = isXorgEnabled config;
+
   cfg = config.nixsys.system.virtualized;
 in
 {
@@ -30,6 +32,6 @@ in
 
   config = mkIf cfg.enable {
     services.qemuGuest.enable = cfg.guest-type == "qemu";
-    services.spice-vdagentd.enable = (isXorgEnabled config);
+    services.spice-vdagentd.enable = xorgEnabled;
   };
 }

@@ -56,7 +56,7 @@ rec {
     Return the nixsys home-manager config if it is enabled and a main user is defined,
     otherwise return null.
   */
-  getHomeConfig =
+  getHomeConfigOrNull =
     config:
     let
       mainUser = (getMainUserOrNull config);

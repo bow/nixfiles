@@ -7,6 +7,8 @@
 let
   inherit (lib) mkIf;
   inherit (lib.nixsys.nixos) hasProfileWorkstation;
+
+  profileWorkstation = hasProfileWorkstation config;
 in
 {
   config = mkIf config.nixsys.enable {
@@ -32,7 +34,7 @@ in
           vim
           wget
         ]
-        ++ (lib.optionals (hasProfileWorkstation config) [ pkgs.home-manager ]);
+        ++ (lib.optionals profileWorkstation [ pkgs.home-manager ]);
       variables = {
         EDITOR = "nvim";
       };

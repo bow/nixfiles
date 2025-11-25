@@ -11,10 +11,12 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.nixos) getHomeConfig getMainUserName;
+  inherit (lib.nixsys.nixos) getHomeConfigOrNull getMainUserName;
+
+  mainUserName = getMainUserName config;
 
   cfg = config.nixsys.users.main.session.i3;
-  homeCfg = getHomeConfig config;
+  homeCfg = getHomeConfigOrNull config;
 in
 {
   options.nixsys.users.main.session.i3 = mkOption {
@@ -81,7 +83,7 @@ in
             ExecStart = "${homeCfg.desktop.i3.lock-script}";
           };
         };
-        services."${templateName}@${getMainUserName config}" = {
+        services."${templateName}@${mainUserName}" = {
           wantedBy = [ "sleep.target" ];
           before = [ "sleep.target" ];
           overrideStrategy = "asDropin";

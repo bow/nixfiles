@@ -7,9 +7,11 @@
 let
   inherit (lib) mkIf;
   inherit (lib.nixsys.nixos) hasProfileWorkstation;
+
+  profileWorkstation = hasProfileWorkstation config;
 in
 {
-  config = mkIf (hasProfileWorkstation config) {
+  config = mkIf profileWorkstation {
     services = {
       udev = {
         enable = true;

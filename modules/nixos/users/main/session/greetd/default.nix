@@ -15,10 +15,11 @@ let
   inherit (lib.nixsys) mkOpt;
   inherit (lib.nixsys.nixos) getMainUser isXorgEnabled;
 
-  user = getMainUser config;
-  cfg = user.session.greetd;
-
   autologinEnabled = hasAttr "auto-login" cfg.settings && cfg.settings.auto-login;
+  mainUser = getMainUser config;
+  xorgEnabled = isXorgEnabled config;
+
+  cfg = mainUser.session.greetd;
 in
 {
   options.nixsys.users.main.session.greetd = mkOption {
@@ -35,19 +36,19 @@ in
 
     services.displayManager.autoLogin = mkIf autologinEnabled {
       enable = true;
-      user = user.name;
+      user = mainUser.name;
     };
 
     services.greetd = mkIf cfg.enable {
       enable = true;
       settings = {
         terminal.vt = 7;
-        default_session = mkIf (isXorgEnabled config) {
+        default_session = mkIf xorgEnabled {
           command = "${pkgs.xorg.xinit}/bin/startx";
         };
-        initial_session = mkIf (autologinEnabled && (isXorgEnabled config)) {
+        initial_session = mkIf (autologinEnabled && xorgEnabled) {
           command = "${pkgs.xorg.xinit}/bin/startx";
-          user = user.name;
+          user = mainUser.name;
         };
       };
     };

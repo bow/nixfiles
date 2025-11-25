@@ -12,6 +12,8 @@ let
     ;
   inherit (lib.nixsys.nixos) isXorgEnabled;
 
+  xorgEnabled = isXorgEnabled config;
+
   cfg = config.nixsys.system.hardware.touchpad;
 in
 {
@@ -24,7 +26,7 @@ in
     };
   };
 
-  config = mkIf (cfg.enable && (isXorgEnabled config)){
+  config = mkIf (cfg.enable && xorgEnabled){
     services.libinput = {
       enable = true;
       touchpad = {
