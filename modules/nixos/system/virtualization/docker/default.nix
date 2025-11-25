@@ -10,13 +10,16 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.nixos) getMainUserOrNull;
+  inherit (lib.nixsys.nixos) getMainUser isMainUserDefined;
 
-  mainUser = getMainUserOrNull config;
+  mainUser = getMainUser config;
+  mainUserDefined = isMainUserDefined config;
+
   cfg = config.nixsys.system.virtualization.docker;
 in
 {
   options.nixsys.system.virtualization.docker = mkOption {
+    default = { };
     type = types.submodule {
       options = {
         enable = mkEnableOption "nixsys.system.virtualization.docker";
@@ -45,7 +48,5 @@ in
         };
       };
     };
-
-    # TODO: Hook up to personal aliases?
   };
 }
