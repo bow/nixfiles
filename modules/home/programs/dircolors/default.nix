@@ -11,7 +11,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.home) usesBash;
+  inherit (lib.nixsys.home) isShellBash;
 
   cfg = config.nixsys.home.programs.dircolors;
 in
@@ -38,7 +38,7 @@ in
 
     programs.dircolors = {
       enable = true;
-      enableBashIntegration = usesBash user;
+      enableBashIntegration = isShellBash user;
       settings = {
         EIGHTBIT = "1";
         NORMAL = "00";

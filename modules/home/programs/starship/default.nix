@@ -12,7 +12,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.home) usesBash;
+  inherit (lib.nixsys.home) isShellBash;
 
   cfg = config.nixsys.home.programs.starship;
 in
@@ -31,7 +31,7 @@ in
   config = mkIf cfg.enable rec {
     programs.starship = {
       enable = true;
-      enableBashIntegration = usesBash user;
+      enableBashIntegration = isShellBash user;
 
       settings = {
         format = concatStrings [

@@ -11,7 +11,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.nixsys.home) usesBash;
+  inherit (lib.nixsys.home) isShellBash;
 
   cfg = config.nixsys.home.programs.direnv;
 in
@@ -30,7 +30,7 @@ in
   config = mkIf cfg.enable {
     programs.direnv = {
       enable = true;
-      enableBashIntegration = usesBash user;
+      enableBashIntegration = isShellBash user;
       config = {
         global = {
           warn_timeout = "5m";

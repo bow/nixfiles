@@ -12,11 +12,11 @@ let
     isNeovimEnabled
     isXorgEnabled
     isZoxideEnabled
-    usesBash
+    isShellBash
     ;
 in
 {
-  config = mkIf (usesBash user) {
+  config = mkIf (isShellBash user) {
 
     programs.bat = {
       enable = true;

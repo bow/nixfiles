@@ -40,5 +40,5 @@ rec {
   /**
     Return whether the current user enables a bash shell.
   */
-  usesBash = user: user.shell == "bash";
+  isShellBash = user: user.shell == "bash";
 }
