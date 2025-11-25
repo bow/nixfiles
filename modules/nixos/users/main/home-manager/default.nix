@@ -48,6 +48,7 @@ in
         user = {
           inherit (cfgMainUser)
             name
+            email
             full-name
             home-directory
             shell

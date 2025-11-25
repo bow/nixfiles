@@ -19,6 +19,7 @@ in
       options = {
         name = mkOpt types.str null "User name of the main user";
         full-name = mkOpt types.str "" "Full name of the main user";
+        email = mkOpt types.str "" "Email of the main user";
         home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to the user's home directory";
         extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
         shell = mkOpt (types.enum [ "bash" ]) "bash" "Login shell of the user";

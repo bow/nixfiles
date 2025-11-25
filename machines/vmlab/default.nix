@@ -34,6 +34,7 @@ rec {
     users.main = {
       name = "bow";
       full-name = "Wibowo Arindrarto";
+      email = "contact@arindrarto.dev";
       trusted = true;
       session.greetd = enabledWith {
         settings.auto-login = true;
