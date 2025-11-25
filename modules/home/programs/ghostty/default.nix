@@ -12,10 +12,10 @@ let
     types
     ;
 
-  cfg = config.nixsys.home.programs.graphical.ghostty;
+  cfg = config.nixsys.home.programs.ghostty;
 in
 {
-  options.nixsys.home.programs.graphical.ghostty = mkOption {
+  options.nixsys.home.programs.ghostty = mkOption {
     default = { };
     type = types.submodule {
       options = {
@@ -31,7 +31,7 @@ in
 
     home.file = {
       ".config/ghostty/config" = {
-        source = ../../../../../dotfiles/ghostty/config;
+        source = ../../../../dotfiles/ghostty/config;
       };
     };
   };
