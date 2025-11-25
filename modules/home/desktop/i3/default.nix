@@ -341,20 +341,6 @@ in
         };
     };
 
-    home.packages = [
-      # Image viewer.
-      pkgs.feh
-
-      # Screnshot tool.
-      pkgs.maim
-
-      # Temperature-based screen light adjuster.
-      pkgs.redshift
-
-      # File explorer.
-      pkgs.xfce.thunar
-    ];
-
     home.file = {
       ".xinitrc" = {
         text = "exec i3";

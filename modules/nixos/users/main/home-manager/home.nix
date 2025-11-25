@@ -136,11 +136,17 @@ let
   ];
 
   desktopPackages = with pkgs; [
+    # File storage.
+    dropbox
+
     # PDF reader.
     evince
 
     # Web browser.
     firefox
+
+    # Web browser.
+    google-chrome
 
     # Text editor.
     geany
@@ -148,11 +154,32 @@ let
     # Disk partition editor.
     gparted
 
+    # Screnshot tool.
+    maim
+
+    # Image viewer.
+    nomacs
+
     # Markdown-based knowledge base.
     obsidian
 
+    # Mail client.
+    protonmail-bridge
+
     # Music player.
     spotify
+
+    # Image viewer.
+    sxiv
+
+    # Logitech peripherals.
+    solaar
+
+    # Synology.
+    synology-drive-client
+
+    # Email client.
+    thunderbird-latest
 
     # Official Todoist app.
     todoist-electron
@@ -162,6 +189,12 @@ let
 
     # Video player.
     vlc
+
+    # File explorer + plugins.
+    xfce.thunar
+    xfce.thunar-archive-plugin
+    xfce.thunar-dropbox-plugin
+    xfce.thunar-volman
 
     # PDF reader.
     zathura
