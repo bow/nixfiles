@@ -167,8 +167,8 @@ let
 in
 {
   options.nixsys.home.system = mkOption {
-    description = "Container for copied system-level settings";
     default = { };
+    description = "Container for copied system-level settings";
     type = types.submodule {
       freeformType = types.attrsOf types.anything;
     };

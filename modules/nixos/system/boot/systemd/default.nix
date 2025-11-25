@@ -16,6 +16,7 @@ let
 in
 {
   options.nixsys.system.boot.systemd = mkOption {
+    default = { };
     description = "Boot settings for systemd-boot";
     type = types.submodule {
       options = {
