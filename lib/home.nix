@@ -33,6 +33,11 @@ rec {
   isBatEnabled = config: isProgramEnabled config "bat";
 
   /**
+    Return whether the current config enables ghostty.
+  */
+  isGhosttyEnabled = config: isProgramEnabled config "ghostty";
+
+  /**
     Return whether the current config enables neovim.
   */
   isNeovimEnabled = config: isProgramEnabled config "neovim";
@@ -41,6 +46,11 @@ rec {
     Return whether the current config enables ripgrep.
   */
   isRipgrepEnabled = config: isProgramEnabled config "ripgrep";
+
+  /**
+    Return whether the current config enables rofi.
+  */
+  isRofiEnabled = config: isProgramEnabled config "rofi";
 
   /**
     Return whether the current config enables zoxide.

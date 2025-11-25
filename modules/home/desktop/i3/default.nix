@@ -11,9 +11,11 @@ let
     mkEnableOption
     mkIf
     mkOption
+    optionalAttrs
     types
     ;
   inherit (lib.nixsys) mkOpt;
+  inherit (lib.nixsys.home) isRofiEnabled;
 
   lock-sh =
     with theme.lock-screen;
@@ -79,6 +81,8 @@ let
           --greeter-font "''${FONT}" \
           && ( ([[ "''${NOFORK}" -eq 1 ]] && [[ "''${playing}" -eq 1 ]] && ${pkgs.playerctl}/bin/playerctl play-pause) || true )
     '';
+
+  rofiEnabled = isRofiEnabled config;
 
   cfg = config.nixsys.home.desktop.i3;
 in
@@ -293,7 +297,6 @@ in
             # Interact with applications.
             "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
             "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
-            "${modifier}+Tab" = "exec ${pkgs.rofi}/bin/rofi -show combi";
 
             # Audio + video controls.
             "XF86AudioRaiseVolume" =
@@ -309,6 +312,9 @@ in
             # System controls.
             "${modifier}+Shift+z" = "exec ${pkgs.systemd}/bin/systemctl suspend";
             "${modifier}+Shift+x" = "exec ${lock-sh}";
+          }
+          // optionalAttrs rofiEnabled {
+            "${modifier}+Tab" = "exec ${pkgs.rofi}/bin/rofi -show combi";
           };
           startup = [
             {
@@ -344,10 +350,6 @@ in
 
       # Temperature-based screen light adjuster.
       pkgs.redshift
-
-      # Launcher.
-      pkgs.rofi
-      pkgs.rofi-pass
 
       # File explorer.
       pkgs.xfce.thunar
