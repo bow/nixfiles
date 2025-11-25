@@ -115,9 +115,9 @@ in
               "loadavg"
               "wlan"
               "eth"
-              "battery-combined"
-              "temperature"
               "pulseaudio"
+              "temperature"
+              "battery-combined"
               "tray"
             ];
           };
@@ -159,7 +159,7 @@ in
           format = {
             text = "<label>";
             prefix = {
-              text = " ";
+              text = " ";
               foreground = ''''${colors.foreground-alt}'';
             };
           };
@@ -193,13 +193,13 @@ in
           format = {
             text = "<label>";
             prefix = {
-              text = " ";
+              text = " ";
               foreground = ''''${colors.foreground-alt}'';
             };
             warn = {
               text = "<label-warn>";
               prefix = {
-                text = " ";
+                text = " ";
                 foreground = ''''${colors.alert}'';
               };
             };
@@ -251,7 +251,7 @@ in
           };
           label = {
             disconnected = "";
-            connected = "%local_ip%";
+            connected = "%linkspeed%";
           };
         };
 
@@ -422,7 +422,7 @@ in
 
     systemd.user.services.polybar = {
       # FIXME: This should be systemctl --user import-environment DISPLAY XAUTHORITY somewhere.
-      Service.Environment = ["DISPLAY=:0"];
+      Service.Environment = [ "DISPLAY=:0" ];
       # NOTE: upower dependency is explicit in battery script.
       Unit.After = [ "upower.service" ];
     };
