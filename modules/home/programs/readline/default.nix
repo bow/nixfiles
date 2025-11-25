@@ -28,12 +28,21 @@ in
   config = mkIf cfg.enable {
     programs.readline = {
       enable = true;
-    };
-
-    home.file = {
-      ".inputrc" = {
-        source = ../../../../dotfiles/readline/.inputrc;
+      bindings = {
+        "\\e[A" = "history-search-backward";
+        "\\e[B" = "history-search-forward";
       };
+      variables = {
+        colored-completion-prefix = true;
+        colored-stats = true;
+        comment-begin = "# ";
+        mark-symlinked-directories = true;
+        show-all-if-unmodified = true;
+        skip-completed-text = true;
+      };
+      extraConfig = ''
+        set bell-style none
+      '';
     };
   };
 }
