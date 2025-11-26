@@ -9,8 +9,32 @@ let
     mkIf
     mkEnableOption
     mkOption
+    mkPackageOption
     types
     ;
+
+  handlerScriptName = "ghostty-text-handler";
+  ghostty-text-handler = pkgs.writeShellScriptBin "${handlerScriptName}" ''
+    FILE_PATH="''${1}"
+    ${cfg.package}/bin/ghostty -e ${pkgs.runtimeShell} -c "''${EDITOR} \"''${FILE_PATH}\"" &
+  '';
+
+  mimeTypes = [
+    "application/json"
+    "application/xml"
+    "text/css"
+    "text/diff"
+    "text/markdown"
+    "text/plain"
+    "text/x-c"
+    "text/x-c++"
+    "text/x-devicetree-source"
+    "text/x-perl"
+    "text/x-python"
+    "text/x-ruby"
+    "text/x-shellscript"
+    "text/x-sql"
+  ];
 
   cfg = config.nixsys.home.programs.ghostty;
 in
@@ -22,12 +46,14 @@ in
         enable = mkEnableOption "nixsys.home.programs.graphical.ghostty" // {
           default = true;
         };
+        package = mkPackageOption pkgs "ghostty" { };
       };
     };
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.ghostty ];
+
+    home.packages = [ cfg.package ];
 
     home.file = {
       ".config/ghostty/config" = {
@@ -50,5 +76,34 @@ in
         '';
       };
     };
+
+    xdg =
+      let
+        desktopEntryName = "ghostty-editor";
+      in
+      {
+        desktopEntries.${desktopEntryName} = {
+          name = "Ghostty editor";
+          comment = ''Open text files in ''$EDITOR in a new Ghostty terminal'';
+          exec = "${ghostty-text-handler}/bin/${handlerScriptName} %f";
+          terminal = false;
+          icon = "ghostty";
+          categories = [
+            "Utility"
+            "TextEditor"
+          ];
+          mimeType = mimeTypes;
+        };
+        mimeApps = {
+          enable = true;
+          defaultApplications = builtins.listToAttrs (
+            builtins.map (name: {
+              inherit name;
+              value = [ "${desktopEntryName}.desktop" ];
+            }) mimeTypes
+          );
+        };
+      };
+
   };
 }
