@@ -29,10 +29,11 @@ in
           jq
           neovim
           readline
-          ripgrep
           unzip
           vim
           wget
+
+          unstable.ripgrep
         ]
         ++ (lib.optionals profileWorkstation [ pkgs.home-manager ]);
       variables = {

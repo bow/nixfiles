@@ -8,6 +8,7 @@
 let
   inherit (lib) mkIf optionalAttrs optionalString;
   inherit (lib.nixsys.home)
+    getRipgrepPackage
     isBatEnabled
     isDockerEnabled
     isNeovimEnabled
@@ -21,6 +22,7 @@ let
   dockerEnabled = isDockerEnabled config;
   neovimEnabled = isNeovimEnabled config;
   ripgrepEnabled = isRipgrepEnabled config;
+  ripgrepPackage = getRipgrepPackage config;
   shellBash = isShellBash user;
   xorgEnabled = isXorgEnabled config;
   zoxideEnabled = isZoxideEnabled config;
@@ -345,7 +347,7 @@ in
         # Interactive text search and edit.
         function frg() {
             result=''$(
-                ${pkgs.ripgrep}/bin/rg --ignore-case --color=always --line-number --no-heading "''$@" \
+                ${ripgrepPackage}/bin/rg --ignore-case --color=always --line-number --no-heading "''$@" \
                 | ${pkgs.fzf}/bin/fzf \
                     --ansi --color 'hl:-1:underline,hl+:-1:underline:reverse' \
                     --delimiter ':' \

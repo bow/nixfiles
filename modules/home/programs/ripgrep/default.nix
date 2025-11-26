@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -8,8 +9,12 @@ let
     mkIf
     mkEnableOption
     mkOption
+    mkPackageOption
     types
     ;
+  inherit (lib.nixsys.home) isNeovimEnabled;
+
+  neovimEnabled = isNeovimEnabled config;
 
   cfg = config.nixsys.home.programs.ripgrep;
 in
@@ -21,13 +26,16 @@ in
         enable = mkEnableOption "nixsys.home.programs.ripgrep" // {
           default = true;
         };
+        package = mkPackageOption pkgs.unstable "ripgrep" { };
       };
     };
   };
 
   config = mkIf cfg.enable {
+
     programs.ripgrep = {
       enable = true;
+      inherit (cfg) package;
       arguments = [
         # Search hidden files and directories.
         "--hidden"
@@ -77,5 +85,7 @@ in
         "--colors=match:style:nobold"
       ];
     };
+
+    programs.neovim.extraPackages = mkIf neovimEnabled [ cfg.package ];
   };
 }

@@ -1,5 +1,15 @@
 _: rec {
   /**
+    Return the package used by the given module.
+  */
+  getModulePackage = config: name: config.nixsys.home.programs.${name}.package;
+
+  /**
+    Return the package used by the ripgrep module.
+  */
+  getRipgrepPackage = config: getModulePackage config "ripgrep";
+
+  /**
     Return whether the current config enables Xorg.
   */
   isXorgEnabled = config: config.nixsys.home.desktop.i3.enable;

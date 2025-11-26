@@ -44,7 +44,6 @@ in
       extraPackages = with pkgs.unstable; [
         # Shared
         fzf
-        ripgrep
         tree-sitter
         lua54Packages.jsregexp
 

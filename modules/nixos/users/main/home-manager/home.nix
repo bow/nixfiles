@@ -100,7 +100,6 @@ let
     qemu
     readline
     restic
-    ripgrep
     rustup
     sequoia-sq
     shfmt
