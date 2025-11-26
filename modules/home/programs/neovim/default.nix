@@ -57,6 +57,7 @@ in
 
         # C/C++
         ccls
+        clang-tools
         tree-sitter-grammars.tree-sitter-c
         tree-sitter-grammars.tree-sitter-cmake
         tree-sitter-grammars.tree-sitter-cpp
