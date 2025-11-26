@@ -7,13 +7,14 @@ REPO_DIR="$(dirname "$(readlink -f "$0")")"
 show_usage() {
     cat <<__USAGE__
 $(fmt_section "SYNOPSIS")
-    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[build-iso|build-machine|rebuild|update|gc]")
+    $(fmt_name "$(basename "${0}")") $(fmt_subcommand "[build-iso|build-machine|fmt|rebuild|update|gc]")
 
     Helper script for common Nix tasks.
 
 $(fmt_section "OPTIONS")
     $(fmt_subcommand "build-iso|bi")                \`nix build .#nixosConfigurations.iso.config.system.build.isoImage\`
     $(fmt_subcommand "build-machine|bm") $(fmt_param "machine")    \`nix build .#nixosConfigurations.$(fmt_param "machine").config.system.build.toplevel\`
+    $(fmt_subcommand "fmt|f")                       \`nixfmt -- **/*.nix\`
     $(fmt_subcommand "rebuild|r") $(fmt_param "machine")           \`nixos-rebuild --flake #.$(fmt_param "machine")\`
     $(fmt_subcommand "update|u") $(fmt_param "target")             \`nix flake update $(fmt_param "target")\`
     $(fmt_subcommand "gc")                          \`nix-store --gc\`
@@ -38,6 +39,11 @@ run_build_machine() {
 
     show_msg "Starting build-machine for machine=${machine}"
     nix build ".#nixosConfigurations.${machine}.config.system.build.toplevel"
+}
+
+run_fmt() {
+    show_msg "Formatting all .nix files"
+    find . -name "*.nix" -not -path "./result/*" -not -path "./sandbox/*" -exec nixfmt {} \;
 }
 
 run_update() {
@@ -93,6 +99,10 @@ parse_opts() {
             ;;
         build-machine | bm)
             run_build_machine "${2}"
+            exit 0
+            ;;
+        fmt | f)
+            run_fmt
             exit 0
             ;;
         rebuild | r)
