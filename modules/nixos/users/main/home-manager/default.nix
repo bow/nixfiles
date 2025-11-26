@@ -43,6 +43,8 @@ in
 
       useGlobalPkgs = true;
 
+      backupFileExtension = "hm-backup";
+
       extraSpecialArgs = {
         inherit inputs outputs;
         user = {
