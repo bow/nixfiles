@@ -5,6 +5,11 @@ _: rec {
   getModulePackage = config: name: config.nixsys.home.programs.${name}.package;
 
   /**
+    Return the package used by the fzf module.
+  */
+  getFzfPackage = config: getModulePackage config "fzf";
+
+  /**
     Return the package used by the ripgrep module.
   */
   getRipgrepPackage = config: getModulePackage config "ripgrep";
@@ -38,6 +43,11 @@ _: rec {
     Return whether the current config enables bat.
   */
   isBatEnabled = config: isProgramEnabled config "bat";
+
+  /**
+    Return whether the current config enables fzf.
+  */
+  isFzfEnabled = config: isProgramEnabled config "fzf";
 
   /**
     Return whether the current config enables ghostty.

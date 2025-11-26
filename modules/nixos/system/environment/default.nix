@@ -20,7 +20,6 @@ in
           curl
           findutils
           file
-          fzf
           git
           gnugrep
           gnupg

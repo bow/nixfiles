@@ -46,7 +46,6 @@ let
     fd
     file
     findutils
-    fzf
     gcc
     gdb
     gh

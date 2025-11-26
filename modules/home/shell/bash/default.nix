@@ -8,8 +8,10 @@
 let
   inherit (lib) mkIf optionalAttrs optionalString;
   inherit (lib.nixsys.home)
+    getFzfPackage
     getRipgrepPackage
     isBatEnabled
+    isFzfEnabled
     isDockerEnabled
     isNeovimEnabled
     isRipgrepEnabled
@@ -20,6 +22,8 @@ let
 
   batEnabled = isBatEnabled config;
   dockerEnabled = isDockerEnabled config;
+  fzfEnabled = isFzfEnabled config;
+  fzfPackage = getFzfPackage config;
   neovimEnabled = isNeovimEnabled config;
   ripgrepEnabled = isRipgrepEnabled config;
   ripgrepPackage = getRipgrepPackage config;
@@ -342,13 +346,13 @@ in
             "''$@" --help 2>&1 | ${pkgs.bat}/bin/bat --plain --language=help
         }
       ''
-      + optionalString (batEnabled && ripgrepEnabled) ''
+      + optionalString (batEnabled && ripgrepEnabled && fzfEnabled) ''
 
         # Interactive text search and edit.
         function frg() {
             result=''$(
                 ${ripgrepPackage}/bin/rg --ignore-case --color=always --line-number --no-heading "''$@" \
-                | ${pkgs.fzf}/bin/fzf \
+                | ${fzfPackage}/bin/fzf \
                     --ansi --color 'hl:-1:underline,hl+:-1:underline:reverse' \
                     --delimiter ':' \
                     --preview "${pkgs.bat}/bin/bat --color=always {1} --theme='gruvbox-dark' --highlight-line {2}" \

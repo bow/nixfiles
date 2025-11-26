@@ -43,7 +43,6 @@ in
       ];
       extraPackages = with pkgs.unstable; [
         # Shared
-        fzf
         tree-sitter
         lua54Packages.jsregexp
 
