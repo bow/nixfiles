@@ -133,7 +133,6 @@ in
         tree-sitter-grammars.tree-sitter-latex
 
         # Nix
-        deadnix
         nil
         nixfmt-rfc-style
         statix

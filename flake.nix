@@ -149,7 +149,6 @@
               ssh-to-age
 
               nixfmt-rfc-style
-              deadnix
               statix
             ];
           };

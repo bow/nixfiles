@@ -27,7 +27,6 @@ let
     coreutils-full
     curl
     curlie
-    deadnix
     delve
     difftastic
     distrobox
