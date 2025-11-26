@@ -51,7 +51,7 @@ in
 
       settings = {
         auto-optimise-store = true;
-        download-buffer-size = cfg.download-buffer-size;
+        inherit (cfg) download-buffer-size;
         experimental-features = [
           "ca-derivations" # content-addressed derivations.
           "flakes" # nix flakes.

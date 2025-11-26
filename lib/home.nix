@@ -1,7 +1,4 @@
-{
-  ...
-}:
-rec {
+_: rec {
   /**
     Return whether the current config enables Xorg.
   */
@@ -10,7 +7,7 @@ rec {
   /**
     Return whether the current config enables desktop.
   */
-  isDesktopEnabled = config: isXorgEnabled config;
+  isDesktopEnabled = isXorgEnabled;
 
   /**
     Return whether the current config enables docker.

@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+_: {
   services.keyd = {
     enable = true;
     keyboards = {

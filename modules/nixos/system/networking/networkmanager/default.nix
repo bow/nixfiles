@@ -48,13 +48,13 @@ in
   config = mkIf cfg.enable {
     networking = {
       inherit hostName;
-      networkmanager.enable = true;
-      networkmanager.plugins = [
-        pkgs.networkmanager-openvpn
-      ];
-      networkmanager.dns = mkDefault cfg.dns;
-      networkmanager.appendNameservers = cfg.append-nameservers;
-      networkmanager.insertNameservers = cfg.insert-nameservers;
+      networkmanager = {
+        enable = true;
+        plugins = [ pkgs.networkmanager-openvpn ];
+        dns = mkDefault cfg.dns;
+        appendNameservers = cfg.append-nameservers;
+        insertNameservers = cfg.insert-nameservers;
+      };
     };
 
     users.users = mkIf mainUserDefined {

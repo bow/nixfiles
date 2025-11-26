@@ -28,7 +28,7 @@ let
   };
 in
 listToAttrs (
-  builtins.map (mkWallpaperPkg) [
+  builtins.map mkWallpaperPkg [
     {
       name = "francesco-ungaro-lcQzCo-X1vM-unsplash";
       ext = "jpg";

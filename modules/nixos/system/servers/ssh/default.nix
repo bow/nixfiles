@@ -41,6 +41,8 @@ in
     services.openssh = {
       enable = true;
 
+      inherit (cfg) ports;
+
       hostKeys = lib.optionals cfg.generate-hostkey [
         {
           path = "/etc/ssh/hostkey";
@@ -48,7 +50,6 @@ in
         }
       ];
       openFirewall = true;
-      ports = cfg.ports;
 
       settings = {
         AllowUsers = cfg.allow-users;

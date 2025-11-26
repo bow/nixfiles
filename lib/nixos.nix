@@ -1,7 +1,4 @@
-{
-  ...
-}:
-rec {
+_: rec {
   /**
     Return the system hostname. If it is null, an error will be thrown.
   */
@@ -59,7 +56,7 @@ rec {
   getHomeConfigOrNull =
     config:
     let
-      mainUser = (getMainUserOrNull config);
+      mainUser = getMainUserOrNull config;
     in
     if mainUser != null && mainUser.home-manager.enable then
       config.home-manager.users.${mainUser.name}.nixsys.home
