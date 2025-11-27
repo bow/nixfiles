@@ -41,10 +41,6 @@ in
         pkgs.unstable.tree-sitter
         pkgs.unstable.lua54Packages.jsregexp
 
-        # Bash
-        bash-language-server
-        tree-sitter-grammars.tree-sitter-bash
-
         # Bazel
         starlark-rust
 

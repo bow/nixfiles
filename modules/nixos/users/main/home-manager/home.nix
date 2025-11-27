@@ -96,7 +96,6 @@ let
     restic
     rustup
     sequoia-sq
-    shfmt
     socat
     stow
     strace
