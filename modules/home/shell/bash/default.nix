@@ -246,7 +246,7 @@ in
         # Calculator.
         function calc() { ${pkgs.coreutils}/bin/echo "''$*" | ${pkgs.bc}/bin/bc; }
 
-        # check weather from wego
+        # Check weather from wttr.
         function wttr() { ${pkgs.curl}/bin/curl http://wttr.in/"''${1:-Copenhagen}"; }
 
         # Show the absolute path of a command executable.
