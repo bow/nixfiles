@@ -41,9 +41,6 @@ in
         pkgs.unstable.tree-sitter
         pkgs.unstable.lua54Packages.jsregexp
 
-        # Bazel
-        starlark-rust
-
         # CSS
         vscode-langservers-extracted
         tree-sitter-grammars.tree-sitter-css
