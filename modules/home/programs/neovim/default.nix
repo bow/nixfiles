@@ -38,8 +38,8 @@ in
       ];
       extraPackages = with pkgs.unstable; [
         # Shared
-        tree-sitter
-        lua54Packages.jsregexp
+        pkgs.unstable.tree-sitter
+        pkgs.unstable.lua54Packages.jsregexp
 
         # Bash
         bash-language-server
@@ -47,13 +47,6 @@ in
 
         # Bazel
         starlark-rust
-
-        # C/C++
-        ccls
-        clang-tools
-        tree-sitter-grammars.tree-sitter-c
-        tree-sitter-grammars.tree-sitter-cmake
-        tree-sitter-grammars.tree-sitter-cpp
 
         # CSS
         vscode-langservers-extracted

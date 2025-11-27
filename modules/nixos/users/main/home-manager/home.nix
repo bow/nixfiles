@@ -21,8 +21,6 @@ let
     autojump
     bat
     btop
-    ccls
-    clangStdenv
     cloc
     coreutils-full
     curl
@@ -46,12 +44,9 @@ let
     fd
     file
     findutils
-    gcc
-    gdb
     gh
     glow
     gnugrep
-    gnumake
     gnupatch
     gnupg
     gnused
@@ -115,7 +110,6 @@ let
     unrar
     unzip
     usbutils
-    valgrind
     vim
     virt-manager
     virt-viewer

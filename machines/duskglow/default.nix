@@ -39,6 +39,7 @@ rec {
       };
       home-manager = enabledWith {
         desktop.i3 = enabled;
+        devel = enabled;
       };
     };
   };
