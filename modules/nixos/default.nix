@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkOption types;
+  inherit (lib) types;
 in
 {
   # Default external modules.
@@ -12,12 +12,12 @@ in
     inputs.sops-nix.nixosModules.sops
   ];
 
-  options.nixsys = mkOption {
+  options.nixsys = lib.mkOption {
     default = { };
     description = "nixsys settings";
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys";
+        enable = lib.mkEnableOption "nixsys";
       };
     };
   };

@@ -3,11 +3,8 @@
   lib,
   ...
 }:
-let
-  inherit (lib) mkIf;
-in
 {
-  config = mkIf config.nixsys.enable {
+  config = lib.mkIf config.nixsys.enable {
     security = {
       sudo = {
         enable = true;

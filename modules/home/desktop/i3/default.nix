@@ -7,15 +7,9 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    optionalAttrs
-    types
-    ;
+  inherit (lib) types;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.home) isRofiEnabled;
+  libcfg = lib.nixsys.home;
 
   lock-sh =
     with theme.lock-screen;
@@ -82,23 +76,23 @@ let
           && ( ([[ "''${NOFORK}" -eq 1 ]] && [[ "''${playing}" -eq 1 ]] && ${pkgs.playerctl}/bin/playerctl play-pause) || true )
     '';
 
-  rofiEnabled = isRofiEnabled config;
+  rofiEnabled = libcfg.isRofiEnabled config;
 
   cfg = config.nixsys.home.desktop.i3;
 in
 {
-  options.nixsys.home.desktop.i3 = mkOption {
+  options.nixsys.home.desktop.i3 = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.desktop.i3";
+        enable = lib.mkEnableOption "nixsys.home.desktop.i3";
         mod-key = mkOpt types.str "Mod4" "Mod key for i3";
         lock-script = mkOpt types.package lock-sh "Screen lock script";
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     xsession.windowManager.i3 = {
       enable = true;
       package = pkgs.i3;
@@ -313,7 +307,7 @@ in
             "${modifier}+Shift+z" = "exec ${pkgs.systemd}/bin/systemctl suspend";
             "${modifier}+Shift+x" = "exec ${lock-sh}";
           }
-          // optionalAttrs rofiEnabled {
+          // lib.optionalAttrs rofiEnabled {
             "${modifier}+Tab" = "exec ${pkgs.rofi}/bin/rofi -show combi";
           };
           startup = [

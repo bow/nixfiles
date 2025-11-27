@@ -4,28 +4,23 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.programs.readline;
 in
 {
-  options.nixsys.home.programs.readline = mkOption {
+  options.nixsys.home.programs.readline = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.readline" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.readline" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.readline = {
       enable = true;
       bindings = {

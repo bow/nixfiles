@@ -1,5 +1,6 @@
 {
   pkgs,
+  ...
 }:
 pkgs.stdenvNoCC.mkDerivation {
   pname = "awesome-terminal-fonts";

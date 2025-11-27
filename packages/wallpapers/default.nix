@@ -3,8 +3,6 @@
   ...
 }:
 let
-  inherit (pkgs.lib) listToAttrs;
-
   mkWallpaperPkg = wallpaper: {
     inherit (wallpaper) name;
     value = pkgs.stdenvNoCC.mkDerivation {
@@ -27,7 +25,7 @@ let
     };
   };
 in
-listToAttrs (
+pkgs.lib.listToAttrs (
   builtins.map mkWallpaperPkg [
     {
       name = "francesco-ungaro-lcQzCo-X1vM-unsplash";

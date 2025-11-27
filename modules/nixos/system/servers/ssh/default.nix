@@ -4,22 +4,17 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
+  inherit (lib) types;
   inherit (lib.nixsys) mkOpt;
 
   cfg = config.nixsys.system.servers.ssh;
 in
 {
-  options.nixsys.system.servers.ssh = mkOption {
+  options.nixsys.system.servers.ssh = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.system.servers.ssh";
+        enable = lib.mkEnableOption "nixsys.system.servers.ssh";
 
         generate-hostkey = mkOpt types.bool true "Whether to create an SSH host key or not";
 
@@ -37,7 +32,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.openssh = {
       enable = true;
 

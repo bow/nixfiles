@@ -5,28 +5,23 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.fonts;
 in
 {
-  options.nixsys.home.fonts = mkOption {
+  options.nixsys.home.fonts = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.fonts" // {
+        enable = lib.mkEnableOption "nixsys.home.fonts" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     fonts = {
       fontconfig = {
         enable = true;

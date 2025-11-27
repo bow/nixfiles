@@ -8,10 +8,10 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkOption types;
-  inherit (lib.nixsys.home) isDesktopEnabled;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
-  desktopEnabled = isDesktopEnabled config;
+  desktopEnabled = libcfg.isDesktopEnabled config;
 
   cliPackages = with pkgs; [
     age
@@ -198,7 +198,7 @@ let
   ];
 in
 {
-  options.nixsys.home.system = mkOption {
+  options.nixsys.home.system = lib.mkOption {
     default = { };
     description = "Container for copied system-level settings";
     type = types.submodule {
@@ -215,7 +215,7 @@ in
       preferXdgDirectories = true;
     };
 
-    nixpkgs = mkIf asStandalone {
+    nixpkgs = lib.mkIf asStandalone {
       overlays = builtins.attrValues outputs.overlays;
       config.allowUnfree = true;
     };

@@ -5,13 +5,12 @@
   ...
 }:
 let
-  inherit (lib) mkIf;
-  inherit (lib.nixsys.nixos) isProfileWorkstation;
+  libcfg = lib.nixsys.nixos;
 
-  profileWorkstation = isProfileWorkstation config;
+  profileWorkstation = libcfg.isProfileWorkstation config;
 in
 {
-  config = mkIf config.nixsys.enable {
+  config = lib.mkIf config.nixsys.enable {
     environment = {
       pathsToLink = [ "/share/bash-completion" ];
       systemPackages =

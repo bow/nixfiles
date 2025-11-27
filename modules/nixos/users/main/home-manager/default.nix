@@ -7,13 +7,7 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    removeAttrs
-    types
-    ;
+  inherit (lib) types;
 
   cfgMainUser = config.nixsys.users.main;
   cfg = cfgMainUser.home-manager;
@@ -23,21 +17,21 @@ in
     inputs.home-manager.nixosModules.home-manager
   ];
 
-  options.nixsys.users.main.home-manager = mkOption {
+  options.nixsys.users.main.home-manager = lib.mkOption {
     default = { };
     type = types.submodule {
       freeformType = types.attrsOf types.anything;
       options = {
-        enable = mkEnableOption "nixsys.users.main.home-manager";
-        system = mkOption {
-          type = types.attrsOf types.anything;
+        enable = lib.mkEnableOption "nixsys.users.main.home-manager";
+        system = lib.mkOption {
           default = { };
+          type = types.attrsOf types.anything;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home-manager = {
 

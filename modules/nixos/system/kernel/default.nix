@@ -6,11 +6,12 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkOption types;
+  inherit (lib) types;
+
   cfg = config.nixsys.system.kernel;
 in
 {
-  options.nixsys.system.kernel = mkOption {
+  options.nixsys.system.kernel = lib.mkOption {
     default = { };
     description = "System kernel";
     type = types.submodule {
@@ -23,7 +24,7 @@ in
     };
   };
 
-  config = mkIf config.nixsys.enable {
+  config = lib.mkIf config.nixsys.enable {
     boot.kernelPackages = cfg.package;
   };
 }

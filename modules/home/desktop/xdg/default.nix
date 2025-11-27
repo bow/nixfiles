@@ -4,24 +4,19 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.desktop.xdg;
 in
 {
-  options.nixsys.home.desktop.xdg = mkOption {
+  options.nixsys.home.desktop.xdg = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.desktop.xdg" // {
+        enable = lib.mkEnableOption "nixsys.home.desktop.xdg" // {
           default = true;
         };
-        create-directories = mkOption {
+        create-directories = lib.mkOption {
           default = true;
           type = types.bool;
           description = "Sets xdg.userDirs.createDirectories";
@@ -30,7 +25,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     xdg.userDirs = with config.home; {
       enable = true;
       createDirectories = cfg.create-directories;

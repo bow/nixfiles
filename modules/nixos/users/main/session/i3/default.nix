@@ -5,32 +5,27 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.nixos) getHomeConfigOrNull getMainUserName;
+  inherit (lib) types;
+  libcfg = lib.nixsys.nixos;
 
-  mainUserName = getMainUserName config;
+  mainUserName = libcfg.getMainUserName config;
+  homeCfg = libcfg.getHomeConfigOrNull config;
 
   cfg = config.nixsys.users.main.session.i3;
-  homeCfg = getHomeConfigOrNull config;
 in
 {
-  options.nixsys.users.main.session.i3 = mkOption {
+  options.nixsys.users.main.session.i3 = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.user.main.session.i3" // {
+        enable = lib.mkEnableOption "nixsys.user.main.session.i3" // {
           default = config.nixsys.users.main.home-manager.desktop.i3.enable;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services = {
 
@@ -66,7 +61,7 @@ in
       let
         templateName = "sleep";
       in
-      mkIf (homeCfg != null && homeCfg.desktop.i3.enable) {
+      lib.mkIf (homeCfg != null && homeCfg.desktop.i3.enable) {
         services."${templateName}@" = {
           enable = true;
           description = "i3 screen locker script template ";

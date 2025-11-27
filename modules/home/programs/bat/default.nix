@@ -4,28 +4,23 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.programs.bat;
 in
 {
-  options.nixsys.home.programs.bat = mkOption {
+  options.nixsys.home.programs.bat = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.bat" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.bat" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.bat = {
       enable = true;
       config = {

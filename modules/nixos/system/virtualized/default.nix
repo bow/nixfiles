@@ -4,25 +4,20 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.nixos) isXorgEnabled;
+  inherit (lib) types;
+  libcfg = lib.nixsys.nixos;
 
-  xorgEnabled = isXorgEnabled config;
+  xorgEnabled = libcfg.isXorgEnabled config;
 
   cfg = config.nixsys.system.virtualized;
 in
 {
-  options.nixsys.system.virtualized = mkOption {
+  options.nixsys.system.virtualized = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.system.virtualized";
-        guest-type = mkOption {
+        enable = lib.mkEnableOption "nixsys.system.virtualized";
+        guest-type = lib.mkOption {
           type = types.enum [ "qemu" ];
           description = "The type of the guest agent to run";
         };
@@ -30,7 +25,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.qemuGuest.enable = cfg.guest-type == "qemu";
     services.spice-vdagentd.enable = xorgEnabled;
   };

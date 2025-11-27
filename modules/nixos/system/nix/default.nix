@@ -6,27 +6,27 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkOption types;
+  inherit (lib) types;
 
   cfg = config.nixsys.system.nix;
 in
 {
-  options.nixsys.system.nix = mkOption {
+  options.nixsys.system.nix = lib.mkOption {
     default = { };
     description = "Nix settings";
     type = types.submodule {
       options = {
-        download-buffer-size = mkOption {
+        download-buffer-size = lib.mkOption {
           type = types.ints.positive;
           default = 134217728; # 128 MiB
           description = "Sets nix.settings.download-buffer-size";
         };
-        gc-max-retention-days = mkOption {
+        gc-max-retention-days = lib.mkOption {
           type = types.ints.positive;
           default = 30;
           description = "The age of the oldest item to keep (in days) after garbage collection";
         };
-        gc-min-free-space = mkOption {
+        gc-min-free-space = lib.mkOption {
           type = types.ints.positive;
           default = 1073741824; # 1 GiB
           description = "Sets nix.settings.min-free";
@@ -35,7 +35,7 @@ in
     };
   };
 
-  config = mkIf config.nixsys.enable {
+  config = lib.mkIf config.nixsys.enable {
     environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
 
     nix = {

@@ -5,25 +5,20 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
   inherit (lib.nixsys) mkOpt;
-  inherit (lib.nixsys.home) isXorgEnabled;
+  libcfg = lib.nixsys.home;
 
-  xorgEnabled = isXorgEnabled config;
+  xorgEnabled = libcfg.isXorgEnabled config;
 
   cfg = config.nixsys.home.programs.gpg;
 in
 {
-  options.nixsys.home.programs.gpg = mkOption {
+  options.nixsys.home.programs.gpg = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.gpg" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.gpg" // {
           default = true;
         };
 
@@ -54,7 +49,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.gpg = {
       enable = true;
       mutableKeys = cfg.mutable-keys;

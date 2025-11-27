@@ -6,33 +6,21 @@
   ...
 }:
 let
-  inherit (lib) mkIf optionalAttrs optionalString;
-  inherit (lib.nixsys.home)
-    getFzfPackage
-    getRipgrepPackage
-    isBatEnabled
-    isFzfEnabled
-    isDockerEnabled
-    isNeovimEnabled
-    isRipgrepEnabled
-    isXorgEnabled
-    isZoxideEnabled
-    isShellBash
-    ;
+  libcfg = lib.nixsys.home;
 
-  batEnabled = isBatEnabled config;
-  dockerEnabled = isDockerEnabled config;
-  fzfEnabled = isFzfEnabled config;
-  fzfPackage = getFzfPackage config;
-  neovimEnabled = isNeovimEnabled config;
-  ripgrepEnabled = isRipgrepEnabled config;
-  ripgrepPackage = getRipgrepPackage config;
-  shellBash = isShellBash user;
-  xorgEnabled = isXorgEnabled config;
-  zoxideEnabled = isZoxideEnabled config;
+  batEnabled = libcfg.isBatEnabled config;
+  dockerEnabled = libcfg.isDockerEnabled config;
+  fzfEnabled = libcfg.isFzfEnabled config;
+  fzfPackage = libcfg.getFzfPackage config;
+  neovimEnabled = libcfg.isNeovimEnabled config;
+  ripgrepEnabled = libcfg.isRipgrepEnabled config;
+  ripgrepPackage = libcfg.getRipgrepPackage config;
+  shellBash = libcfg.isShellBash user;
+  xorgEnabled = libcfg.isXorgEnabled config;
+  zoxideEnabled = libcfg.isZoxideEnabled config;
 in
 {
-  config = mkIf shellBash {
+  config = lib.mkIf shellBash {
 
     programs.bash = rec {
       enable = true;
@@ -67,7 +55,7 @@ in
 
         PYTHONPYCACHEPREFIX = ''${config.xdg.cacheHome}/python/pycache'';
       }
-      // optionalAttrs zoxideEnabled { _ZO_ECHO = 1; };
+      // lib.optionalAttrs zoxideEnabled { _ZO_ECHO = 1; };
 
       shellAliases = {
         # chmod +x.
@@ -108,10 +96,10 @@ in
         # grep history.
         grest = "history | ${pkgs.gnugrep}/bin/grep";
       }
-      // optionalAttrs xorgEnabled {
+      // lib.optionalAttrs xorgEnabled {
         clip = "${pkgs.findutils}/bin/xargs ${pkgs.coreutils}/bin/echo -n | ${pkgs.xclip}/bin/xclip -selection c";
       }
-      // optionalAttrs dockerEnabled {
+      // lib.optionalAttrs dockerEnabled {
         # List container processes.
         dps = "${pkgs.docker}/bin/docker ps";
         # List container processes including stopped containers.
@@ -312,7 +300,7 @@ in
         # shellcheck disable=SC1091
         [[ -f ~/.bash_private ]] && . "''${HOME}/.bash_private"
       ''
-      + optionalString xorgEnabled ''
+      + lib.optionalString xorgEnabled ''
 
         # Resolve path and copy it to clipboard.
         function pcp() {
@@ -339,14 +327,14 @@ in
             fi
         }
       ''
-      + optionalString batEnabled ''
+      + lib.optionalString batEnabled ''
 
         # Show help with colors.
         function help() {
             "''$@" --help 2>&1 | ${pkgs.bat}/bin/bat --plain --language=help
         }
       ''
-      + optionalString (batEnabled && ripgrepEnabled && fzfEnabled) ''
+      + lib.optionalString (batEnabled && ripgrepEnabled && fzfEnabled) ''
 
         # Interactive text search and edit.
         function frg() {
@@ -365,7 +353,7 @@ in
             fi
         }
       ''
-      + optionalString dockerEnabled ''
+      + lib.optionalString dockerEnabled ''
 
         # Execute interactive container, e.g. dexi base /bin/bash
         function dexi() { ${pkgs.docker}/bin/docker exec -it "''${1}" "''${2:-/bin/bash}"; }

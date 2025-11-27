@@ -5,12 +5,7 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.system.nix.nixos-cli;
 in
@@ -19,17 +14,17 @@ in
     inputs.nixos-cli.nixosModules.nixos-cli
   ];
 
-  options.nixsys.system.nix.nixos-cli = mkOption {
+  options.nixsys.system.nix.nixos-cli = lib.mkOption {
     default = { };
     description = "Settings for nixos-cli tool";
     type = types.submodule {
       options = {
-        enable = mkEnableOption "Enable nixos-cli module";
+        enable = lib.mkEnableOption "Enable nixos-cli module";
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.nixos-cli = {
       enable = true;
     };

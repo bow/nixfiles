@@ -4,31 +4,26 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.nixos) getMainUser isMainUserDefined;
+  inherit (lib) types;
+  libcfg = lib.nixsys.nixos;
 
-  mainUser = getMainUser config;
-  mainUserDefined = isMainUserDefined config;
+  mainUser = libcfg.getMainUser config;
+  mainUserDefined = libcfg.isMainUserDefined config;
 
   cfg = config.nixsys.system.virtualization.docker;
 in
 {
-  options.nixsys.system.virtualization.docker = mkOption {
+  options.nixsys.system.virtualization.docker = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.system.virtualization.docker";
+        enable = lib.mkEnableOption "nixsys.system.virtualization.docker";
       };
     };
   };
 
-  config = mkIf cfg.enable {
-    users.users = mkIf mainUserDefined {
+  config = lib.mkIf cfg.enable {
+    users.users = lib.mkIf mainUserDefined {
       ${mainUser.name}.extraGroups = [ "docker" ];
     };
 

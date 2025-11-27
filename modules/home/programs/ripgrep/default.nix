@@ -5,33 +5,27 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    mkPackageOption
-    types
-    ;
-  inherit (lib.nixsys.home) isNeovimEnabled;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
-  neovimEnabled = isNeovimEnabled config;
+  neovimEnabled = libcfg.isNeovimEnabled config;
 
   cfg = config.nixsys.home.programs.ripgrep;
 in
 {
-  options.nixsys.home.programs.ripgrep = mkOption {
+  options.nixsys.home.programs.ripgrep = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.ripgrep" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.ripgrep" // {
           default = true;
         };
-        package = mkPackageOption pkgs.unstable "ripgrep" { };
+        package = lib.mkPackageOption pkgs.unstable "ripgrep" { };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.ripgrep = {
       enable = true;
@@ -86,6 +80,6 @@ in
       ];
     };
 
-    programs.neovim.extraPackages = mkIf neovimEnabled [ cfg.package ];
+    programs.neovim.extraPackages = lib.mkIf neovimEnabled [ cfg.package ];
   };
 }

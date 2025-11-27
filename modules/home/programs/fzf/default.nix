@@ -6,34 +6,28 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    mkPackageOption
-    types
-    ;
-  inherit (lib.nixsys.home) isNeovimEnabled isShellBash;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
-  neovimEnabled = isNeovimEnabled config;
-  shellBash = isShellBash user;
+  neovimEnabled = libcfg.isNeovimEnabled config;
+  shellBash = libcfg.isShellBash user;
 
   cfg = config.nixsys.home.programs.fzf;
 in
 {
-  options.nixsys.home.programs.fzf = mkOption {
+  options.nixsys.home.programs.fzf = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.fzf" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.fzf" // {
           default = true;
         };
-        package = mkPackageOption pkgs.unstable "fzf" { };
+        package = lib.mkPackageOption pkgs.unstable "fzf" { };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.fzf = {
       enable = true;
@@ -56,6 +50,6 @@ in
       };
     };
 
-    programs.neovim.extraPackages = mkIf neovimEnabled [ cfg.package ];
+    programs.neovim.extraPackages = lib.mkIf neovimEnabled [ cfg.package ];
   };
 }

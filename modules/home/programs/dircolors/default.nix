@@ -5,29 +5,26 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.home) isShellBash;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
+
+  shellBash = libcfg.isShellBash user;
 
   cfg = config.nixsys.home.programs.dircolors;
 in
 {
-  options.nixsys.home.programs.dircolors = mkOption {
+  options.nixsys.home.programs.dircolors = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.dircolors" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.dircolors" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # codes:
     # formatting
     # 00=none  01=bold  04=underscore  05=blink  07=reverse  08=concealed
@@ -38,7 +35,7 @@ in
 
     programs.dircolors = {
       enable = true;
-      enableBashIntegration = isShellBash user;
+      enableBashIntegration = shellBash;
       settings = {
         EIGHTBIT = "1";
         NORMAL = "00";

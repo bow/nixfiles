@@ -5,34 +5,29 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
-  inherit (lib.strings) concatStringsSep;
-
-  cfg = config.nixsys.home.desktop.polybar;
-  i3Cfg = config.nixsys.home.desktop.i3;
+  inherit (lib) types;
 
   polybar-module-load-avg-sh = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
     ${pkgs.gawk}/bin/awk '{printf("%{F#665c54} %{F#e8e8d3}%2.1f · %2.1f", $1, $2)}' < /proc/loadavg
   '';
+
+  i3Cfg = config.nixsys.home.desktop.i3;
+
+  cfg = config.nixsys.home.desktop.polybar;
 in
 {
-  options.nixsys.home.desktop.polybar = mkOption {
+  options.nixsys.home.desktop.polybar = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.desktop.polybar" // {
+        enable = lib.mkEnableOption "nixsys.home.desktop.polybar" // {
           default = i3Cfg.enable;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.polybar = {
       enable = true;
@@ -107,9 +102,9 @@ in
           ];
 
           modules = {
-            left = lib.strings.optionalString i3Cfg.enable "i3";
+            left = lib.optionalString i3Cfg.enable "i3";
             center = "date";
-            right = concatStringsSep " " [
+            right = lib.concatStringsSep " " [
               "cpu"
               "memory"
               "loadavg"
@@ -340,7 +335,7 @@ in
         };
       };
 
-      settings."module/i3" = mkIf i3Cfg.enable {
+      settings."module/i3" = lib.mkIf i3Cfg.enable {
         type = "internal/i3";
         format = "<label-mode> <label-state> <label-mode>";
         strip.wsnumbers = true;

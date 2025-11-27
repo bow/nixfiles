@@ -4,29 +4,24 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.nixos) isXorgEnabled;
+  inherit (lib) types;
+  libcfg = lib.nixsys.nixos;
 
-  xorgEnabled = isXorgEnabled config;
+  xorgEnabled = libcfg.isXorgEnabled config;
 
   cfg = config.nixsys.system.hardware.touchpad;
 in
 {
-  options.nixsys.system.hardware.touchpad = mkOption {
+  options.nixsys.system.hardware.touchpad = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.system.hardware.touchpad";
+        enable = lib.mkEnableOption "nixsys.system.hardware.touchpad";
       };
     };
   };
 
-  config = mkIf (cfg.enable && xorgEnabled) {
+  config = lib.mkIf (cfg.enable && xorgEnabled) {
     services.libinput = {
       enable = true;
       touchpad = {

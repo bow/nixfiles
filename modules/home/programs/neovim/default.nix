@@ -5,33 +5,28 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkForce
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys) mkOpt;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.programs.neovim;
 in
 {
-  options.nixsys.home.programs.neovim = mkOption {
+  options.nixsys.home.programs.neovim = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.neovim" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.neovim" // {
           default = true;
         };
-        as-default-editor =
-          mkOpt types.bool true
-            "Whether to set the EDITOR environment variable to neovim or not";
+        as-default-editor = lib.mkOption {
+          description = "Whether to set the EDITOR environment variable to neovim or not";
+          type = types.bool;
+          default = true;
+        };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.neovim = {
       enable = true;
       viAlias = false;
@@ -191,8 +186,8 @@ in
       };
     };
 
-    home.sessionVariables = mkIf cfg.as-default-editor {
-      EDITOR = mkForce "nvim";
+    home.sessionVariables = lib.mkIf cfg.as-default-editor {
+      EDITOR = lib.mkForce "nvim";
     };
   };
 }

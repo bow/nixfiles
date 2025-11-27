@@ -4,31 +4,26 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.home) isGhosttyEnabled;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
-  ghosttyEnabled = isGhosttyEnabled config;
+  ghosttyEnabled = libcfg.isGhosttyEnabled config;
 
   cfg = config.nixsys.home.programs.rofi;
 in
 {
-  options.nixsys.home.programs.rofi = mkOption {
+  options.nixsys.home.programs.rofi = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.rofi" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.rofi" // {
           default = config.nixsys.home.desktop.i3.enable;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.rofi = {
       enable = true;

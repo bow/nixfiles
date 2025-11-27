@@ -7,21 +7,16 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.programs.git;
 in
 {
-  options.nixsys.home.programs.git = mkOption {
+  options.nixsys.home.programs.git = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.git" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.git" // {
           default = true;
         };
         inherit (options.programs.git) package;
@@ -29,7 +24,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
 

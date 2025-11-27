@@ -5,32 +5,29 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.home) isShellBash;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
+
+  shellBash = libcfg.isShellBash user;
 
   cfg = config.nixsys.home.programs.zoxide;
 in
 {
-  options.nixsys.home.programs.zoxide = mkOption {
+  options.nixsys.home.programs.zoxide = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.zoxide" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.zoxide" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.zoxide = {
       enable = true;
-      enableBashIntegration = isShellBash user;
+      enableBashIntegration = shellBash;
       options = [ "--cmd j" ];
     };
   };

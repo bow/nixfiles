@@ -4,28 +4,23 @@
   ...
 }:
 let
-  inherit (lib)
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
+  inherit (lib) types;
 
   cfg = config.nixsys.home.desktop.picom;
 in
 {
-  options.nixsys.home.desktop.picom = mkOption {
+  options.nixsys.home.desktop.picom = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.desktop.picom" // {
+        enable = lib.mkEnableOption "nixsys.home.desktop.picom" // {
           default = config.nixsys.home.desktop.i3.enable;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     # FIXME: This should be systemctl --user import-environment DISPLAY XAUTHORITY somewhere.
     systemd.user.services.picom = {

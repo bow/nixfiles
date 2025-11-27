@@ -5,33 +5,28 @@
   ...
 }:
 let
-  inherit (lib)
-    mkDefault
-    mkEnableOption
-    mkIf
-    mkOption
-    types
-    ;
+  inherit (lib) types;
+
+  i3Cfg = config.nixsys.users.main.session.i3;
 
   cfg = config.nixsys.users.main.session.polybar;
-  i3Cfg = config.nixsys.users.main.session.i3;
 in
 {
-  options.nixsys.users.main.session.polybar = mkOption {
+  options.nixsys.users.main.session.polybar = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.user.main.session.polybar" // {
+        enable = lib.mkEnableOption "nixsys.user.main.session.polybar" // {
           default = i3Cfg.enable;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services = {
       udev = {
-        enable = mkDefault true;
+        enable = lib.mkDefault true;
         packages = [
           (pkgs.writeTextFile {
             name = "polybar-module-battery-combined-sh-udev-rules";

@@ -5,36 +5,32 @@
   ...
 }:
 let
-  inherit (lib)
-    concatStrings
-    mkIf
-    mkEnableOption
-    mkOption
-    types
-    ;
-  inherit (lib.nixsys.home) isShellBash;
+  inherit (lib) types;
+  libcfg = lib.nixsys.home;
+
+  shellBash = libcfg.isShellBash user;
 
   cfg = config.nixsys.home.programs.starship;
 in
 {
-  options.nixsys.home.programs.starship = mkOption {
+  options.nixsys.home.programs.starship = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.starship" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.starship" // {
           default = true;
         };
       };
     };
   };
 
-  config = mkIf cfg.enable rec {
+  config = lib.mkIf cfg.enable rec {
     programs.starship = {
       enable = true;
-      enableBashIntegration = isShellBash user;
+      enableBashIntegration = shellBash;
 
       settings = {
-        format = concatStrings [
+        format = lib.concatStrings [
           "$nix_shell$custom "
           "$username$hostname$sudo "
           "$shlvl"
@@ -176,7 +172,7 @@ in
       };
     };
 
-    programs.bash.initExtra = mkIf programs.starship.enableBashIntegration ''
+    programs.bash.initExtra = lib.mkIf programs.starship.enableBashIntegration ''
       function set_window_title() {
           # shellcheck disable=SC2116
           echo -ne "\033]0; $(echo "Terminal ''${PWD/#$HOME/'~'}") \007"
