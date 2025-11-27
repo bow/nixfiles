@@ -51,7 +51,6 @@ let
     gnupg
     gnused
     go
-    graphviz
     grpcurl
     gzip
     hexyl

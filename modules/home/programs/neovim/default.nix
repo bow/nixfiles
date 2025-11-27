@@ -41,9 +41,6 @@ in
         pkgs.unstable.tree-sitter
         pkgs.unstable.lua54Packages.jsregexp
 
-        # Dot
-        tree-sitter-grammars.tree-sitter-dot
-
         # Elixir / Erlang
         tree-sitter-grammars.tree-sitter-elixir
         tree-sitter-grammars.tree-sitter-erlang
