@@ -41,10 +41,6 @@ in
         pkgs.unstable.tree-sitter
         pkgs.unstable.lua54Packages.jsregexp
 
-        # CSS
-        vscode-langservers-extracted
-        tree-sitter-grammars.tree-sitter-css
-
         # Dot
         tree-sitter-grammars.tree-sitter-dot
 
