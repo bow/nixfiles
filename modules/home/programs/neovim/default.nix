@@ -45,14 +45,6 @@ in
         tree-sitter-grammars.tree-sitter-elixir
         tree-sitter-grammars.tree-sitter-erlang
 
-        # Go
-        delve
-        go
-        gofumpt
-        gopls
-        tree-sitter-grammars.tree-sitter-go
-        tree-sitter-grammars.tree-sitter-gomod
-
         # Haskell
         haskell-language-server
         tree-sitter-grammars.tree-sitter-haskell

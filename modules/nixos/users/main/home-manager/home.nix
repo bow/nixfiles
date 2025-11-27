@@ -25,7 +25,6 @@ let
     coreutils-full
     curl
     curlie
-    delve
     difftastic
     distrobox
     dmidecode
@@ -50,7 +49,6 @@ let
     gnupatch
     gnupg
     gnused
-    go
     grpcurl
     gzip
     hexyl
