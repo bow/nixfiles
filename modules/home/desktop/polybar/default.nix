@@ -23,6 +23,7 @@ in
         enable = lib.mkEnableOption "nixsys.home.desktop.polybar" // {
           default = i3Cfg.enable;
         };
+        package = lib.mkPackageOption pkgs.unstable "polybar" { };
       };
     };
   };
@@ -32,7 +33,7 @@ in
     services.polybar = {
       enable = true;
 
-      package = pkgs.polybar.override {
+      package = cfg.package.override {
         alsaSupport = true;
         githubSupport = true;
         iwSupport = true;
