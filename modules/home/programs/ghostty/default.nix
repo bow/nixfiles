@@ -37,7 +37,7 @@ in
     default = { };
     type = types.submodule {
       options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.graphical.ghostty" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.ghostty" // {
           default = true;
         };
         package = lib.mkPackageOption pkgs.unstable "ghostty" { };
