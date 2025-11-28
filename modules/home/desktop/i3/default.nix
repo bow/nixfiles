@@ -289,7 +289,8 @@ in
             "${modifier}+r" = ''mode "resize"'';
 
             # Interact with applications.
-            "${modifier}+Return" = "exec ${pkgs.ghostty}/bin/ghostty";
+            # FIXME: Move this into ghostty module and set a default terminal here.
+            "${modifier}+Return" = "exec ${pkgs.unstable.ghostty}/bin/ghostty";
             "${modifier}+backslash" = "exec ${pkgs.xfce.thunar}/bin/thunar";
 
             # Audio + video controls.
