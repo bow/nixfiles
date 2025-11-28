@@ -21,5 +21,10 @@ in
     terraform = prev.terraform.overrideAttrs (_: {
       doCheck = false;
     });
+    unstable = prev.unstable // {
+      terraform = prev.unstable.terraform.overrideAttrs (_: {
+        doCheck = false;
+      });
+    };
   };
 }

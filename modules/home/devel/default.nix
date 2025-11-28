@@ -247,8 +247,7 @@ in
 
     terraform = {
       tools = [
-        # FIXME: Use unstable after fixing overlay issue.
-        pkgs.terraform
+        pkgs.unstable.terraform
       ];
       langservers = [
         pkgs.unstable.terraform-ls
