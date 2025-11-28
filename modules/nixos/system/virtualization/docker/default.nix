@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -18,6 +19,7 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "nixsys.system.virtualization.docker";
+        package = lib.mkPackageOption pkgs.unstable "docker" { };
       };
     };
   };
@@ -27,9 +29,15 @@ in
       ${mainUser.name}.extraGroups = [ "docker" ];
     };
 
+    environment.systemPackages = [
+      pkgs.unstable.docker-buildx
+      pkgs.unstable.docker-compose
+    ];
+
     virtualisation = {
       oci-containers.backend = "docker";
       docker = {
+        inherit (cfg) package;
         enable = true;
         autoPrune = {
           enable = true;

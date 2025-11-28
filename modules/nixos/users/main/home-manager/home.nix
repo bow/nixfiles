@@ -29,9 +29,6 @@ let
     dmidecode
     dnsmasq
     dnsutils
-    docker
-    docker-buildx
-    docker-compose
     dos2unix
     dua
     duf
