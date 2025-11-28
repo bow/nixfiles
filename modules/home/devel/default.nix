@@ -2,10 +2,14 @@
   config,
   lib,
   pkgs,
+  user,
   ...
 }:
 let
   inherit (lib) types;
+  libcfg = lib.nixsys.home;
+
+  shellBash = libcfg.isShellBash user;
 
   mkDevelModule =
     {
@@ -124,6 +128,19 @@ in
         pkgs.unstable.tree-sitter-grammars.tree-sitter-go
         pkgs.unstable.tree-sitter-grammars.tree-sitter-gomod
       ];
+      extraConfig = lib.optionalAttrs shellBash {
+        programs.bash.bashrcExtra = with config.home; ''
+          # Go config.
+          export GOPATH="${homeDirectory}/.local/go"
+          case ":''${PATH}:" in
+              *:"${homeDirectory}/.local/go/bin":*)
+                  ;;
+              *)
+                  export PATH="${homeDirectory}/.local/go/bin:''${PATH}"
+                  ;;
+          esac
+        '';
+      };
     })
 
     (mkDevelModule {

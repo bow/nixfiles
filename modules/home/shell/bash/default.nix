@@ -268,16 +268,6 @@ in
         EOF
         }
 
-        # go config.
-        export GOPATH="''${HOME}/.local/go"
-        case ":''${PATH}:" in
-            *:"''${HOME}/.local/go/bin":*)
-                ;;
-            *)
-                export PATH="''${HOME}/.local/go/bin:''${PATH}"
-                ;;
-        esac
-
         # cargo config
         case ":''${PATH}:" in
             *:"''${HOME}/.cargo/bin":*)
