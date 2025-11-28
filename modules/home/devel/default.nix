@@ -11,6 +11,8 @@ let
 
   shellBash = libcfg.isShellBash user;
 
+  mkDevelModuleImports = lib.mapAttrsToList (name: args: mkDevelModule ({ inherit name; } // args));
+
   mkDevelModule =
     {
       name,
@@ -74,18 +76,16 @@ in
     };
   };
 
-  imports = [
+  imports = mkDevelModuleImports {
 
-    (mkDevelModule {
-      name = "bazel";
+    bazel = {
       tools = [
         pkgs.unstable.bazel
         pkgs.unstable.starlark-rust
       ];
-    })
+    };
 
-    (mkDevelModule {
-      name = "c";
+    c = {
       langservers = [
         pkgs.unstable.ccls
       ];
@@ -102,20 +102,18 @@ in
         pkgs.unstable.tree-sitter-grammars.tree-sitter-cmake
         pkgs.unstable.tree-sitter-grammars.tree-sitter-cpp
       ];
-    })
+    };
 
-    (mkDevelModule {
-      name = "css";
+    css = {
       langservers = [
         pkgs.vscode-langservers-extracted
       ];
       treesitters = [
         pkgs.unstable.tree-sitter-grammars.tree-sitter-css
       ];
-    })
+    };
 
-    (mkDevelModule {
-      name = "go";
+    go = {
       langservers = [
         pkgs.unstable.gopls
       ];
@@ -141,10 +139,9 @@ in
           esac
         '';
       };
-    })
+    };
 
-    (mkDevelModule {
-      name = "graphviz";
+    graphviz = {
       langservers = [
         pkgs.unstable.dot-language-server
       ];
@@ -154,10 +151,9 @@ in
       treesitters = [
         pkgs.unstable.tree-sitter-grammars.tree-sitter-dot
       ];
-    })
+    };
 
-    (mkDevelModule {
-      name = "sh";
+    sh = {
       langservers = [
         pkgs.unstable.bash-language-server
       ];
@@ -167,6 +163,6 @@ in
       treesitters = [
         pkgs.unstable.tree-sitter-grammars.tree-sitter-bash
       ];
-    })
-  ];
+    };
+  };
 }
