@@ -5,13 +5,7 @@
   ...
 }:
 let
-  inherit (lib)
-    mkIf
-    mkEnableOption
-    mkOption
-    mkPackageOption
-    types
-    ;
+  inherit (lib) types;
 
   handlerScriptName = "ghostty-text-handler";
   ghostty-text-handler = pkgs.writeShellScriptBin "${handlerScriptName}" ''
@@ -39,19 +33,19 @@ let
   cfg = config.nixsys.home.programs.ghostty;
 in
 {
-  options.nixsys.home.programs.ghostty = mkOption {
+  options.nixsys.home.programs.ghostty = lib.mkOption {
     default = { };
     type = types.submodule {
       options = {
-        enable = mkEnableOption "nixsys.home.programs.graphical.ghostty" // {
+        enable = lib.mkEnableOption "nixsys.home.programs.graphical.ghostty" // {
           default = true;
         };
-        package = mkPackageOption pkgs "ghostty" { };
+        package = lib.mkPackageOption pkgs "ghostty" { };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home.packages = [ cfg.package ];
 
