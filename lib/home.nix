@@ -15,9 +15,14 @@ _: rec {
   getRipgrepPackage = config: getModulePackage config "ripgrep";
 
   /**
+    Return whether the current config enables i3.
+  */
+  isI3Enabled = config: config.nixsys.home.desktop.i3.enable;
+
+  /**
     Return whether the current config enables Xorg.
   */
-  isXorgEnabled = config: config.nixsys.home.desktop.i3.enable;
+  isXorgEnabled = isI3Enabled;
 
   /**
     Return whether the current config enables desktop.

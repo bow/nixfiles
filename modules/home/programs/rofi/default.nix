@@ -8,6 +8,7 @@ let
   libcfg = lib.nixsys.home;
 
   ghosttyEnabled = libcfg.isGhosttyEnabled config;
+  i3Enabled = libcfg.isI3Enabled config;
 
   cfg = config.nixsys.home.programs.rofi;
 in
@@ -17,7 +18,7 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "nixsys.home.programs.rofi" // {
-          default = config.nixsys.home.desktop.i3.enable;
+          default = i3Enabled;
         };
       };
     };

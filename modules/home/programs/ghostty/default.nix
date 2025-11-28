@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
   handlerScriptName = "ghostty-text-handler";
   ghostty-text-handler = pkgs.writeShellScriptBin "${handlerScriptName}" ''
@@ -38,7 +39,7 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "nixsys.home.programs.ghostty" // {
-          default = true;
+          default = libcfg.isDesktopEnabled config;
         };
         package = lib.mkPackageOption pkgs.unstable "ghostty" { };
       };

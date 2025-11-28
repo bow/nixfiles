@@ -6,6 +6,9 @@
 }:
 let
   inherit (lib) types;
+  libcfg = lib.nixsys.home;
+
+  desktopEnabled = libcfg.isDesktopEnabled config;
 
   cfg = config.nixsys.home.programs.zathura;
 in
@@ -15,7 +18,7 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "nixsys.home.programs.zathura" // {
-          default = true;
+          default = desktopEnabled;
         };
         package = lib.mkPackageOption pkgs.unstable "zathura" { };
       };

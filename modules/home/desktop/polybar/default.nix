@@ -6,12 +6,13 @@
 }:
 let
   inherit (lib) types;
+  libcfg = lib.nixsys.home;
 
   polybar-module-load-avg-sh = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
     ${pkgs.gawk}/bin/awk '{printf("%{F#665c54} %{F#e8e8d3}%2.1f · %2.1f", $1, $2)}' < /proc/loadavg
   '';
 
-  i3Cfg = config.nixsys.home.desktop.i3;
+  i3Enabled = libcfg.isI3Enabled config;
 
   cfg = config.nixsys.home.desktop.polybar;
 in
@@ -21,7 +22,7 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "nixsys.home.desktop.polybar" // {
-          default = i3Cfg.enable;
+          default = i3Enabled;
         };
         package = lib.mkPackageOption pkgs.unstable "polybar" { };
       };
@@ -37,7 +38,7 @@ in
         alsaSupport = true;
         githubSupport = true;
         iwSupport = true;
-        i3Support = i3Cfg.enable;
+        i3Support = i3Enabled;
         mpdSupport = true;
         nlSupport = true;
         pulseSupport = true;
@@ -103,7 +104,7 @@ in
           ];
 
           modules = {
-            left = lib.optionalString i3Cfg.enable "i3";
+            left = lib.optionalString i3Enabled "i3";
             center = "date";
             right = lib.concatStringsSep " " [
               "cpu"
@@ -336,7 +337,7 @@ in
         };
       };
 
-      settings."module/i3" = lib.mkIf i3Cfg.enable {
+      settings."module/i3" = lib.mkIf i3Enabled {
         type = "internal/i3";
         format = "<label-mode> <label-state> <label-mode>";
         strip.wsnumbers = true;
