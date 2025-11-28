@@ -1,0 +1,56 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  inherit (lib) types;
+
+  cfg = config.nixsys.home.programs.zathura;
+in
+{
+  options.nixsys.home.programs.zathura = lib.mkOption {
+    default = { };
+    type = types.submodule {
+      options = {
+        enable = lib.mkEnableOption "nixsys.home.programs.zathura" // {
+          default = true;
+        };
+        package = lib.mkPackageOption pkgs.unstable "zathura" { };
+      };
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.zathura = {
+      inherit (cfg) package;
+      enable = true;
+      mappings = {
+        "[index] q" = "quit";
+      };
+      options = {
+        selection-clipboard = "clipboard";
+        statusbar-basename = true;
+
+        guioptions = "cv";
+        font = "Iosevka Term SS03 Light 12";
+
+        default-bg = "#151515";
+        default-fg = "#ebdbb2";
+
+        completion-group-fg = "#ebdbb2";
+        completion-group-bg = "#458588";
+
+        inputbar-fg = "#ebdbb2";
+        inputbar-bg = "#151515";
+
+        completion-highlight-bg = "#fabd2f";
+        completion-highlight-fg = "#151515";
+
+        highlight-color = "#6bb95f";
+        highlight-active-color = "#b769c3";
+      };
+    };
+  };
+}

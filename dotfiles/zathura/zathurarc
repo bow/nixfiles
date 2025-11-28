@@ -4,7 +4,7 @@ set selection-clipboard clipboard
 set statusbar-basename true
 
 set guioptions "cv"
-set font "Inconsolata Nerd Font 12"
+set font "Iosevka Term SS03 Light 12"
 
 set default-bg "#151515"
 set default-fg "#ebdbb2"

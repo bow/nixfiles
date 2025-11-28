@@ -158,9 +158,6 @@ let
     xfce.thunar-archive-plugin
     xfce.thunar-dropbox-plugin
     xfce.thunar-volman
-
-    # PDF reader.
-    zathura
   ];
 in
 {
