@@ -40,7 +40,7 @@ in
         enable = lib.mkEnableOption "nixsys.home.programs.graphical.ghostty" // {
           default = true;
         };
-        package = lib.mkPackageOption pkgs "ghostty" { };
+        package = lib.mkPackageOption pkgs.unstable "ghostty" { };
       };
     };
   };
