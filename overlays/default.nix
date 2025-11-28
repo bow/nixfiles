@@ -16,20 +16,6 @@ in
     local = import ../packages { pkgs = final; };
   };
 
-  replacements = _final: prev: {
-    inherit (pkgsUnstableForSystem prev.system)
-      asdf-vm
-      ghostty
-      poetry
-      polybar
-      pyenv
-      rofi
-      rofi-pass
-      rustup
-      uv
-      ;
-  };
-
   modifications = _final: prev: {
     # To speed up builds.
     terraform = prev.terraform.overrideAttrs (_: {
