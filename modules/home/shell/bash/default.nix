@@ -52,8 +52,6 @@ in
         PAGER = "less";
         LESS = "-F -X -g -S -w -z-2 -#.1 -M -R";
         EDITOR = if neovimEnabled then "nvim" else "vi";
-
-        PYTHONPYCACHEPREFIX = ''${config.xdg.cacheHome}/python/pycache'';
       }
       // lib.optionalAttrs zoxideEnabled { _ZO_ECHO = 1; };
 
@@ -267,18 +265,6 @@ in
         print(''${modname}.__file__)
         EOF
         }
-
-        # cargo config
-        case ":''${PATH}:" in
-            *:"''${HOME}/.cargo/bin":*)
-                ;;
-            *)
-                export PATH="''${HOME}/.cargo/bin:''${PATH}"
-                ;;
-        esac
-
-        # Ensure directories exist.
-        mkdir -p ${sessionVariables.PYTHONPYCACHEPREFIX}
 
         # Load completions.
         # complete -C "${pkgs.terraform}/bin/terraform" terraform

@@ -15,9 +15,7 @@ let
 
   cliPackages = with pkgs; [
     age
-    asdf-vm
     aria2
-    asciidoctor-with-extensions
     btop
     cloc
     coreutils-full
@@ -55,7 +53,6 @@ let
     iperf3
     iproute2
     jq
-    just
     ldns
     libvirt
     lld
@@ -67,30 +64,20 @@ let
     mtr
     nerdctl
     nh
-    nixfmt-rfc-style
     nmap
-    nodejs
     ntfs3g
     p7zip
     packer
     pass
     pciutils
     pdftk
-    poetry
     pv
-    pyenv
-    python3
     qemu
     restic
-    rustup
     sequoia-sq
     socat
     strace
-    stylua
     sysstat
-    terraform
-    texlab
-    texliveFull
     tmux
     tree
     unrar
@@ -201,7 +188,6 @@ in
 
     programs = {
       home-manager.enable = true;
-      uv.enable = true;
     };
 
     # Reload systemd units on config change.
