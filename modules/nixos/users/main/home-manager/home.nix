@@ -19,7 +19,6 @@ let
     aria2
     asciidoctor-with-extensions
     autojump
-    bat
     btop
     cloc
     coreutils-full
