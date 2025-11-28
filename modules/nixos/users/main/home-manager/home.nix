@@ -18,13 +18,11 @@ let
     asdf-vm
     aria2
     asciidoctor-with-extensions
-    autojump
     btop
     cloc
     coreutils-full
     curl
     curlie
-    difftastic
     distrobox
     dmidecode
     dnsmasq
@@ -66,9 +64,7 @@ let
     ltrace
     lzip
     minify
-    mpd
     mtr
-    ncmpcpp
     nerdctl
     nh
     nixfmt-rfc-style
@@ -85,12 +81,10 @@ let
     pyenv
     python3
     qemu
-    readline
     restic
     rustup
     sequoia-sq
     socat
-    stow
     strace
     stylua
     sysstat
@@ -114,7 +108,6 @@ let
     xz
     yazi
     zip
-    zoxide
     zstd
   ];
 
