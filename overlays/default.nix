@@ -2,17 +2,12 @@
   inputs,
   ...
 }:
-let
-  pkgsUnstableForSystem =
-    system:
-    import inputs.nixpkgs-unstable {
-      inherit system;
-      config.allowUnfree = true;
-    };
-in
 {
   additions = final: prev: {
-    unstable = pkgsUnstableForSystem prev.system;
+    unstable = import inputs.nixpkgs-unstable {
+      inherit (prev) system;
+      config.allowUnfree = true;
+    };
     local = import ../packages { pkgs = final; };
   };
 
