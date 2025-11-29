@@ -46,7 +46,7 @@ in
       gc = {
         automatic = true;
         dates = "daily";
-        options = "--delete-older-than ${builtins.toString cfg.gc-max-retention-days}";
+        options = "--delete-older-than ${builtins.toString cfg.gc-max-retention-days}d";
       };
 
       settings = {
