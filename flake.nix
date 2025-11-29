@@ -57,6 +57,14 @@
             };
           }
         );
+
+      user = {
+        name = "default";
+        full-name = "Default User";
+        email = "default@email.com";
+        city = "Reykjavik";
+        timezone = "UTC";
+      };
     in
     {
       inherit lib;
@@ -66,11 +74,12 @@
       homeConfigurations = {
         bow = lib.homeManagerConfiguration {
           extraSpecialArgs = {
-            inherit inputs outputs lib;
-            user = rec {
-              name = "bow";
-              home-directory = "/home/${name}";
-            };
+            inherit
+              inputs
+              outputs
+              lib
+              user
+              ;
             asStandalone = true;
           };
           modules = [ ./modules/nixos/users/main/home-manager/home.nix ];
@@ -81,7 +90,14 @@
       # usage: sudo nixos-rebuild switch --flake .#machinename
       nixosConfigurations = {
         duskglow = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs lib; };
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              lib
+              user
+              ;
+          };
           modules = [ ./machines/duskglow ];
         };
         # ISO installation media for nixos-anywhere
@@ -105,7 +121,14 @@
           ];
         };
         vmlab = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs lib; };
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              lib
+              user
+              ;
+          };
           modules = [ ./machines/vmlab ];
         };
       };

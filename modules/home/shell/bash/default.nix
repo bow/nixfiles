@@ -22,7 +22,7 @@ in
 {
   config = lib.mkIf shellBash {
 
-    programs.bash = rec {
+    programs.bash = {
       enable = true;
       enableCompletion = true;
       enableVteIntegration = true;
@@ -245,7 +245,7 @@ in
         function calc() { ${pkgs.coreutils}/bin/echo "''$*" | ${pkgs.bc}/bin/bc; }
 
         # Check weather from wttr.
-        function wttr() { ${pkgs.curl}/bin/curl http://wttr.in/"''${1:-Copenhagen}"; }
+        function wttr() { ${pkgs.curl}/bin/curl http://wttr.in/"''${1:-${user.city}}"; }
 
         # Show the absolute path of a command executable.
         # shellcheck disable=SC2164

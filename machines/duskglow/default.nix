@@ -2,7 +2,7 @@
   inputs,
   outputs,
   lib,
-  pkgs,
+  user,
   ...
 }:
 let
@@ -31,9 +31,13 @@ rec {
       virtualization.docker = enabled;
     };
     users.main = {
-      name = "bow";
-      full-name = "Wibowo Arindrarto";
-      email = "contact@arindrarto.dev";
+      inherit (user)
+        name
+        full-name
+        email
+        city
+        timezone
+        ;
       trusted = true;
       session.greetd = enabledWith {
         settings.auto-login = true;

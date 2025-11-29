@@ -45,6 +45,8 @@ in
             name
             email
             full-name
+            city
+            timezone
             home-directory
             shell
             ;
