@@ -51,9 +51,9 @@ in
             ;
         };
         theme = {
-          desktop.bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash}/desktop-bg";
+          desktop.bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash.desktop-bg}";
           lock-screen = {
-            bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash}/lock-screen-bg";
+            bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash.lock-screen-bg}";
             font = {
               name = "Titillium";
               package = pkgs.local.titillium-font;

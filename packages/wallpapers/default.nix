@@ -3,30 +3,39 @@
   ...
 }:
 let
-  mkWallpaperPkg = wallpaper: {
-    inherit (wallpaper) name;
-    value = pkgs.stdenvNoCC.mkDerivation {
-      pname = "${wallpaper.name}";
-      version = "0.0.0";
+  mkWallpaperAttrs =
+    wallpaper:
+    let
+      drv = pkgs.stdenvNoCC.mkDerivation {
+        pname = "${wallpaper.name}-bare";
+        version = "0.0.0";
 
-      src = pkgs.fetchurl {
-        inherit (wallpaper) sha256;
-        name = "${wallpaper.name}.${wallpaper.ext}";
-        url = "${wallpaper.url}";
+        src = pkgs.fetchurl {
+          inherit (wallpaper) sha256;
+          name = "${wallpaper.name}.${wallpaper.ext}";
+          url = "${wallpaper.url}";
+        };
+
+        unpackPhase = "true";
+
+        buildPhase = ''
+          mkdir -p $out
+          cp $src $out/desktop-bg.${wallpaper.ext}
+          ${pkgs.imagemagick}/bin/magick $src -blur 0x8 $out/lock-screen-bg.${wallpaper.ext}
+        '';
       };
-
-      unpackPhase = "true";
-
-      buildPhase = ''
-        mkdir -p $out
-        cp $src $out/desktop-bg
-        ${pkgs.imagemagick}/bin/magick $src -blur 0x8 $out/lock-screen-bg
-      '';
+    in
+    {
+      name = "${wallpaper.name}";
+      value = {
+        package = drv;
+        desktop-bg = "${drv}/desktop-bg.${wallpaper.ext}";
+        lock-screen-bg = "${drv}/lock-screen-bg.${wallpaper.ext}";
+      };
     };
-  };
 in
 pkgs.lib.listToAttrs (
-  builtins.map mkWallpaperPkg [
+  builtins.map mkWallpaperAttrs [
     {
       name = "francesco-ungaro-lcQzCo-X1vM-unsplash";
       ext = "jpg";
