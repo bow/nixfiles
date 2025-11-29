@@ -44,6 +44,7 @@ rec {
           mod-key = "Mod1";
         };
         devel = enabled;
+        theme.north-01 = enabled;
       };
     };
   };

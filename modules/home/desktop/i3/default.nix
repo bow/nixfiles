@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  theme,
   user,
   ...
 }:
@@ -10,6 +9,8 @@ let
   inherit (lib) types;
   inherit (lib.nixsys) mkOpt;
   libcfg = lib.nixsys.home;
+
+  theme = config.nixsys.home.theme.active;
 
   lock-sh =
     with theme.lock-screen;

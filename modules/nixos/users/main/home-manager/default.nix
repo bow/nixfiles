@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   inputs,
   outputs,
   ...
@@ -49,27 +48,6 @@ in
             home-directory
             shell
             ;
-        };
-        theme = {
-          desktop.bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash.desktop-bg}";
-          lock-screen = {
-            bg = "${pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash.lock-screen-bg}";
-            font = {
-              name = "Titillium";
-              package = pkgs.local.titillium-font;
-            };
-            colors = rec {
-              time = light;
-              greeter = dark;
-
-              light = "#ffffffff";
-              dark = "#1d2021ee";
-              ring = "#007c5bff";
-              ring-hl = "#e3ac2dff";
-              ring-bs = "#d1472fff";
-              ring-sep = "#00000000";
-            };
-          };
         };
         asStandalone = false;
       };

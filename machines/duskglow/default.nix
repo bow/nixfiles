@@ -2,6 +2,7 @@
   inputs,
   outputs,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -40,6 +41,7 @@ rec {
       home-manager = enabledWith {
         desktop.i3 = enabled;
         devel = enabled;
+        theme.north-01 = enabled;
       };
     };
   };
