@@ -4,6 +4,9 @@
   ...
 }:
 {
+  # Placeholder for functions exported through the flake.
+  pub = { };
+
   # nixos modules config-related library functions.
   nixos = import ./nixos.nix { inherit lib; };
 

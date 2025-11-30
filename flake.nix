@@ -67,7 +67,8 @@
       };
     in
     {
-      inherit lib;
+      # Export only public functions.
+      lib = lib.nixsys.pub;
 
       # home-manager configuration.
       # usage: home-manager --flake .#{user}
