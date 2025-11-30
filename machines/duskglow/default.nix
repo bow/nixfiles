@@ -12,7 +12,7 @@ rec {
   system.stateVersion = "25.05";
 
   imports = [
-    outputs.nixosModules.all
+    outputs.nixosModules.nixsys
     ./hardware.nix
     ./disk.nix
     inputs.disko.nixosModules.disko

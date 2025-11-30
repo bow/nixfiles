@@ -54,7 +54,7 @@ in
 
       users.${cfgMainUser.name} = {
         imports = [
-          outputs.homeManagerModules.all
+          outputs.homeManagerModules.nixsys
           ./home.nix
         ];
 
