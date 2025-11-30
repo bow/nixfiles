@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   shellBash = libcfg.isShellBash user;
@@ -13,14 +12,9 @@ let
   cfg = config.nixsys.home.programs.zoxide;
 in
 {
-  options.nixsys.home.programs.zoxide = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.zoxide" // {
-          default = true;
-        };
-      };
+  options.nixsys.home.programs.zoxide = {
+    enable = lib.mkEnableOption "nixsys.home.programs.zoxide" // {
+      default = true;
     };
   };
 

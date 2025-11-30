@@ -10,19 +10,14 @@ let
   cfg = config.nixsys.home.programs.neovim;
 in
 {
-  options.nixsys.home.programs.neovim = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.neovim" // {
-          default = true;
-        };
-        as-default-editor = lib.mkOption {
-          description = "Whether to set the EDITOR environment variable to neovim or not";
-          type = types.bool;
-          default = true;
-        };
-      };
+  options.nixsys.home.programs.neovim = {
+    enable = lib.mkEnableOption "nixsys.home.programs.neovim" // {
+      default = true;
+    };
+    as-default-editor = lib.mkOption {
+      description = "Whether to set the EDITOR environment variable to neovim or not";
+      type = types.bool;
+      default = true;
     };
   };
 

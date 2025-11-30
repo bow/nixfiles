@@ -27,33 +27,29 @@ let
       cfg = config.nixsys.home.devel.${name};
     in
     {
-      options.nixsys.home.devel.${name} = lib.mkOption {
-        default = { };
-        type = types.submodule {
-          options = {
-            enable = lib.mkEnableOption "nixsys.home.devel.${name}" // {
-              default = config.nixsys.home.devel.enable;
-            };
-            enable-neovim-integration = lib.mkOption {
-              default = true;
-              type = types.bool;
-            };
-            langservers = lib.mkOption {
-              type = types.listOf types.package;
-              default = langservers;
-            };
-            tools = lib.mkOption {
-              type = types.listOf types.package;
-              default = tools;
-            };
-            treesitters = lib.mkOption {
-              type = types.listOf types.package;
-              default = treesitters;
-            };
-          }
-          // extraOptions;
+      options.nixsys.home.devel.${name} = {
+        enable = lib.mkEnableOption "nixsys.home.devel.${name}" // {
+          default = config.nixsys.home.devel.enable;
         };
-      };
+        enable-neovim-integration = lib.mkOption {
+          default = true;
+          type = types.bool;
+        };
+        langservers = lib.mkOption {
+          type = types.listOf types.package;
+          default = langservers;
+        };
+        tools = lib.mkOption {
+          type = types.listOf types.package;
+          default = tools;
+        };
+        treesitters = lib.mkOption {
+          type = types.listOf types.package;
+          default = treesitters;
+        };
+      }
+      // extraOptions;
+
       config = lib.mkIf cfg.enable (
         {
           home.packages = cfg.tools;
@@ -66,14 +62,8 @@ let
     };
 in
 {
-  options.nixsys.home.devel = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      freeformType = types.attrsOf types.anything;
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.devel";
-      };
-    };
+  options.nixsys.home.devel = {
+    enable = lib.mkEnableOption "nixsys.home.devel";
   };
 
   imports = mkDevelModuleImports {

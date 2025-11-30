@@ -4,7 +4,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   ghosttyEnabled = libcfg.isGhosttyEnabled config;
@@ -13,14 +12,9 @@ let
   cfg = config.nixsys.home.programs.rofi;
 in
 {
-  options.nixsys.home.programs.rofi = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.rofi" // {
-          default = i3Enabled;
-        };
-      };
+  options.nixsys.home.programs.rofi = {
+    enable = lib.mkEnableOption "nixsys.home.programs.rofi" // {
+      default = i3Enabled;
     };
   };
 

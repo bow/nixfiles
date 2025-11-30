@@ -5,19 +5,12 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.home.fonts;
 in
 {
-  options.nixsys.home.fonts = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.fonts" // {
-          default = true;
-        };
-      };
+  options.nixsys.home.fonts = {
+    enable = lib.mkEnableOption "nixsys.home.fonts" // {
+      default = true;
     };
   };
 

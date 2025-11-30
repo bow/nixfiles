@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.nixos;
 
   mainUser = libcfg.getMainUser config;
@@ -14,14 +13,9 @@ let
   cfg = config.nixsys.system.virtualization.docker;
 in
 {
-  options.nixsys.system.virtualization.docker = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.system.virtualization.docker";
-        package = lib.mkPackageOption pkgs.unstable "docker" { };
-      };
-    };
+  options.nixsys.system.virtualization.docker = {
+    enable = lib.mkEnableOption "nixsys.system.virtualization.docker";
+    package = lib.mkPackageOption pkgs.unstable "docker" { };
   };
 
   config = lib.mkIf cfg.enable {

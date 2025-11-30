@@ -4,19 +4,12 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.home.programs.readline;
 in
 {
-  options.nixsys.home.programs.readline = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.readline" // {
-          default = true;
-        };
-      };
+  options.nixsys.home.programs.readline = {
+    enable = lib.mkEnableOption "nixsys.home.programs.readline" // {
+      default = true;
     };
   };
 

@@ -4,19 +4,12 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.home.desktop.picom;
 in
 {
-  options.nixsys.home.desktop.picom = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.desktop.picom" // {
-          default = config.nixsys.home.desktop.i3.enable;
-        };
-      };
+  options.nixsys.home.desktop.picom = {
+    enable = lib.mkEnableOption "nixsys.home.desktop.picom" // {
+      default = config.nixsys.home.desktop.i3.enable;
     };
   };
 

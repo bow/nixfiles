@@ -10,16 +10,11 @@ let
   cfg = config.nixsys.home.theme.north-01;
 in
 {
-  options.nixsys.home.theme.north-01 = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.theme.north-01";
-        wallpaper = lib.mkOption {
-          type = types.attrs;
-          default = pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash;
-        };
-      };
+  options.nixsys.home.theme.north-01 = {
+    enable = lib.mkEnableOption "nixsys.home.theme.north-01";
+    wallpaper = lib.mkOption {
+      type = types.attrs;
+      default = pkgs.local.wallpapers.francesco-ungaro-lcQzCo-X1vM-unsplash;
     };
   };
 

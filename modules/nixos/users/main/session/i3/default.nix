@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.nixos;
 
   mainUserName = libcfg.getMainUserName config;
@@ -14,14 +13,9 @@ let
   cfg = config.nixsys.users.main.session.i3;
 in
 {
-  options.nixsys.users.main.session.i3 = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.user.main.session.i3" // {
-          default = config.nixsys.users.main.home-manager.desktop.i3.enable;
-        };
-      };
+  options.nixsys.users.main.session.i3 = {
+    enable = lib.mkEnableOption "nixsys.user.main.session.i3" // {
+      default = config.nixsys.users.main.home-manager.desktop.i3.enable;
     };
   };
 

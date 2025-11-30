@@ -12,16 +12,11 @@ let
   cfg = config.nixsys.home.programs.git;
 in
 {
-  options.nixsys.home.programs.git = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.git" // {
-          default = true;
-        };
-        inherit (options.programs.git) package;
-      };
+  options.nixsys.home.programs.git = {
+    enable = lib.mkEnableOption "nixsys.home.programs.git" // {
+      default = true;
     };
+    inherit (options.programs.git) package;
   };
 
   config = lib.mkIf cfg.enable {

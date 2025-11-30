@@ -12,16 +12,11 @@ let
   cfg = config.nixsys.system.virtualized;
 in
 {
-  options.nixsys.system.virtualized = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.system.virtualized";
-        guest-type = lib.mkOption {
-          type = types.enum [ "qemu" ];
-          description = "The type of the guest agent to run";
-        };
-      };
+  options.nixsys.system.virtualized = {
+    enable = lib.mkEnableOption "nixsys.system.virtualized";
+    guest-type = lib.mkOption {
+      type = types.enum [ "qemu" ];
+      description = "The type of the guest agent to run";
     };
   };
 

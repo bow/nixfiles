@@ -82,15 +82,10 @@ let
   cfg = config.nixsys.home.desktop.i3;
 in
 {
-  options.nixsys.home.desktop.i3 = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.desktop.i3";
-        mod-key = mkOpt types.str "Mod4" "Mod key for i3";
-        lock-script = mkOpt types.package lock-sh "Screen lock script";
-      };
-    };
+  options.nixsys.home.desktop.i3 = {
+    enable = lib.mkEnableOption "nixsys.home.desktop.i3";
+    mod-key = mkOpt types.str "Mod4" "Mod key for i3";
+    lock-script = mkOpt types.package lock-sh "Screen lock script";
   };
 
   config = lib.mkIf cfg.enable {

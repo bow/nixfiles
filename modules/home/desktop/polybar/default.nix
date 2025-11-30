@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   polybar-module-load-avg-sh = pkgs.writeShellScript "polybar-module-load-avg.sh" ''
@@ -17,16 +16,11 @@ let
   cfg = config.nixsys.home.desktop.polybar;
 in
 {
-  options.nixsys.home.desktop.polybar = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.desktop.polybar" // {
-          default = i3Enabled;
-        };
-        package = lib.mkPackageOption pkgs.unstable "polybar" { };
-      };
+  options.nixsys.home.desktop.polybar = {
+    enable = lib.mkEnableOption "nixsys.home.desktop.polybar" // {
+      default = i3Enabled;
     };
+    package = lib.mkPackageOption pkgs.unstable "polybar" { };
   };
 
   config = lib.mkIf cfg.enable {

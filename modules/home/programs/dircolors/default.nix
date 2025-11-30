@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   shellBash = libcfg.isShellBash user;
@@ -13,14 +12,9 @@ let
   cfg = config.nixsys.home.programs.dircolors;
 in
 {
-  options.nixsys.home.programs.dircolors = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.dircolors" // {
-          default = true;
-        };
-      };
+  options.nixsys.home.programs.dircolors = {
+    enable = lib.mkEnableOption "nixsys.home.programs.dircolors" // {
+      default = true;
     };
   };
 

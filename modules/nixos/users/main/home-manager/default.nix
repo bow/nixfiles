@@ -18,14 +18,12 @@ in
 
   options.nixsys.users.main.home-manager = lib.mkOption {
     default = { };
+    # Make this a freeform submodule so we can let home-manager modules define anything
+    # from here on and not bother nixos modules about it.
     type = types.submodule {
       freeformType = types.attrsOf types.anything;
       options = {
         enable = lib.mkEnableOption "nixsys.users.main.home-manager";
-        system = lib.mkOption {
-          default = { };
-          type = types.attrsOf types.anything;
-        };
       };
     };
   };

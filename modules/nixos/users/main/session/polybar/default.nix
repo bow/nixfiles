@@ -5,21 +5,14 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   i3Cfg = config.nixsys.users.main.session.i3;
 
   cfg = config.nixsys.users.main.session.polybar;
 in
 {
-  options.nixsys.users.main.session.polybar = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.user.main.session.polybar" // {
-          default = i3Cfg.enable;
-        };
-      };
+  options.nixsys.users.main.session.polybar = {
+    enable = lib.mkEnableOption "nixsys.user.main.session.polybar" // {
+      default = i3Cfg.enable;
     };
   };
 

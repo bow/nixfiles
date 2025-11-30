@@ -6,7 +6,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   neovimEnabled = libcfg.isNeovimEnabled config;
@@ -15,16 +14,11 @@ let
   cfg = config.nixsys.home.programs.fzf;
 in
 {
-  options.nixsys.home.programs.fzf = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.fzf" // {
-          default = true;
-        };
-        package = lib.mkPackageOption pkgs.unstable "fzf" { };
-      };
+  options.nixsys.home.programs.fzf = {
+    enable = lib.mkEnableOption "nixsys.home.programs.fzf" // {
+      default = true;
     };
+    package = lib.mkPackageOption pkgs.unstable "fzf" { };
   };
 
   config = lib.mkIf cfg.enable {

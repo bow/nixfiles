@@ -17,19 +17,21 @@ let
   cfg = config.nixsys.system.networking.networkmanager;
 in
 {
-  options.nixsys.system.networking.networkmanager = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.system.networking.networkmanager";
-        dns = mkOpt types.str "default" "Sets networking.networkmanager.dns";
-        insert-nameservers =
-          mkOpt (types.listOf types.str) [ ]
-            "Sets networking.networkmanager.insertNameservers";
-        append-nameservers =
-          mkOpt (types.listOf types.str) [ ]
-            "Sets networking.networkmanager.appendNameservers";
-      };
+  options.nixsys.system.networking.networkmanager = {
+    enable = lib.mkEnableOption "nixsys.system.networking.networkmanager";
+
+    dns = mkOpt types.str "default" "Sets networking.networkmanager.dns";
+
+    append-nameservers = lib.mkOption {
+      description = "Sets networking.networkmanager.appendNameservers";
+      type = types.listOf types.str;
+      default = [ ];
+    };
+
+    insert-nameservers = lib.mkOption {
+      description = "Sets networking.networkmanager.insertNameservers";
+      type = types.listOf types.str;
+      default = [ ];
     };
   };
 

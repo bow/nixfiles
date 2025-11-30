@@ -11,27 +11,21 @@ let
   cfg = config.nixsys.system.nix;
 in
 {
-  options.nixsys.system.nix = lib.mkOption {
-    default = { };
-    description = "Nix settings";
-    type = types.submodule {
-      options = {
-        download-buffer-size = lib.mkOption {
-          type = types.ints.positive;
-          default = 134217728; # 128 MiB
-          description = "Sets nix.settings.download-buffer-size";
-        };
-        gc-max-retention-days = lib.mkOption {
-          type = types.ints.positive;
-          default = 30;
-          description = "The age of the oldest item to keep (in days) after garbage collection";
-        };
-        gc-min-free-space = lib.mkOption {
-          type = types.ints.positive;
-          default = 1073741824; # 1 GiB
-          description = "Sets nix.settings.min-free";
-        };
-      };
+  options.nixsys.system.nix = {
+    download-buffer-size = lib.mkOption {
+      type = types.ints.positive;
+      default = 134217728; # 128 MiB
+      description = "Sets nix.settings.download-buffer-size";
+    };
+    gc-max-retention-days = lib.mkOption {
+      type = types.ints.positive;
+      default = 30;
+      description = "The age of the oldest item to keep (in days) after garbage collection";
+    };
+    gc-min-free-space = lib.mkOption {
+      type = types.ints.positive;
+      default = 1073741824; # 1 GiB
+      description = "Sets nix.settings.min-free";
     };
   };
 

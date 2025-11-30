@@ -9,19 +9,14 @@ let
   cfg = config.nixsys.home.desktop.xdg;
 in
 {
-  options.nixsys.home.desktop.xdg = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.desktop.xdg" // {
-          default = true;
-        };
-        create-directories = lib.mkOption {
-          default = true;
-          type = types.bool;
-          description = "Sets xdg.userDirs.createDirectories";
-        };
-      };
+  options.nixsys.home.desktop.xdg = {
+    enable = lib.mkEnableOption "nixsys.home.desktop.xdg" // {
+      default = true;
+    };
+    create-directories = lib.mkOption {
+      default = true;
+      type = types.bool;
+      description = "Sets xdg.userDirs.createDirectories";
     };
   };
 

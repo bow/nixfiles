@@ -10,16 +10,10 @@ let
   cfg = config.nixsys.system.boot.systemd;
 in
 {
-  options.nixsys.system.boot.systemd = lib.mkOption {
-    default = { };
-    description = "Boot settings for systemd-boot";
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "Enable boot module";
-        loader-timeout = mkOpt (types.nullOr types.int) 1 "Sets boot.loader.timeout";
-        console-mode = mkOpt types.str "auto" "Sets boot.loader.systemd-boot.consoleMode";
-      };
-    };
+  options.nixsys.system.boot.systemd = {
+    enable = lib.mkEnableOption "Enable boot module";
+    loader-timeout = mkOpt (types.nullOr types.int) 1 "Sets boot.loader.timeout";
+    console-mode = mkOpt types.str "auto" "Sets boot.loader.systemd-boot.consoleMode";
   };
 
   config = lib.mkIf cfg.enable {

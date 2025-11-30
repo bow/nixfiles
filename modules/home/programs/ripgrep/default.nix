@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   neovimEnabled = libcfg.isNeovimEnabled config;
@@ -13,16 +12,11 @@ let
   cfg = config.nixsys.home.programs.ripgrep;
 in
 {
-  options.nixsys.home.programs.ripgrep = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.ripgrep" // {
-          default = true;
-        };
-        package = lib.mkPackageOption pkgs.unstable "ripgrep" { };
-      };
+  options.nixsys.home.programs.ripgrep = {
+    enable = lib.mkEnableOption "nixsys.home.programs.ripgrep" // {
+      default = true;
     };
+    package = lib.mkPackageOption pkgs.unstable "ripgrep" { };
   };
 
   config = lib.mkIf cfg.enable {

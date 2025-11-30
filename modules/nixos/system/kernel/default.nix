@@ -6,21 +6,13 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.system.kernel;
 in
 {
-  options.nixsys.system.kernel = lib.mkOption {
-    default = { };
-    description = "System kernel";
-    type = types.submodule {
-      options = {
-        package = options.boot.kernelPackages // {
-          description = "Sets the system kernel";
-          default = pkgs.linuxPackages_latest;
-        };
-      };
+  options.nixsys.system.kernel = {
+    package = options.boot.kernelPackages // {
+      description = "Sets the system kernel";
+      default = pkgs.linuxPackages_latest;
     };
   };
 

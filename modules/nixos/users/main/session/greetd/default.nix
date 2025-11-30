@@ -16,14 +16,9 @@ let
   cfg = mainUser.session.greetd;
 in
 {
-  options.nixsys.users.main.session.greetd = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.users.main.session.greetd";
-        settings = mkOpt types.attrs { } "greetd settings";
-      };
-    };
+  options.nixsys.users.main.session.greetd = {
+    enable = lib.mkEnableOption "nixsys.users.main.session.greetd";
+    settings = mkOpt types.attrs { } "greetd settings";
   };
 
   config = lib.mkIf cfg.enable {

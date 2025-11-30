@@ -13,14 +13,9 @@ let
   cfg = config.nixsys.home.programs.direnv;
 in
 {
-  options.nixsys.home.programs.direnv = lib.mkOption {
-    default = { };
-    type = types.submodule {
-      options = {
-        enable = lib.mkEnableOption "nixsys.home.programs.direnv" // {
-          default = true;
-        };
-      };
+  options.nixsys.home.programs.direnv = {
+    enable = lib.mkEnableOption "nixsys.home.programs.direnv" // {
+      default = true;
     };
   };
 

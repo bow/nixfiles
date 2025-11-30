@@ -15,21 +15,18 @@ in
 {
   options.nixsys.users = {
     mutable = mkOpt types.bool false "Sets users.mutableUsers in NixOS config";
-    main = mkOpt (types.submodule {
-      options = {
-        name = mkOpt types.str null "User name of the main user";
-        full-name = mkOpt' types.str "Full name of the main user";
-        email = mkOpt' types.str "Email of the main user";
-        city = mkOpt' types.str "City where the user lives";
-        timezone = mkOpt types.str "UTC" "Timezone";
+    main = {
+      name = mkOpt types.str null "User name of the main user";
+      full-name = mkOpt' types.str "Full name of the main user";
+      email = mkOpt' types.str "Email of the main user";
+      city = mkOpt' types.str "City where the user lives";
+      timezone = mkOpt types.str "UTC" "Timezone";
 
-        home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to the user's home directory";
-        extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
-        shell = mkOpt (types.enum [ "bash" ]) "bash" "Login shell of the user";
-        trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
-      };
-    }) { } "Main user configurations";
-    programs = mkOpt (types.submodule { }) { } "Programs common for all users";
+      home-directory = mkOpt types.str "/home/${cfg.main.name}" "Path to the user's home directory";
+      extra-groups = mkOpt (types.listOf types.str) [ ] "Additional groups of the user";
+      shell = mkOpt (types.enum [ "bash" ]) "bash" "Login shell of the user";
+      trusted = mkOpt types.bool false "Whether to add the user to the trusted user list or not";
+    };
   };
 
   config = lib.mkIf mainUserDefined {

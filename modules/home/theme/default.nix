@@ -8,8 +8,8 @@ in
 {
   options.nixsys.home.theme = {
     active = lib.mkOption {
-      default = { };
-      type = types.attrs;
+      default = null;
+      type = types.nullOr types.attrs;
     };
   };
 }

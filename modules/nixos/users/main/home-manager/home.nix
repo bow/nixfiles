@@ -164,8 +164,11 @@ in
   options.nixsys.home.system = lib.mkOption {
     default = { };
     description = "Container for copied system-level settings";
+    # Make this a typed submodule to prevent this from becoming a random bag of stuff.
     type = types.submodule {
-      freeformType = types.attrsOf types.anything;
+      options = {
+        docker.enable = lib.mkEnableOption "nixsys.home.system.docker";
+      };
     };
   };
 
