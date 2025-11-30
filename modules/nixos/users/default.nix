@@ -5,8 +5,15 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt mkOpt';
   libcfg = lib.nixsys.nixos;
+
+  # Shortcut to make a simple option with a default.
+  mkOpt =
+    type: default: description:
+    lib.mkOption { inherit type default description; };
+
+  # Shortcut to make a simple option without any defaults.
+  mkOpt' = type: description: lib.mkOption { inherit type description; };
 
   mainUserDefined = libcfg.isMainUserDefined config;
 

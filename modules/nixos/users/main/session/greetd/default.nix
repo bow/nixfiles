@@ -18,7 +18,10 @@ in
 {
   options.nixsys.users.main.session.greetd = {
     enable = lib.mkEnableOption "nixsys.users.main.session.greetd";
-    settings = mkOpt types.attrs { } "greetd settings";
+    settings = lib.mkOption {
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config = lib.mkIf cfg.enable {

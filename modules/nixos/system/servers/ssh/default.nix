@@ -5,23 +5,48 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt;
 
   cfg = config.nixsys.system.servers.ssh;
 in
 {
   options.nixsys.system.servers.ssh = {
     enable = lib.mkEnableOption "nixsys.system.servers.ssh";
-    generate-hostkey = mkOpt types.bool true "Whether to create an SSH host key or not";
-    ports = mkOpt (types.listOf types.port) [ 22 ] "Sets services.openssh.ports";
-    allow-users = mkOpt (types.nullOr (
-      types.listOf types.str
-    )) null "Sets services.openssh.settings.AllowUsers";
-    password-authentication =
-      mkOpt types.bool true
-        "Sets services.openssh.settings.PasswordAuthentication";
-    permit-root-login = mkOpt types.str "no" "Sets services.openssh.settings.PermitRootLogin";
-    x11-forwarding = mkOpt types.bool false "Sets services.openssh.settings.X11Forwarding";
+
+    allow-users = lib.mkOption {
+      description = "Sets services.openssh.settings.AllowUsers";
+      type = types.nullOr (types.listOf types.str);
+      default = null;
+    };
+
+    generate-hostkey = lib.mkOption {
+      description = "Whether to create an SSH host key or not";
+      type = types.bool;
+      default = true;
+    };
+
+    password-authentication = lib.mkOption {
+      description = "Sets services.openssh.settings.PasswordAuthentication";
+      type = types.bool;
+      default = true;
+    };
+
+    permit-root-login = lib.mkOption {
+      description = "Sets services.openssh.settings.PermitRootLogin";
+      type = types.str;
+      default = "no";
+    };
+
+    ports = lib.mkOption {
+      description = "Sets services.openssh.ports";
+      type = types.listOf types.port;
+      default = [ 22 ];
+    };
+
+    x11-forwarding = lib.mkOption {
+      description = "Sets services.openssh.settings.X11Forwarding";
+      type = types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf cfg.enable {

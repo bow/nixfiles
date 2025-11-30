@@ -20,12 +20,16 @@ in
   options.nixsys.system.networking.networkmanager = {
     enable = lib.mkEnableOption "nixsys.system.networking.networkmanager";
 
-    dns = mkOpt types.str "default" "Sets networking.networkmanager.dns";
-
     append-nameservers = lib.mkOption {
       description = "Sets networking.networkmanager.appendNameservers";
       type = types.listOf types.str;
       default = [ ];
+    };
+
+    dns = lib.mkOption {
+      description = "Sets networking.networkmanager.dns";
+      type = types.str;
+      default = "default";
     };
 
     insert-nameservers = lib.mkOption {

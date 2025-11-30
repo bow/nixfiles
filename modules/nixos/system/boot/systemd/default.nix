@@ -12,8 +12,18 @@ in
 {
   options.nixsys.system.boot.systemd = {
     enable = lib.mkEnableOption "Enable boot module";
-    loader-timeout = mkOpt (types.nullOr types.int) 1 "Sets boot.loader.timeout";
-    console-mode = mkOpt types.str "auto" "Sets boot.loader.systemd-boot.consoleMode";
+
+    console-mode = lib.mkOption {
+      description = "Sets boot.loader.systemd-boot.consoleMode";
+      type = types.str;
+      default = "auto";
+    };
+
+    loader-timeout = lib.mkOption {
+      description = "Sets boot.loader.timeout";
+      type = types.nullOr types.ints.positive;
+      default = 1;
+    };
   };
 
   config = lib.mkIf cfg.enable {

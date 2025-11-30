@@ -84,8 +84,18 @@ in
 {
   options.nixsys.home.desktop.i3 = {
     enable = lib.mkEnableOption "nixsys.home.desktop.i3";
-    mod-key = mkOpt types.str "Mod4" "Mod key for i3";
-    lock-script = mkOpt types.package lock-sh "Screen lock script";
+
+    lock-script = lib.mkOption {
+      description = "Screen lock script";
+      type = types.package;
+      default = lock-sh;
+    };
+
+    mod-key = lib.mkOption {
+      description = "Mod key for i3";
+      type = types.str;
+      default = "Mod4";
+    };
   };
 
   config = lib.mkIf cfg.enable {

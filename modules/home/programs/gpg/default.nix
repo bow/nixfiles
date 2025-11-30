@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt;
   libcfg = lib.nixsys.home;
 
   xorgEnabled = libcfg.isXorgEnabled config;
@@ -19,29 +18,47 @@ in
       default = true;
     };
 
-    default-cache-ttl =
-      mkOpt (types.nullOr types.ints.positive) 86400
-        "Sets services.gpg-agent.defaultCacheTtl";
+    default-cache-ttl = lib.mkOption {
+      description = "Sets services.gpg-agent.defaultCacheTtl";
+      type = types.nullOr types.ints.positive;
+      default = 86400;
+    };
 
-    default-cache-ttl-ssh =
-      mkOpt (types.nullOr types.ints.positive) 86400
-        "Sets services.gpg-agent.defaultCacheTtlSsh";
+    default-cache-ttl-ssh = lib.mkOption {
+      description = "Sets services.gpg-agent.defaultCacheTtlSsh";
+      type = types.nullOr types.ints.positive;
+      default = 86400;
+    };
 
-    exported-as-ssh = mkOpt (types.nullOr (
-      types.listOf types.str
-    )) null "Sets services.gpg-agent.sshKeys";
+    exported-as-ssh = lib.mkOption {
+      description = "Sets services.gpg-agent.sshKeys";
+      type = types.nullOr (types.listOf types.str);
+      default = null;
+    };
 
-    max-cache-ttl = mkOpt (types.nullOr types.ints.positive) (
-      14 * 86400
-    ) "Sets services.gpg-agent.defaultCacheTtl";
+    max-cache-ttl = lib.mkOption {
+      description = "Sets services.gpg-agent.defaultCacheTtl";
+      type = types.nullOr types.ints.positive;
+      default = 14 * 86400;
+    };
 
-    max-cache-ttl-ssh = mkOpt (types.nullOr types.ints.positive) (
-      7 * 86400
-    ) "Sets services.gpg-agent.defaultCacheTtlSsh";
+    max-cache-ttl-ssh = lib.mkOption {
+      description = "Sets services.gpg-agent.defaultCacheTtlSsh";
+      type = types.nullOr types.ints.positive;
+      default = 7 * 86400;
+    };
 
-    mutable-keys = mkOpt types.bool true "Sets programs.gpg.mutableKeys";
+    mutable-keys = lib.mkOption {
+      description = "Sets programs.gpg.mutableKeys";
+      type = types.bool;
+      default = true;
+    };
 
-    mutable-trust = mkOpt types.bool true "Sets programs.gpg.mutableTrust";
+    mutable-trust = lib.mkOption {
+      description = "Sets programs.gpg.mutableTrust";
+      type = types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
