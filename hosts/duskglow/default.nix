@@ -3,24 +3,24 @@
   outputs,
   lib,
   user,
+  hostname,
   ...
 }:
 let
   inherit (lib.nixsys) enabled enabledWith;
 in
-rec {
+{
   system.stateVersion = "25.05";
 
   imports = [
     outputs.nixosModules.nixsys
-    ./hardware.nix
-    ./disk.nix
     inputs.disko.nixosModules.disko
+    ./disk.nix
   ];
 
   nixsys = enabledWith {
     system = {
-      hostname = "duskglow";
+      inherit hostname;
       profile = "workstation";
       hardware.touchpad = enabled;
 
@@ -46,17 +46,6 @@ rec {
         desktop.i3 = enabled;
         devel = enabled;
         theme.north-01 = enabled;
-      };
-    };
-  };
-
-  users = {
-    users = {
-      root = {
-        hashedPassword = "$6$cgJT.91qlswKdIud$r0.H/NLTLAKo8u8jkZZH2tY8PBLaFygL436FYnGcRJh5hTD.PpX7o94/yTdipcKKSxQjrhVB02OS8Wd3knmqC.";
-      };
-      "${nixsys.users.main.name}" = {
-        hashedPassword = "$6$iKfcfUgbNFtHGTRj$Ie1425E0xPZG.FUlw4KLsofQdTL2rELJ17xtJKuUD7AifiEUZoE3jQag2lDG7ahfgkHjJPTFNuZETUFHbMuJ01";
       };
     };
   };

@@ -1,6 +1,6 @@
 = nixsys
 
-Nix configuration files.
+Nix modules for a system configuration.
 
 
 == Credits

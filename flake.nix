@@ -32,139 +32,93 @@
     }@inputs:
     let
       inherit (self) outputs;
+      inherit (lib.nixsys.pub) forEachSystem;
+
       lib = nixpkgs.lib.extend (
         final: _prev: {
           nixsys = import ./lib {
-            inherit inputs;
+            inherit inputs outputs;
             lib = final;
           };
         }
       );
 
-      supportedSystems = [
+      forEachSupportedSystem = forEachSystem [
         "x86_64-linux"
         "aarch64-linux"
       ];
-
-      forEachSupportedSystem =
-        f:
-        lib.genAttrs supportedSystems (
-          system:
-          f {
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-            };
-          }
-        );
-
-      user = {
-        name = "default";
-        full-name = "Default User";
-        email = "default@email.com";
-        city = "Reykjavik";
-        timezone = "UTC";
-      };
     in
     {
-      # Export only public functions.
       lib = lib.nixsys.pub;
 
-      # home-manager configuration.
-      # usage: home-manager --flake .#{user}
-      homeConfigurations = {
-        bow = lib.homeManagerConfiguration {
-          extraSpecialArgs = {
-            inherit
-              inputs
-              outputs
-              lib
-              user
-              ;
-            asStandalone = true;
-          };
-          modules = [ ./modules/nixos/users/main/home-manager/home.nix ];
-        };
-      };
-
-      # NixOS configuration.
-      # usage: sudo nixos-rebuild switch --flake .#machinename
-      nixosConfigurations = {
-        duskglow = lib.nixosSystem {
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              lib
-              user
-              ;
-          };
-          modules = [ ./machines/duskglow ];
-        };
-        # ISO installation media for nixos-anywhere
-        # Build with: nix build .#nixosConfigurations.iso.config.system.build.isoImage
-        # Then run with: nix run github:nix-community/nixos-anywhere -- --flake .#vmlab --target-host <user>@<host>
-        iso = lib.nixosSystem {
-          modules = [
-            (
-              { pkgs, modulesPath, ... }:
-              {
-                imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
-                nixpkgs.hostPlatform = "x86_64-linux";
-                networking.networkmanager.enable = true;
-                networking.wireless.enable = false;
-                systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
-                users.users.root.openssh.authorizedKeys.keys = [
-                  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILetxdkGYGooOnymLSctz3B+QxTGonnAwQbSwFoIa9UR openpgp:0xBBA92D16"
-                ];
-              }
-            )
-          ];
-        };
-        vmlab = lib.nixosSystem {
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              lib
-              user
-              ;
-          };
-          modules = [ ./machines/vmlab ];
-        };
-      };
-
-      # Re-exported attributes.
       overlays = import ./overlays { inherit inputs; };
+
       nixosModules = import ./modules/nixos/mod.nix { inherit inputs outputs lib; };
+
       homeManagerModules = import ./modules/home/mod.nix { inherit inputs outputs lib; };
+
       packages = forEachSupportedSystem ({ pkgs, ... }: import ./packages { inherit pkgs; });
 
-      # Reusable apps.
-      apps = forEachSupportedSystem (
-        { pkgs, ... }:
+      # NixOS configuration examples.
+      # usages:
+      #   - nix build .#nixosConfigurations.{name}.config.system.build.toplevel
+      #   - nix run .#build-os -- {name}
+      nixosConfigurations =
+        let
+          user = {
+            name = "default";
+            full-name = "Default User";
+            email = "default@email.com";
+            city = "Reykjavik";
+            timezone = "UTC";
+          };
+        in
         {
-          gen-machine-key =
+          duskglow-qemu = lib.nixsys.mkSystem {
+            inherit user;
+            hostModuleName = "duskglow";
+            hardware = ./machines/duskglow-qemu/hardware.nix;
+            extraModules = [
+              ./machines/duskglow-qemu/config.nix
+              ./machines/duskglow-qemu/secrets.nix
+            ];
+          };
+        };
+
+      apps = forEachSupportedSystem (
+        { pkgs }:
+        {
+          build-os =
             let
-              pkgGenMachineKey = pkgs.writeShellScriptBin "gen-machine-key" ''
-                set -eu
-                OUT=''${1:-/mnt/persist/machine-key.txt}
-                mkdir -p ''$(dirname ''${OUT})
-                ${pkgs.age}/bin/age-keygen -o ''${OUT}
-                chmod 600 ''${OUT}
-                echo "Path: ''${OUT}"
+              script-pkg = pkgs.writeShellScriptBin "build-os" ''
+                set -e
+
+                if [ -z "''${1}" ]; then
+                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-os -- <nixosConfiguration>"
+                  ${pkgs.coreutils}/bin/echo "Available configurations:"
+                  ${pkgs.coreutils}/bin/ls ${self}/nixosConfigurations
+                  exit 1
+                fi
+
+                CONFIG="$1"
+
+                ${pkgs.coreutils}/bin/echo "Building configuration: ''$CONFIG"
+
+                nix build ".#nixosConfigurations.''${CONFIG}.config.system.build.toplevel"
+
+                ${pkgs.coreutils}/bin/echo "Build complete. See ./result"
               '';
             in
             {
               type = "app";
-              program = "${pkgGenMachineKey}/bin/gen-machine-key";
+              program = "${script-pkg}/bin/build-os";
             };
         }
       );
 
       # Flake conveniences.
       devShells = forEachSupportedSystem (
-        { pkgs, ... }:
+        { pkgs }:
         {
           default = pkgs.mkShellNoCC {
             packages = with pkgs; [
@@ -178,6 +132,7 @@
           };
         }
       );
+
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
     };
 }
