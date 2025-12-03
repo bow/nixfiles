@@ -117,8 +117,9 @@
         duskglow-qemu = lib.nixsys.mkSystem {
           inherit user;
           hostModuleName = "duskglow";
-          hardware = ./machines/duskglow-qemu/hardware.nix;
-          extraModules = [
+          modules = [
+            ./machines/duskglow-qemu/hardware.nix
+            ./machines/duskglow-qemu/disk.nix
             ./machines/duskglow-qemu/config.nix
             ./machines/duskglow-qemu/secrets.nix
           ];
