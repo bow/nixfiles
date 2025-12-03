@@ -29,7 +29,7 @@ in
   config = lib.mkIf cfg.enable {
     boot = {
       loader = {
-        timeout = cfg.loader-timeout;
+        timeout = lib.mkForce cfg.loader-timeout;
         systemd-boot = {
           enable = true;
           consoleMode = cfg.console-mode;
