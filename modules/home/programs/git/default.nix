@@ -7,8 +7,6 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.home.programs.git;
 in
 {

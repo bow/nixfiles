@@ -6,7 +6,6 @@
   ...
 }:
 let
-  inherit (lib) types;
   libcfg = lib.nixsys.home;
 
   shellBash = libcfg.isShellBash user;

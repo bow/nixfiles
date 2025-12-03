@@ -166,6 +166,7 @@
               sops
               ssh-to-age
 
+              deadnix
               nixfmt-rfc-style
               statix
             ];

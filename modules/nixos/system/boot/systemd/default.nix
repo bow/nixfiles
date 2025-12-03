@@ -5,7 +5,6 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt;
 
   cfg = config.nixsys.system.boot.systemd;
 in

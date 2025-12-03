@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt;
   libcfg = lib.nixsys.nixos;
 
   hostName = libcfg.getHostName config;

@@ -7,7 +7,6 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.nixsys) mkOpt;
   libcfg = lib.nixsys.home;
 
   theme = config.nixsys.home.theme.active;

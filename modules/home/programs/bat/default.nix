@@ -5,8 +5,6 @@
   ...
 }:
 let
-  inherit (lib) types;
-
   cfg = config.nixsys.home.programs.bat;
 in
 {
