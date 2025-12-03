@@ -3,12 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,6 +20,12 @@
       url = "github:nix-community/disko/v1.12.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-cli = {
       url = "github:nix-community/nixos-cli";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -28,6 +36,7 @@
     {
       self,
       nixpkgs,
+      nixos-generators,
       ...
     }@inputs:
     let
@@ -47,6 +56,14 @@
         "x86_64-linux"
         "aarch64-linux"
       ];
+
+      user = {
+        name = "default";
+        full-name = "Default User";
+        email = "default@email.com";
+        city = "Reykjavik";
+        timezone = "UTC";
+      };
     in
     {
       lib = lib.nixsys.pub;
@@ -57,33 +74,56 @@
 
       homeManagerModules = import ./modules/home/mod.nix { inherit inputs outputs lib; };
 
-      packages = forEachSupportedSystem ({ pkgs, ... }: import ./packages { inherit pkgs; });
+      packages = forEachSupportedSystem (
+        { pkgs }:
+        import ./packages { inherit pkgs; }
+        // {
+          duskglow-qcow = nixos-generators.nixosGenerate {
+            inherit lib;
+            inherit (pkgs.stdenv.hostPlatform) system;
+            format = "qcow-efi";
+            modules = [
+              {
+                nix.registry.nixpkgs.flake = nixpkgs;
+                virtualisation.vmVariant.virtualisation = {
+                  diskSize = 80 * 1024;
+                  memSize = 8 * 1024;
+                  writableStoreUseTmpfs = false;
+                };
+              }
+              ./hosts/duskglow
+              ./machines/duskglow-qemu/hardware.nix
+              ./machines/duskglow-qemu/config.nix
+              ./machines/duskglow-qemu/secrets.nix
+            ];
+            specialArgs = {
+              inherit
+                inputs
+                outputs
+                lib
+                user
+                ;
+              hostname = "duskglow";
+            };
+          };
+        }
+      );
 
       # NixOS configuration examples.
       # usages:
       #   - nix build .#nixosConfigurations.{name}.config.system.build.toplevel
       #   - nix run .#build-os -- {name}
-      nixosConfigurations =
-        let
-          user = {
-            name = "default";
-            full-name = "Default User";
-            email = "default@email.com";
-            city = "Reykjavik";
-            timezone = "UTC";
-          };
-        in
-        {
-          duskglow-qemu = lib.nixsys.mkSystem {
-            inherit user;
-            hostModuleName = "duskglow";
-            hardware = ./machines/duskglow-qemu/hardware.nix;
-            extraModules = [
-              ./machines/duskglow-qemu/config.nix
-              ./machines/duskglow-qemu/secrets.nix
-            ];
-          };
+      nixosConfigurations = {
+        duskglow-qemu = lib.nixsys.mkSystem {
+          inherit user;
+          hostModuleName = "duskglow";
+          hardware = ./machines/duskglow-qemu/hardware.nix;
+          extraModules = [
+            ./machines/duskglow-qemu/config.nix
+            ./machines/duskglow-qemu/secrets.nix
+          ];
         };
+      };
 
       apps = forEachSupportedSystem (
         { pkgs }:
