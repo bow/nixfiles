@@ -59,7 +59,7 @@ in
         # chmod +x.
         chmox = "${pkgs.coreutils}/bin/chmod +x";
         # cp, interactive, verbose.
-        cp = "${pkgs.coreutils}/bin/cp -iv";
+        cp = "cp -iv";
         # df, with total size, with human-readable output.
         df = "${pkgs.coreutils}/bin/df -h -T --total";
         # du, with human-readable output.
@@ -77,11 +77,11 @@ in
         # ls, sorted by mtime.
         ltime = "${pkgs.coreutils}/bin/ls -ltrh";
         # mkdir, create parents.
-        mkdir = "${pkgs.coreutils}/bin/mkdir -p";
+        mkdir = "mkdir -p";
         # mv, interactive.
-        mv = "${pkgs.coreutils}/bin/mv -i";
+        mv = "mv -i";
         # rm, interactive.
-        rm = "${pkgs.coreutils}/bin/rm -i";
+        rm = "rm -i";
         # terraform.
         tf = "${pkgs.terraform}/bin/terraform";
         # eza.
