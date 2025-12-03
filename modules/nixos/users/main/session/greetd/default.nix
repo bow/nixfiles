@@ -18,6 +18,11 @@ in
 {
   options.nixsys.users.main.session.greetd = {
     enable = lib.mkEnableOption "nixsys.users.main.session.greetd";
+    vt = lib.mkOption {
+      type = types.ints.positive;
+      default = 7;
+      description = "Sets services.greetd.settings.terminal.vt";
+    };
     settings = lib.mkOption {
       type = types.attrs;
       default = { };
@@ -34,7 +39,7 @@ in
     services.greetd = lib.mkIf cfg.enable {
       enable = true;
       settings = {
-        terminal.vt = 7;
+        terminal.vt = lib.mkForce cfg.vt;
         default_session = lib.mkIf xorgEnabled {
           command = "${pkgs.xorg.xinit}/bin/startx";
         };
