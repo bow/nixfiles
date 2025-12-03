@@ -5,7 +5,7 @@
 {
   additions = final: prev: {
     unstable = import inputs.nixpkgs-unstable {
-      inherit (prev) system;
+      inherit (prev.stdenv.hostPlatform) system;
       config.allowUnfree = true;
     };
     local = import ../packages { pkgs = final; };

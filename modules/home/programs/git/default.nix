@@ -18,13 +18,75 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+
+    programs.difftastic.git = {
+      enable = true;
+    };
+
     programs.git = {
       enable = true;
 
-      userName = user.full-name;
-      userEmail = user.email;
+      settings = {
+        user = {
+          inherit (user) email;
+          name = user.full-name;
+        };
 
-      extraConfig = {
+        aliases = {
+          # list all alias
+          lsalias = "!${cfg.package}/bin/git config -l | ${pkgs.gnugrep}/bin/grep alias | ${pkgs.coreutils}/bin/cut -c 7-";
+
+          # basic shortcuts
+          co = "checkout";
+          ci = "commit";
+          cp = "cherry-pick";
+          st = "status";
+          br = "branch";
+          mg = "merge";
+          sh = "stash";
+          wt = "worktree";
+
+          # various commit displays
+          hist = "log --pretty=format:'%C(yellow)%h %Cblue%ad %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --date=short";
+          histh = "log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --abbrev-commit --";
+          histf = "log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%cn • %G?]' --decorate --numstat";
+          histo = "log --format=format:'%C(yellow)%h %Creset• %<(50,trunc)%s %C(cyan)[%cN • %G?] %C(blue)%cr%Creset %Cred%d' --graph -20 --branches --remotes --tags --date-order";
+          histb = ''!f() { ${cfg.package}/bin/git log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --abbrev-commit ''${1:-''$(${cfg.package}/bin/git rev-parse --abbrev-ref HEAD)} --not ''${2:-master}; }; f'';
+          histp = "log -u";
+
+          # handy aliases
+          adp = "add -p";
+          ec = "config --global -e";
+          cia = "commit --amend";
+          ciam = "commit --no-edit --amend";
+          stn = "status -uno";
+          difc = "diff --cached";
+          diffc = "diff --cached";
+          punch = "push -f";
+          rsh = "reset -q HEAD --";
+          discard = "checkout --";
+          uncommit = "reset --mixed HEAD~";
+          syncr = "fetch --all --prune";
+          shi = "stash --staged";
+          shl = "stash list";
+          shs = ''!f() { ${cfg.package}/bin/git stash show -p stash@{''${1:-0}}; }; f'';
+          shp = ''!f() { ${cfg.package}/bin/git stash pop stash@{''${1:-0}}; }; f'';
+          shd = ''!f() { ${cfg.package}/bin/git stash drop stash@{''${1:-0}}; }; f'';
+          ed = ''!f() { ${cfg.package}/bin/git rebase -i HEAD~''${1:-''$(${cfg.package}/bin/git rev-list --left-right --count ''$(${cfg.package}/bin/git rev-parse --abbrev-ref ''$(${cfg.package}/bin/git rev-parse --abbrev-ref HEAD)@{upstream})...''$(${cfg.package}/bin/git branch --show-current) | ${pkgs.coreutils}/bin/cut -f2)}; }; f'';
+          brstat = "for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(objectname:short)%(color:reset) %(color:blue)%(committerdate:short)%(color:reset) • %(color:red)(%(refname:short))%(color:reset) %(contents:subject) %(color:cyan)[%(authorname)]%(color:reset)'";
+          up = ''!${cfg.package}/bin/git pull --rebase --prune ''$@ && ${cfg.package}/bin/git submodule update --init --recursive'';
+          linediff = ''!f() { ${cfg.package}/bin/git diff --numstat --pretty ''${1} | ${pkgs.gawk}/bin/awk '{ print ''${1}+''${2}\"\t\"''${0} }' | ${pkgs.coreutils}/bin/sort -nrk1,1; }; f'';
+          clinediff = ''!f() { ${cfg.package}/bin/git diff --numstat --pretty ''${1} | ${pkgs.gawk}/bin/awk '{ if (!(''${1} ~ /0/ || ''${2} ~ /0/ || (''${1}+''${2}) ~ /0/)) print ''${1}+''${2}\"\t\"''${0} }' | ${pkgs.coreutils}/bin/sort -nrk1,1; }; f'';
+
+          # assume / unassume changed
+          assume = "update-index --assume-unchanged";
+          unassume = "update-index --no-assume-unchanged";
+          # show assumed files
+          assumed = "!${cfg.package}/bin/git ls-files -v | ${pkgs.gnugrep}/bin/grep ^h | cut -c 3-";
+          # unassume / assume all
+          unassumeall = "!${cfg.package}/bin/git assumed | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git update-index --no-assume-unchanged";
+          assumeall = "!${cfg.package}/bin/git st -s | ${pkgs.gawk}/bin/awk {'print $2'} | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git assume";
+        };
         core = {
           autocrlf = "input";
           safecrlf = "warn";
@@ -71,62 +133,6 @@ in
         color = {
           ui = "auto";
         };
-      };
-
-      aliases = {
-        # list all alias
-        lsalias = "!${cfg.package}/bin/git config -l | ${pkgs.gnugrep}/bin/grep alias | ${pkgs.coreutils}/bin/cut -c 7-";
-
-        # basic shortcuts
-        co = "checkout";
-        ci = "commit";
-        cp = "cherry-pick";
-        st = "status";
-        br = "branch";
-        mg = "merge";
-        sh = "stash";
-        wt = "worktree";
-
-        # various commit displays
-        hist = "log --pretty=format:'%C(yellow)%h %Cblue%ad %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --date=short";
-        histh = "log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --abbrev-commit --";
-        histf = "log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%cn • %G?]' --decorate --numstat";
-        histo = "log --format=format:'%C(yellow)%h %Creset• %<(50,trunc)%s %C(cyan)[%cN • %G?] %C(blue)%cr%Creset %Cred%d' --graph -20 --branches --remotes --tags --date-order";
-        histb = ''!f() { ${cfg.package}/bin/git log --pretty=format:'%C(yellow)%h %Cblue%cr %Creset• %s%C(red)%d%Creset %C(cyan)[%an • %G?]%Creset' --graph --abbrev-commit ''${1:-''$(${cfg.package}/bin/git rev-parse --abbrev-ref HEAD)} --not ''${2:-master}; }; f'';
-        histp = "log -u";
-
-        # handy aliases
-        adp = "add -p";
-        ec = "config --global -e";
-        cia = "commit --amend";
-        ciam = "commit --no-edit --amend";
-        stn = "status -uno";
-        difc = "diff --cached";
-        diffc = "diff --cached";
-        punch = "push -f";
-        rsh = "reset -q HEAD --";
-        discard = "checkout --";
-        uncommit = "reset --mixed HEAD~";
-        syncr = "fetch --all --prune";
-        shi = "stash --staged";
-        shl = "stash list";
-        shs = ''!f() { ${cfg.package}/bin/git stash show -p stash@{''${1:-0}}; }; f'';
-        shp = ''!f() { ${cfg.package}/bin/git stash pop stash@{''${1:-0}}; }; f'';
-        shd = ''!f() { ${cfg.package}/bin/git stash drop stash@{''${1:-0}}; }; f'';
-        ed = ''!f() { ${cfg.package}/bin/git rebase -i HEAD~''${1:-''$(${cfg.package}/bin/git rev-list --left-right --count ''$(${cfg.package}/bin/git rev-parse --abbrev-ref ''$(${cfg.package}/bin/git rev-parse --abbrev-ref HEAD)@{upstream})...''$(${cfg.package}/bin/git branch --show-current) | ${pkgs.coreutils}/bin/cut -f2)}; }; f'';
-        brstat = "for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(objectname:short)%(color:reset) %(color:blue)%(committerdate:short)%(color:reset) • %(color:red)(%(refname:short))%(color:reset) %(contents:subject) %(color:cyan)[%(authorname)]%(color:reset)'";
-        up = ''!${cfg.package}/bin/git pull --rebase --prune ''$@ && ${cfg.package}/bin/git submodule update --init --recursive'';
-        linediff = ''!f() { ${cfg.package}/bin/git diff --numstat --pretty ''${1} | ${pkgs.gawk}/bin/awk '{ print ''${1}+''${2}\"\t\"''${0} }' | ${pkgs.coreutils}/bin/sort -nrk1,1; }; f'';
-        clinediff = ''!f() { ${cfg.package}/bin/git diff --numstat --pretty ''${1} | ${pkgs.gawk}/bin/awk '{ if (!(''${1} ~ /0/ || ''${2} ~ /0/ || (''${1}+''${2}) ~ /0/)) print ''${1}+''${2}\"\t\"''${0} }' | ${pkgs.coreutils}/bin/sort -nrk1,1; }; f'';
-
-        # assume / unassume changed
-        assume = "update-index --assume-unchanged";
-        unassume = "update-index --no-assume-unchanged";
-        # show assumed files
-        assumed = "!${cfg.package}/bin/git ls-files -v | ${pkgs.gnugrep}/bin/grep ^h | cut -c 3-";
-        # unassume / assume all
-        unassumeall = "!${cfg.package}/bin/git assumed | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git update-index --no-assume-unchanged";
-        assumeall = "!${cfg.package}/bin/git st -s | ${pkgs.gawk}/bin/awk {'print $2'} | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git assume";
       };
 
       includes = [
@@ -236,10 +242,6 @@ in
         ".vagrant"
         ".null-ls*"
       ];
-
-      difftastic = {
-        enable = true;
-      };
     };
   };
 }
