@@ -34,16 +34,7 @@ rec {
     : The function to apply to each system-specialized pkgs.
   */
   forEachSystem =
-    systems: f:
-    lib.genAttrs systems (
-      system:
-      f {
-        pkgs = import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      }
-    );
+    systems: f: lib.genAttrs systems (system: f { pkgs = inputs.nixpkgs.legacyPackages.${system}; });
 
   /**
     Create a nixos system with the given main user and hardware module on the given host module.
