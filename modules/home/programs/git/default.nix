@@ -27,12 +27,58 @@ in
       enable = true;
 
       settings = {
+
         user = {
           inherit (user) email;
           name = user.full-name;
         };
-
-        aliases = {
+        core = {
+          autocrlf = "input";
+          safecrlf = "warn";
+          editor = "nvim";
+        };
+        branch = {
+          sort = "-committerdate";
+        };
+        commit = {
+          verbose = true;
+        };
+        diff = {
+          algorithm = "histogram";
+          colorMoved = "plain";
+          compactionHeuristic = true;
+          mnemonicprefix = true;
+          renames = true;
+        };
+        fetch = {
+          prune = true;
+          pruneTags = true;
+          all = true;
+        };
+        init = {
+          defaultBranch = "master";
+        };
+        push = {
+          default = "simple";
+          autoSetupRemote = true;
+          followTags = true;
+        };
+        rebase = {
+          autosquash = true;
+          autoStash = true;
+          updateRefs = true;
+        };
+        rerere = {
+          enabled = true;
+          autoupdate = true;
+        };
+        tag = {
+          sort = "version:refname";
+        };
+        color = {
+          ui = "auto";
+        };
+        alias = {
           # list all alias
           lsalias = "!${cfg.package}/bin/git config -l | ${pkgs.gnugrep}/bin/grep alias | ${pkgs.coreutils}/bin/cut -c 7-";
 
@@ -86,52 +132,6 @@ in
           # unassume / assume all
           unassumeall = "!${cfg.package}/bin/git assumed | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git update-index --no-assume-unchanged";
           assumeall = "!${cfg.package}/bin/git st -s | ${pkgs.gawk}/bin/awk {'print $2'} | ${pkgs.findutils}/bin/xargs ${cfg.package}/bin/git assume";
-        };
-        core = {
-          autocrlf = "input";
-          safecrlf = "warn";
-          editor = "nvim";
-        };
-        branch = {
-          sort = "-committerdate";
-        };
-        commit = {
-          verbose = true;
-        };
-        diff = {
-          algorithm = "histogram";
-          colorMoved = "plain";
-          compactionHeuristic = true;
-          mnemonicprefix = true;
-          renames = true;
-        };
-        fetch = {
-          prune = true;
-          pruneTags = true;
-          all = true;
-        };
-        init = {
-          defaultBranch = "master";
-        };
-        push = {
-          default = "simple";
-          autoSetupRemote = true;
-          followTags = true;
-        };
-        rebase = {
-          autosquash = true;
-          autoStash = true;
-          updateRefs = true;
-        };
-        rerere = {
-          enabled = true;
-          autoupdate = true;
-        };
-        tag = {
-          sort = "version:refname";
-        };
-        color = {
-          ui = "auto";
         };
       };
 
