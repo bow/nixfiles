@@ -60,11 +60,11 @@ rec {
         city = "Reykjavik";
         timezone = "UTC";
       };
-      hostModule = "duskglow";
-      hardware = ./hardware-configuration.nix;
-      extraModules = [
-        ./other-module-1.nix
-        ./other-module-2.nix
+      hostModuleName = "duskglow";
+      modules = [
+        ./hardware-configuration.nix;
+        ./config.nix
+        ./secrets.nix
       ];
     }
     => ...
@@ -79,17 +79,16 @@ rec {
     # Arguments
 
     **args**
-    : An attribute set containing `user`, `hostModule`, `hardware`, `hostName` (optional), and
-      `extraModules` (optional). See the example above for an example of these values. `hostName` is
-      the hostname of the machine, defaulting to the name of the host module if unspecified.
+    : An attribute set containing `user`, `hostModule`, `modules, and `hostName` (optional).
+      `hostName` is the hostname of the machine, defaulting to the name of the host module if
+      unspecified. See the example above for an example of these values.
   */
   mkSystem =
     {
       user,
-      hardware,
       hostModuleName,
+      modules,
       hostName ? null,
-      extraModules ? [ ],
     }:
     lib.nixosSystem {
       specialArgs = {
@@ -102,10 +101,10 @@ rec {
         hostname = if hostName != null then hostName else hostModuleName;
       };
       modules = [
+        inputs.disko.nixosModules.disko
         ../hosts/${hostModuleName}
-        hardware
       ]
-      ++ extraModules;
+      ++ modules;
     };
 
   /**

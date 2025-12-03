@@ -1,5 +1,4 @@
 {
-  inputs,
   outputs,
   lib,
   user,
@@ -14,8 +13,6 @@ in
 
   imports = [
     outputs.nixosModules.nixsys
-    inputs.disko.nixosModules.disko
-    ./disk.nix
   ];
 
   nixsys = enabledWith {
