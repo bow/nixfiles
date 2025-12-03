@@ -136,8 +136,6 @@
 
                 if [ -z "''${1}" ]; then
                   ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-os -- <nixosConfiguration>"
-                  ${pkgs.coreutils}/bin/echo "Available configurations:"
-                  ${pkgs.coreutils}/bin/ls ${self}/nixosConfigurations
                   exit 1
                 fi
 
