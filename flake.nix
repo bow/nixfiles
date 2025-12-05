@@ -155,7 +155,7 @@
 
                 CONFIG="$1"
 
-                ${pkgs.coreutils}/bin/echo "Building configuration: ''$CONFIG"
+                ${pkgs.coreutils}/bin/echo "Building machine: ''$CONFIG"
 
                 nix build ".#nixosConfigurations.''${CONFIG}.config.system.build.toplevel"
 
@@ -165,6 +165,30 @@
             {
               type = "app";
               program = "${script-pkg}/bin/build-machine";
+            };
+
+          build-home =
+            let
+              script-pkg = pkgs.writeShellScriptBin "build-home" ''
+                set -e
+
+                if [ -z "''${1}" ]; then
+                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-home -- <homeConfiguration>"
+                  exit 1
+                fi
+
+                CONFIG="$1"
+
+                ${pkgs.coreutils}/bin/echo "Building home: ''$CONFIG"
+
+                ${pkgs.home-manager}/bin/home-manager build --flake ".#''${CONFIG}"
+
+                ${pkgs.coreutils}/bin/echo "Build complete. See ./result"
+              '';
+            in
+            {
+              type = "app";
+              program = "${script-pkg}/bin/build-home";
             };
         }
       );
