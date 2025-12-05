@@ -13,27 +13,25 @@ in
   config = lib.mkIf config.nixsys.enable {
     environment = {
       pathsToLink = [ "/share/bash-completion" ];
-      systemPackages =
-        with pkgs;
-        [
-          curl
-          findutils
-          file
-          git
-          gnugrep
-          gnupg
-          gnused
-          iputils
-          jq
-          neovim
-          readline
-          unzip
-          vim
-          wget
+      systemPackages = [
+        pkgs.curl
+        pkgs.findutils
+        pkgs.file
+        pkgs.git
+        pkgs.gnugrep
+        pkgs.gnupg
+        pkgs.gnused
+        pkgs.iputils
+        pkgs.jq
+        pkgs.neovim
+        pkgs.readline
+        pkgs.unzip
+        pkgs.vim
+        pkgs.wget
 
-          unstable.ripgrep
-        ]
-        ++ (lib.optionals profileWorkstation [ pkgs.home-manager ]);
+        pkgs.unstable.ripgrep
+      ]
+      ++ (lib.optionals profileWorkstation [ pkgs.home-manager ]);
       variables = {
         EDITOR = "nvim";
       };

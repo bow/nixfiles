@@ -22,22 +22,22 @@ in
       };
     };
 
-    home.packages = with pkgs; [
-      (iosevka-bin.override { variant = "SS03"; })
-      nerd-fonts.droid-sans-mono
-      nerd-fonts.inconsolata
-      nerd-fonts.ubuntu
-      nerd-fonts.ubuntu-sans
-      noto-fonts
-      noto-fonts-color-emoji
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      siji
+    home.packages = [
+      (pkgs.iosevka-bin.override { variant = "SS03"; })
+      pkgs.nerd-fonts.droid-sans-mono
+      pkgs.nerd-fonts.inconsolata
+      pkgs.nerd-fonts.ubuntu
+      pkgs.nerd-fonts.ubuntu-sans
+      pkgs.noto-fonts
+      pkgs.noto-fonts-color-emoji
+      pkgs.noto-fonts-cjk-sans
+      pkgs.noto-fonts-cjk-serif
+      pkgs.siji
 
-      unstable.font-awesome
+      pkgs.unstable.font-awesome
 
-      local.awesome-terminal-fonts
-      local.titillium-fonts
+      pkgs.local.awesome-terminal-fonts
+      pkgs.local.titillium-fonts
     ];
   };
 }

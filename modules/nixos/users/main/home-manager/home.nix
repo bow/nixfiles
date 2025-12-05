@@ -13,151 +13,151 @@ let
 
   desktopEnabled = libcfg.isDesktopEnabled config;
 
-  cliPackages = with pkgs; [
-    age
-    aria2
-    btop
-    cloc
-    coreutils-full
-    curl
-    curlie
-    distrobox
-    dmidecode
-    dnsmasq
-    dnsutils
-    dos2unix
-    dua
-    duf
-    elinks
-    entr
-    ethtool
-    eza
-    fd
-    file
-    findutils
-    gh
-    glow
-    gnugrep
-    gnupatch
-    gnupg
-    gnused
-    grpcurl
-    gzip
-    hexyl
-    htop
-    iftop
-    imagemagick
-    inetutils
-    iotop
-    ipcalc
-    iperf3
-    iproute2
-    jq
-    ldns
-    libvirt
-    lld
-    lldb
-    lshw
-    ltrace
-    lzip
-    minify
-    mtr
-    nerdctl
-    nh
-    nmap
-    ntfs3g
-    p7zip
-    packer
-    pass
-    pciutils
-    pdftk
-    pv
-    qemu
-    restic
-    sequoia-sq
-    socat
-    strace
-    sysstat
-    tmux
-    tree
-    unrar
-    unzip
-    usbutils
-    vim
-    virt-manager
-    virt-viewer
-    weechat
-    wget
-    which
-    whois
-    wrk
-    xan
-    xz
-    yazi
-    zip
-    zstd
+  cliPackages = [
+    pkgs.age
+    pkgs.aria2
+    pkgs.btop
+    pkgs.cloc
+    pkgs.coreutils-full
+    pkgs.curl
+    pkgs.curlie
+    pkgs.distrobox
+    pkgs.dmidecode
+    pkgs.dnsmasq
+    pkgs.dnsutils
+    pkgs.dos2unix
+    pkgs.dua
+    pkgs.duf
+    pkgs.elinks
+    pkgs.entr
+    pkgs.ethtool
+    pkgs.eza
+    pkgs.fd
+    pkgs.file
+    pkgs.findutils
+    pkgs.gh
+    pkgs.glow
+    pkgs.gnugrep
+    pkgs.gnupatch
+    pkgs.gnupg
+    pkgs.gnused
+    pkgs.grpcurl
+    pkgs.gzip
+    pkgs.hexyl
+    pkgs.htop
+    pkgs.iftop
+    pkgs.imagemagick
+    pkgs.inetutils
+    pkgs.iotop
+    pkgs.ipcalc
+    pkgs.iperf3
+    pkgs.iproute2
+    pkgs.jq
+    pkgs.ldns
+    pkgs.libvirt
+    pkgs.lld
+    pkgs.lldb
+    pkgs.lshw
+    pkgs.ltrace
+    pkgs.lzip
+    pkgs.minify
+    pkgs.mtr
+    pkgs.nerdctl
+    pkgs.nh
+    pkgs.nmap
+    pkgs.ntfs3g
+    pkgs.p7zip
+    pkgs.packer
+    pkgs.pass
+    pkgs.pciutils
+    pkgs.pdftk
+    pkgs.pv
+    pkgs.qemu
+    pkgs.restic
+    pkgs.sequoia-sq
+    pkgs.socat
+    pkgs.strace
+    pkgs.sysstat
+    pkgs.tmux
+    pkgs.tree
+    pkgs.unrar
+    pkgs.unzip
+    pkgs.usbutils
+    pkgs.vim
+    pkgs.virt-manager
+    pkgs.virt-viewer
+    pkgs.weechat
+    pkgs.wget
+    pkgs.which
+    pkgs.whois
+    pkgs.wrk
+    pkgs.xan
+    pkgs.xz
+    pkgs.yazi
+    pkgs.zip
+    pkgs.zstd
   ];
 
-  desktopPackages = with pkgs; [
+  desktopPackages = [
     # File storage.
-    dropbox
+    pkgs.dropbox
 
     # PDF reader.
-    evince
+    pkgs.evince
 
     # Web browser.
-    firefox
+    pkgs.firefox
 
     # Web browser.
-    google-chrome
+    pkgs.google-chrome
 
     # Text editor.
-    geany
+    pkgs.geany
 
     # Disk partition editor.
-    gparted
+    pkgs.gparted
 
     # Screnshot tool.
-    maim
+    pkgs.maim
 
     # Image viewer.
-    nomacs
+    pkgs.nomacs
 
     # Markdown-based knowledge base.
-    obsidian
+    pkgs.obsidian
 
     # Mail client.
-    protonmail-bridge
+    pkgs.protonmail-bridge
 
     # Music player.
-    spotify
+    pkgs.spotify
 
     # Image viewer.
-    sxiv
+    pkgs.sxiv
 
     # Logitech peripherals.
-    solaar
+    pkgs.solaar
 
     # Synology.
-    synology-drive-client
+    pkgs.synology-drive-client
 
     # Email client.
-    thunderbird-latest
+    pkgs.thunderbird-latest
 
     # Official Todoist app.
-    todoist-electron
+    pkgs.todoist-electron
 
     # Encryption tooling.
-    veracrypt
+    pkgs.veracrypt
 
     # Video player.
-    vlc
+    pkgs.vlc
 
     # File explorer + plugins.
-    xfce.thunar
-    xfce.thunar-archive-plugin
-    xfce.thunar-dropbox-plugin
-    xfce.thunar-volman
+    pkgs.xfce.thunar
+    pkgs.xfce.thunar-archive-plugin
+    pkgs.xfce.thunar-dropbox-plugin
+    pkgs.xfce.thunar-volman
   ];
 in
 {

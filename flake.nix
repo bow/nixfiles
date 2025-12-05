@@ -160,14 +160,15 @@
         { pkgs }:
         {
           default = pkgs.mkShellNoCC {
-            packages = with pkgs; [
-              age
-              sops
-              ssh-to-age
+            packages = [
+              pkgs.age
+              pkgs.home-manager
+              pkgs.sops
+              pkgs.ssh-to-age
 
-              deadnix
-              nixfmt-rfc-style
-              statix
+              pkgs.deadnix
+              pkgs.nixfmt-rfc-style
+              pkgs.statix
             ];
           };
         }

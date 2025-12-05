@@ -27,9 +27,9 @@ in
       viAlias = false;
       vimAlias = false;
       vimdiffAlias = true;
-      plugins = with pkgs.unstable; [
-        vimPlugins.nvim-treesitter.withAllGrammars
-        vimPlugins.nvim-treesitter
+      plugins = [
+        pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars
+        pkgs.unstable.vimPlugins.nvim-treesitter
       ];
       extraPackages = [
         pkgs.unstable.tree-sitter
