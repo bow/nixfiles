@@ -51,7 +51,7 @@ rec {
         city = "Reykjavik";
         timezone = "UTC";
       };
-      hostModuleName = "duskglow";
+      systemModuleName = "duskglow";
       modules = [
         ./hardware-configuration.nix;
         ./config.nix
@@ -70,14 +70,14 @@ rec {
     # Arguments
 
     **args**
-    : An attribute set containing `user`, `hostModule`, `modules, and `hostName` (optional).
+    : An attribute set containing `user`, `systemModule`, `modules, and `hostName` (optional).
       `hostName` is the hostname of the machine, defaulting to the name of the host module if
       unspecified. See the example above for an example of these values.
   */
   mkSystem =
     {
       user,
-      hostModuleName,
+      systemModuleName,
       modules,
       hostName ? null,
     }:
@@ -89,11 +89,11 @@ rec {
           lib
           user
           ;
-        hostname = if hostName != null then hostName else hostModuleName;
+        hostname = if hostName != null then hostName else systemModuleName;
       };
       modules = [
         inputs.disko.nixosModules.disko
-        ../hosts/${hostModuleName}
+        ../systems/${systemModuleName}
       ]
       ++ modules;
     };

@@ -82,6 +82,15 @@
             inherit lib;
             inherit (pkgs.stdenv.hostPlatform) system;
             format = "qcow-efi";
+            specialArgs = {
+              inherit
+                inputs
+                outputs
+                lib
+                user
+                ;
+              hostname = "duskglow-qemu";
+            };
             modules = [
               {
                 nix.registry.nixpkgs.flake = nixpkgs;
@@ -91,20 +100,11 @@
                   writableStoreUseTmpfs = false;
                 };
               }
-              ./hosts/duskglow
-              ./machines/duskglow-qemu/hardware.nix
-              ./machines/duskglow-qemu/config.nix
-              ./machines/duskglow-qemu/secrets.nix
+              ./systems/duskglow
+              ./systems/duskglow/examples/duskglow-qemu/hardware.nix
+              ./systems/duskglow/examples/duskglow-qemu/config.nix
+              ./systems/duskglow/examples/duskglow-qemu/secrets.nix
             ];
-            specialArgs = {
-              inherit
-                inputs
-                outputs
-                lib
-                user
-                ;
-              hostname = "duskglow";
-            };
           };
         }
       );
@@ -112,16 +112,16 @@
       # NixOS configuration examples.
       # usages:
       #   - nix build .#nixosConfigurations.{name}.config.system.build.toplevel
-      #   - nix run .#build-os -- {name}
+      #   - nix run .#build-system-example -- {name}
       nixosConfigurations = {
         duskglow-qemu = lib.nixsys.mkSystem {
           inherit user;
-          hostModuleName = "duskglow";
+          systemModuleName = "duskglow";
           modules = [
-            ./machines/duskglow-qemu/hardware.nix
-            ./machines/duskglow-qemu/disk.nix
-            ./machines/duskglow-qemu/config.nix
-            ./machines/duskglow-qemu/secrets.nix
+            ./systems/duskglow/examples/duskglow-qemu/disk.nix
+            ./systems/duskglow/examples/duskglow-qemu/hardware.nix
+            ./systems/duskglow/examples/duskglow-qemu/config.nix
+            ./systems/duskglow/examples/duskglow-qemu/secrets.nix
           ];
         };
       };
@@ -129,13 +129,13 @@
       apps = forEachSupportedSystem (
         { pkgs }:
         {
-          build-os =
+          build-system-example =
             let
-              script-pkg = pkgs.writeShellScriptBin "build-os" ''
+              script-pkg = pkgs.writeShellScriptBin "build-system-example" ''
                 set -e
 
                 if [ -z "''${1}" ]; then
-                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-os -- <nixosConfiguration>"
+                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-system-example -- <nixosConfiguration>"
                   exit 1
                 fi
 
@@ -150,7 +150,7 @@
             in
             {
               type = "app";
-              program = "${script-pkg}/bin/build-os";
+              program = "${script-pkg}/bin/build-system-example";
             };
         }
       );
