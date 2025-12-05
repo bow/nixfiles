@@ -17,7 +17,6 @@ let
     pkgs.age
     pkgs.aria2
     pkgs.btop
-    pkgs.cloc
     pkgs.coreutils-full
     pkgs.curl
     pkgs.curlie

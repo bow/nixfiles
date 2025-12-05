@@ -594,4 +594,8 @@ in
       ];
     };
   };
+
+  config = {
+    home.packages = [ pkgs.cloc ];
+  };
 }
