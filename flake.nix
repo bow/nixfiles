@@ -59,8 +59,8 @@
       ];
 
       user = {
-        name = "example";
-        full-name = "Example User";
+        name = "user";
+        full-name = "User Example";
         email = "example@email.com";
         city = "Reykjavik";
         timezone = "UTC";
@@ -102,9 +102,9 @@
                 };
               }
               ./systems/duskglow
-              ./systems/duskglow/examples/duskglow-qemu/hardware.nix
-              ./systems/duskglow/examples/duskglow-qemu/config.nix
-              ./systems/duskglow/examples/duskglow-qemu/secrets.nix
+              ./examples/machines/duskglow-qemu/hardware.nix
+              ./examples/machines/duskglow-qemu/config.nix
+              ./examples/machines/duskglow-qemu/secrets.nix
             ];
           };
         }
@@ -113,16 +113,16 @@
       # NixOS configuration examples.
       # usages:
       #   - nix build .#nixosConfigurations.{name}.config.system.build.toplevel
-      #   - nix run .#build-system-example -- {name}
+      #   - nix run .#build-machine -- {name}
       nixosConfigurations = {
-        duskglow-qemu = lib.nixsys.mkSystem {
+        duskglow-qemu = lib.nixsys.mkMachine {
           inherit user;
           systemModuleName = "duskglow";
           modules = [
-            ./systems/duskglow/examples/duskglow-qemu/disk.nix
-            ./systems/duskglow/examples/duskglow-qemu/hardware.nix
-            ./systems/duskglow/examples/duskglow-qemu/config.nix
-            ./systems/duskglow/examples/duskglow-qemu/secrets.nix
+            ./examples/machines/duskglow-qemu/disk.nix
+            ./examples/machines/duskglow-qemu/hardware.nix
+            ./examples/machines/duskglow-qemu/config.nix
+            ./examples/machines/duskglow-qemu/secrets.nix
           ];
         };
       };
@@ -134,22 +134,22 @@
           pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
         in
         {
-          example = lib.nixsys.mkHome {
+          user = lib.nixsys.mkHome {
             inherit user pkgs;
-            modules = [ ./users/example ];
+            modules = [ ./examples/homes/user ];
           };
         };
 
       apps = forEachSupportedSystem (
         { pkgs }:
         {
-          build-system-example =
+          build-machine =
             let
-              script-pkg = pkgs.writeShellScriptBin "build-system-example" ''
+              script-pkg = pkgs.writeShellScriptBin "build-machine" ''
                 set -e
 
                 if [ -z "''${1}" ]; then
-                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-system-example -- <nixosConfiguration>"
+                  ${pkgs.coreutils}/bin/echo "Usage: nix run .#build-machine -- <nixosConfiguration>"
                   exit 1
                 fi
 
@@ -164,7 +164,7 @@
             in
             {
               type = "app";
-              program = "${script-pkg}/bin/build-system-example";
+              program = "${script-pkg}/bin/build-machine";
             };
         }
       );

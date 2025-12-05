@@ -7,7 +7,7 @@
 }:
 rec {
   # Publicly-exported functions.
-  pub = { inherit forEachSystem mkSystem mkHome; };
+  pub = { inherit forEachSystem mkMachine mkHome; };
 
   /**
     Loop over the given systems to apply the given functions that use nixpkgs for that system.
@@ -43,7 +43,7 @@ rec {
     # Example
 
     ```nix
-    mkSystem {
+    mkMachine {
       user = {
         name = "default";
         full-name = "Default User";
@@ -64,7 +64,7 @@ rec {
     # Type
 
     ```
-    mkSystem :: AttrSet -> AttrSet
+    mkMachine :: AttrSet -> AttrSet
     ```
 
     # Arguments
@@ -74,7 +74,7 @@ rec {
       `hostName` is the hostname of the machine, defaulting to the name of the host module if
       unspecified. See the example above for an example of these values.
   */
-  mkSystem =
+  mkMachine =
     {
       user,
       systemModuleName,
