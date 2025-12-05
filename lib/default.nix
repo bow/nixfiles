@@ -104,7 +104,11 @@ rec {
     # Example
 
     ```nix
-    mkHome { user = "default"; extraModules = [ ]; }
+    mkHome {
+      user = "default";
+      pkgs = nixpkgs.legacyPackages.x86-64_linux;
+      extraModules = [ ];
+    }
     => ...
     ```
 
@@ -122,19 +126,35 @@ rec {
   mkHome =
     {
       user,
-      extraModules ? [ ],
+      pkgs,
+      modules,
     }:
-    lib.homeManagerConfiguration {
+    inputs.home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
       extraSpecialArgs = {
         inherit
           inputs
           outputs
-          user
-          lib
           ;
+        # FIXME: Find out how to avoid repeating this nixos module logic.
+        user = {
+          home-directory = "/home/${user.name}";
+          shell = "bash";
+        }
+        // user;
         asStandalone = true;
+        lib = pkgs.lib.extend (
+          final: _prev: {
+            inherit (inputs.home-manager.lib) hm;
+            nixsys = { inherit home enabled enabledWith; };
+          }
+        );
       };
-      modules = [ ../modules/nixos/users/main/home-manager/home.nix ] ++ extraModules;
+      modules = [
+        outputs.homeManagerModules.nixsys
+        ../modules/nixos/users/main/home-manager/home.nix
+      ]
+      ++ modules;
     };
 
   # nixos modules config-related library functions.

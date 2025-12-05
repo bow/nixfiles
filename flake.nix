@@ -37,6 +37,7 @@
       self,
       nixpkgs,
       nixos-generators,
+      home-manager,
       ...
     }@inputs:
     let
@@ -58,9 +59,9 @@
       ];
 
       user = {
-        name = "default";
-        full-name = "Default User";
-        email = "default@email.com";
+        name = "example";
+        full-name = "Example User";
+        email = "example@email.com";
         city = "Reykjavik";
         timezone = "UTC";
       };
@@ -125,6 +126,19 @@
           ];
         };
       };
+
+      # Home configuration examples.
+      # usage: home-manager build --flake .#example
+      homeConfigurations =
+        let
+          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        in
+        {
+          example = lib.nixsys.mkHome {
+            inherit user pkgs;
+            modules = [ ./users/example ];
+          };
+        };
 
       apps = forEachSupportedSystem (
         { pkgs }:
