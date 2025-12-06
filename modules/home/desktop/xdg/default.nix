@@ -21,17 +21,20 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    xdg.userDirs = with config.home; {
+    xdg = {
       enable = true;
-      createDirectories = cfg.create-directories;
-      desktop = "${homeDirectory}/dsk";
-      download = "${homeDirectory}/dl";
-      templates = "${homeDirectory}/.xdg-templates";
-      publicShare = "${homeDirectory}/.xdg-public";
-      documents = "${homeDirectory}/docs";
-      music = "${homeDirectory}/music";
-      pictures = "${homeDirectory}/pics";
-      videos = "${homeDirectory}/vids";
+      userDirs = with config.home; {
+        enable = true;
+        createDirectories = cfg.create-directories;
+        desktop = "${homeDirectory}/dsk";
+        download = "${homeDirectory}/dl";
+        templates = "${homeDirectory}/.xdg-templates";
+        publicShare = "${homeDirectory}/.xdg-public";
+        documents = "${homeDirectory}/docs";
+        music = "${homeDirectory}/music";
+        pictures = "${homeDirectory}/pics";
+        videos = "${homeDirectory}/vids";
+      };
     };
   };
 }
